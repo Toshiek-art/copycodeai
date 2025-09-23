@@ -1,7 +1,16 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/Hero.astro";
+// src/pages/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro'; // se non hai un layout, toglilo
+const title = 'CopyCodeArt';
 ---
-<BaseLayout>
-  <Hero />
+<!-- Se non hai un layout, rimuovi il wrapper e lascia solo l'HTML -->
+<BaseLayout title={title}>
+  <main class="mx-auto max-w-3xl p-6">
+    <h1 class="text-3xl font-bold">Hello, Ajia 🐾</h1>
+    <p class="mt-3 opacity-80">Home ok. Astro sta servendo correttamente.</p>
+    <ul class="mt-6 list-disc ml-6">
+      <li><a href="/writing">/writing</a></li>
+      <li><a href="/work">/work</a></li>
+    </ul>
+  </main>
 </BaseLayout>

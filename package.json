@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "wrangler pages dev --compatibility-date=2024-03-01 -- astro dev",
+    "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "dev:pages": "npm run build && wrangler pages dev ./dist",
+    "deploy:pages": "wrangler pages deploy ./dist",
+    "studio": "npx sanity dev"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.9",
