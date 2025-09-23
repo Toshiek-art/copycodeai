@@ -4,7 +4,7 @@ import tailwind from "@astrojs/tailwind";
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  site: "site: "https://copycodeai-bki.pages.dev",",
+  site: "site: "https://copycodeai-bki.pages.dev",
   output: 'server',
   adapter: cloudflare({ mode: 'directory' } ),
   integrations: [tailwind()],
