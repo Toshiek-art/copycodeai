@@ -1,0 +1,10 @@
+---
+const { headline = "Make your ideas legible.", sub = "I craft clear copy, rapid web experiences, and AI-driven visuals." } = Astro.props;
+---
+<section class="min-h-screen flex flex-col justify-center items-center text-center p-6">
+  <h1 class="text-4xl md:text-6xl font-bold mb-4">{headline}</h1>
+  <p class="text-lg md:text-xl text-gray-600 mb-6">{sub}</p>
+  <a href="/contact" class="bg-black text-white px-6 py-3 rounded-lg shadow-lg hover:bg-gray-800 transition">
+    Get in touch
+  </a>
+</section>

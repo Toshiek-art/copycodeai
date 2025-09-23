@@ -1,0 +1,19 @@
+---
+// In: src/components/Footer.astro
+const currentYear = new Date( ).getFullYear();
+---
+<footer class="bg-gray-100 border-t mt-20">
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+      <div class="mb-4 md:mb-0">
+        <p class="text-sm text-gray-600">&copy; {currentYear} CopyCodeAI. All rights reserved.</p>
+      </div>
+      <nav class="flex gap-6 text-sm text-gray-700">
+        <a href="/work" class="hover:underline">Web Design</a>
+        <a href="/writing" class="hover:underline">Blog</a>
+        <a href="/ai" class="hover:underline">AI Solutions</a>
+        <a href="/contact" class="hover:underline">Contact</a>
+      </nav>
+    </div>
+  </div>
+</footer>

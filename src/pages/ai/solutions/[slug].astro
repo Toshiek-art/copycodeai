@@ -1,0 +1,109 @@
+---
+// In: src/pages/ai/solutions/[slug].astro
+import { sanityClient } from "../../../lib/sanity";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { PortableText } from "astro-portabletext";
+import { Image } from "astro:assets";
+
+function getSanityImageUrl(sanityImage: any) {
+  if (!sanityImage || !sanityImage.asset) return null;
+  const ref = sanityImage.asset._ref;
+  const [_type, assetId, dimensions, format] = ref.split('-');
+  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
+}
+
+export async function getStaticPaths( ) {
+  const query = `*[_type == "aiSolution" && defined(slug.current)]{"slug": slug.current}`;
+  const solutions = await sanityClient.fetch(query);
+  return solutions.map((solution) => ({
+    params: { slug: solution.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const singleSolutionQuery = `*[_type == "aiSolution" && slug.current == $slug][0]`;
+const solution = await sanityClient.fetch(singleSolutionQuery, { slug });
+
+if (!solution) return Astro.redirect("/404");
+
+const mainImageUrl = getSanityImageUrl(solution.mainImage);
+---
+
+<BaseLayout title={solution.title}>
+  <div class="container mx-auto px-4 py-12">
+    <nav class="mb-6">
+      <button 
+        onclick="history.back()" 
+        class="text-blue-600 hover:underline flex items-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+        <span>Go Back</span>
+      </button>
+    </nav>
+
+    <article>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">{solution.title}</h1>
+      <p class="text-gray-500 text-lg mb-8">{solution.summary}</p>
+
+      {/* Mostra l'immagine principale se esiste E se non è una galleria di immagini per brand */}
+      {mainImageUrl && solution.solutionType !== 'visual' && (
+        <div class="mb-12">
+          <Image 
+            src={mainImageUrl} 
+            alt={`Featured image for ${solution.title}`}
+            width={1200}
+            height={675}
+            class="rounded-lg shadow-lg w-full h-auto"
+          />
+        </div>
+      )}
+
+      {/* Contenuto principale */}
+      <div class="prose lg:prose-xl max-w-none">
+        <h2 class="text-2xl font-semibold mb-4">The Challenge</h2>
+        <p>{solution.challenge}</p>
+        <h2 class="text-2xl font-semibold mt-8 mb-4">My Solution</h2>
+        <PortableText value={solution.solution} />
+      </div>
+
+      {/* Sezione Anatomia del Prompt (solo per case-study) */}
+      {solution.solutionType === 'case-study' && solution.promptAnatomy && (
+        <div class="mt-12 p-6 bg-gray-50 rounded-lg">
+          <h3 class="text-3xl font-bold mb-6">Prompt Anatomy</h3>
+          <div class="space-y-6">
+            {solution.promptAnatomy.map(block => (
+              <div class="border-l-4 border-blue-500 pl-4">
+                <h4 class="text-xl font-semibold">{block.conceptTitle}</h4>
+                <p class="mt-2 text-gray-700">{block.reasoning}</p>
+                {block.promptSnippet && (
+                  <pre class="mt-2 p-3 bg-gray-800 text-white rounded-md text-sm overflow-x-auto"><code>{block.promptSnippet}</code></pre>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Sezione Galleria (solo per visual) */}
+      {solution.solutionType === 'visual' && solution.gallery && (
+        <div class="mt-12">
+          <h3 class="text-3xl font-bold mb-6">Image Gallery</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {solution.gallery.map(image => {
+              const imageUrl = getSanityImageUrl(image);
+              return imageUrl ? (
+                <div>
+                  <Image src={imageUrl} alt={image.caption || 'AI-generated image'} width={800} height={600} class="rounded-lg shadow-md" />
+                  {image.caption && <p class="text-center text-sm text-gray-600 mt-2">{image.caption}</p>}
+                </div>
+              ) : null;
+            })}
+          </div>
+        </div>
+      )}
+
+    </article>
+  </div>
+</BaseLayout>

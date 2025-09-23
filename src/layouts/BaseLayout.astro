@@ -1,0 +1,45 @@
+---
+import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+const {
+  title = "CopyCodeAi",
+  description = "Portfolio – Copywriting, Python, Web, AI visuals",
+  standalone = false
+} = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+  </head>
+  <body class="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-900">
+    { !standalone && <Nav /> }
+
+    <main class={`flex-1 ${standalone ? 'pb-20' : ''}`}>
+      <slot />
+    </main>
+
+    { !standalone && (
+      <div class="mt-auto">
+        <Footer />
+      </div>
+    )}
+
+    <!-- Sticky CTA solo per le pagine “standalone” (mini-landing) e solo mobile -->
+    { standalone && (
+      <div class="fixed inset-x-0 bottom-0 z-50 md:hidden bg-white/90 border-t backdrop-blur">
+        <a href="/contact" class="block text-center px-4 py-3 font-medium">
+          Get in touch
+        </a>
+      </div>
+    )}
+  </body>
+</html>

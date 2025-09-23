@@ -1,0 +1,19 @@
+<section>
+  <h2>Context</h2>
+  <p>Linee guida interne per mantenere coerenza nelle pagine di progetto e scrittura.</p>
+
+  <h2>Structure</h2>
+  <ul>
+    <li>Usare template fissi (ProjectTemplate, WritingTemplate) con slot contenuti.</li>
+    <li>Controllare i campi <code>status</code>, <code>visible</code>, <code>navVisible</code> per la pubblicazione.</li>
+    <li>SEO di base garantita dal layout globale.</li>
+  </ul>
+
+  <h2>Notes</h2>
+  <p>Ogni progetto e scritto deve avere slug coerente, titolo chiaro, excerpt breve e corpo in <code>src/content</code>.  
+  Le immagini OG default coprono i casi in cui non viene definito un cover specifico.</p>
+
+  <h2>Usage</h2>
+  <p>Questo documento è solo una nota tecnica: non deve apparire nei menu pubblici.  
+  Impostare <code>visible:false</code> in <code>writing.ts</code> per tenerlo fuori dagli indici.</p>
+</section>

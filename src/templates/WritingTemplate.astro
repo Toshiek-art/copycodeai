@@ -1,0 +1,15 @@
+---
+const { item } = Astro.props; // Writing
+---
+<article class="prose max-w-3xl">
+  <header>
+    <h1 class="text-3xl font-bold">{item.title}</h1>
+    <p class="opacity-80">{item.excerpt}</p>
+    {item.pullquote && <blockquote class="mt-4 italic">{item.pullquote}</blockquote>}
+    {item.readingTime && <p class="text-sm opacity-70 mt-2">⏱ {item.readingTime}</p>}
+  </header>
+
+  <div class="mt-8">
+    <slot />
+  </div>
+</article>

@@ -1,0 +1,47 @@
+---
+// In: src/pages/work.astro
+import { sanityClient } from "../lib/sanity";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets"; // Usiamo il componente Image di Astro per ottimizzare le immagini
+
+// 1. Query per prendere tutti i progetti da Sanity
+const query = `*[_type == "project" && defined(slug.current)] | order(_createdAt desc)`;
+const projects = await sanityClient.fetch(query);
+
+// Funzione helper per ottenere l'URL dell'immagine da Sanity
+function getSanityImageUrl(sanityImage: any) {
+  if (!sanityImage || !sanityImage.asset) return "";
+  const ref = sanityImage.asset._ref;
+  // Formato ref: image-projectId-dataset-widthxheight-format
+  const [_type, assetId, dimensions, format] = ref.split('-');
+  const [width, height] = dimensions.split('x').map(Number);
+  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${width}x${height}.${format}`;
+}
+---
+
+<BaseLayout title="Web Design" page="work">
+  <div class="container mx-auto px-4 py-12">
+    <h1 class="text-4xl font-bold mb-8">I Miei Progetti di Web Design</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {
+        projects.map((project ) => (
+          <a href={`/work/${project.slug.current}`} class="group block border rounded-lg overflow-hidden">
+            <div class="relative">
+              <Image
+                src={getSanityImageUrl(project.mainImage)}
+                alt={`Anteprima del progetto ${project.title}`}
+                width={600}
+                height={400}
+                class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+            <div class="p-4">
+              <h2 class="text-xl font-semibold">{project.title}</h2>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

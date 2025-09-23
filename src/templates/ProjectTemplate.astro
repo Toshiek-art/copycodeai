@@ -1,0 +1,24 @@
+---
+const { item } = Astro.props; // Project
+---
+<article class="prose max-w-3xl">
+  <header>
+    <h1 class="text-3xl font-bold">{item.title}</h1>
+    <p class="opacity-80">{item.excerpt}</p>
+    {item.metrics && (
+      <ul class="mt-4 grid grid-cols-2 gap-2 text-sm">
+        {item.metrics.map(m => <li><strong>{m.label}:</strong> {m.value}</li>)}
+      </ul>
+    )}
+  </header>
+
+  <div class="mt-8">
+    <slot />
+  </div>
+
+  {item.gallery && item.gallery.length > 0 && (
+    <div class="mt-8 grid grid-cols-2 gap-3">
+      {item.gallery.map(src => <img src={src} alt="" loading="lazy" />)}
+    </div>
+  )}
+</article>

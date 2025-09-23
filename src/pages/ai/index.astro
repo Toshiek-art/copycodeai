@@ -1,0 +1,65 @@
+---
+// In: src/pages/ai/index.astro
+import { sanityClient } from "../../lib/sanity";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+
+// Funzione helper per l'URL dell'immagine
+function getSanityImageUrl(sanityImage: any) {
+  if (!sanityImage || !sanityImage.asset) return null;
+  const ref = sanityImage.asset._ref;
+  const [_type, assetId, dimensions, format] = ref.split('-');
+  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
+}
+
+// Query per prendere TUTTE le soluzioni AI, ordinate per data
+const query = `*[_type == "aiSolution" && defined(slug.current )] | order(_createdAt desc)`;
+const solutions = await sanityClient.fetch(query);
+
+// Oggetto per mappare i tipi di soluzione a etichette leggibili
+const typeLabels: { [key: string]: string } = {
+  'case-study': 'Case Study',
+  'gpt': 'Custom GPT',
+  'visual': 'Brand Visuals'
+};
+---
+
+<BaseLayout title="AI Solutions" page="ai">
+  <div class="container mx-auto px-4 py-12">
+    <h1 class="text-4xl font-bold mb-2">AI Solutions</h1>
+    <p class="text-xl text-gray-600 mb-10">A collection of case studies, custom GPTs, and visual assets for brands.</p>
+    
+    {/* In futuro, qui potremmo aggiungere dei pulsanti per filtrare i risultati */}
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {
+        solutions.map((solution) => {
+          const imageUrl = getSanityImageUrl(solution.mainImage);
+          return (
+            <a href={`/ai/solutions/${solution.slug.current}`} class="group block border rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+              {imageUrl && (
+                <div class="relative h-48 overflow-hidden">
+                  <Image
+                    src={imageUrl}
+                    alt={`Image for ${solution.title}`}
+                    width={600}
+                    height={400}
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  {/* Etichetta della categoria in un angolo */}
+                  <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                    {typeLabels[solution.solutionType] || 'Solution'}
+                  </span>
+                </div>
+              )}
+              <div class="p-6">
+                <h2 class="text-xl font-semibold mb-2">{solution.title}</h2>
+                <p class="text-gray-700 text-sm">{solution.summary}</p>
+              </div>
+            </a>
+          )
+        })
+      }
+    </div>
+  </div>
+</BaseLayout>
