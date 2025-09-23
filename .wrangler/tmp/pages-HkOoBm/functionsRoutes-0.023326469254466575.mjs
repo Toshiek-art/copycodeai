@@ -4,7 +4,6 @@ import { onRequestGet as __api_templates__slug__ts_onRequestGet } from "/home/to
 import { onRequestPatch as __api_templates__slug__ts_onRequestPatch } from "/home/tosiek/copycodeai/functions/api/templates/[slug].ts"
 import { onRequestGet as __api_ping_ts_onRequestGet } from "/home/tosiek/copycodeai/functions/api/ping.ts"
 import { onRequestOptions as __api_ping_ts_onRequestOptions } from "/home/tosiek/copycodeai/functions/api/ping.ts"
-import { onRequestPost as __api_send_email_ts_onRequestPost } from "/home/tosiek/copycodeai/functions/api/send-email.ts"
 import { onRequestGet as __api_templates_index_ts_onRequestGet } from "/home/tosiek/copycodeai/functions/api/templates/index.ts"
 import { onRequestPost as __api_templates_index_ts_onRequestPost } from "/home/tosiek/copycodeai/functions/api/templates/index.ts"
 import { onRequest as __admin__debug_ts_onRequest } from "/home/tosiek/copycodeai/functions/admin/_debug.ts"
@@ -55,13 +54,6 @@ export const routes = [
       method: "OPTIONS",
       middlewares: [],
       modules: [__api_ping_ts_onRequestOptions],
-    },
-  {
-      routePath: "/api/send-email",
-      mountPath: "/api",
-      method: "POST",
-      middlewares: [],
-      modules: [__api_send_email_ts_onRequestPost],
     },
   {
       routePath: "/api/templates",
