@@ -1,0 +1,36 @@
+---
+// File: src/pages/test-client.astro
+---
+<html lang="it">
+<head>
+  <title>Test Client-Server</title>
+</head>
+<body>
+  <h1>Pagina di Test</h1>
+  <button id="testButton">Esegui Test API</button>
+  <pre id="responseOutput"></pre>
+
+  <script>
+    const button = document.getElementById('testButton');
+    const output = document.getElementById('responseOutput');
+
+    button.addEventListener('click', async () => {
+      output.textContent = 'Invio richiesta...';
+      try {
+        const response = await fetch('/api/test'); // Richiesta GET al nostro endpoint di test
+        
+        if (!response.ok) {
+          throw new Error(`Errore HTTP! Stato: ${response.status}`);
+        }
+
+        const data = await response.json();
+        output.textContent = JSON.stringify(data, null, 2);
+
+      } catch (error) {
+        console.error('Errore durante la fetch:', error);
+        output.textContent = `Errore: ${error.message}`;
+      }
+    });
+  </script>
+</body>
+</html>
