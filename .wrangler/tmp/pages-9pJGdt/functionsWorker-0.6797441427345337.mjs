@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// ../.wrangler/tmp/bundle-WCCNw4/checked-fetch.js
+// ../.wrangler/tmp/bundle-td05C2/checked-fetch.js
 var urls = /* @__PURE__ */ new Set();
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
@@ -973,16 +973,6 @@ var onRequest3 = /* @__PURE__ */ __name(async ({ env }) => {
 // health.ts
 var onRequestGet5 = /* @__PURE__ */ __name(async () => new Response("ok", { status: 200, headers: { "content-type": "text/plain" } }), "onRequestGet");
 
-// [[path]].ts
-var onRequestGet6 = /* @__PURE__ */ __name(async (ctx) => {
-  const url = new URL(ctx.request.url);
-  return new Response(JSON.stringify({
-    ok: true,
-    caught: "catch-all",
-    path: url.pathname
-  }), { status: 200, headers: { "content-type": "application/json" } });
-}, "onRequestGet");
-
 // _middleware.ts
 var CORS2 = {
   "access-control-allow-origin": "*",
@@ -1112,13 +1102,6 @@ var routes = [
     method: "GET",
     middlewares: [],
     modules: [onRequestGet5]
-  },
-  {
-    routePath: "/:path*",
-    mountPath: "/",
-    method: "GET",
-    middlewares: [],
-    modules: [onRequestGet6]
   },
   {
     routePath: "/",
@@ -1616,7 +1599,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// ../.wrangler/tmp/bundle-WCCNw4/middleware-insertion-facade.js
+// ../.wrangler/tmp/bundle-td05C2/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -1648,7 +1631,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// ../.wrangler/tmp/bundle-WCCNw4/middleware-loader.entry.ts
+// ../.wrangler/tmp/bundle-td05C2/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;

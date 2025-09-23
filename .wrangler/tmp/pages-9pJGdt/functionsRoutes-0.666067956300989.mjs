@@ -11,7 +11,6 @@ import { onRequest as __admin__debug_ts_onRequest } from "/home/tosiek/copycodea
 import { onRequest as __admin_login_ts_onRequest } from "/home/tosiek/copycodeai/functions/admin/login.ts"
 import { onRequest as __admin_logout_ts_onRequest } from "/home/tosiek/copycodeai/functions/admin/logout.ts"
 import { onRequestGet as __health_ts_onRequestGet } from "/home/tosiek/copycodeai/functions/health.ts"
-import { onRequestGet as ____path___ts_onRequestGet } from "/home/tosiek/copycodeai/functions/[[path]].ts"
 import { onRequest as ___middleware_ts_onRequest } from "/home/tosiek/copycodeai/functions/_middleware.ts"
 
 export const routes = [
@@ -105,13 +104,6 @@ export const routes = [
       method: "GET",
       middlewares: [],
       modules: [__health_ts_onRequestGet],
-    },
-  {
-      routePath: "/:path*",
-      mountPath: "/",
-      method: "GET",
-      middlewares: [],
-      modules: [____path___ts_onRequestGet],
     },
   {
       routePath: "/",

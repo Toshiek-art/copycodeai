@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// .wrangler/tmp/bundle-iSmpEX/checked-fetch.js
+// .wrangler/tmp/bundle-DAeMbD/checked-fetch.js
 var urls = /* @__PURE__ */ new Set();
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
@@ -1011,14 +1011,6 @@ var onRequest3 = /* @__PURE__ */ __name2(async ({ env }) => {
   return new Response(null, { status: 302, headers: { Location: url } });
 }, "onRequest");
 var onRequestGet5 = /* @__PURE__ */ __name2(async () => new Response("ok", { status: 200, headers: { "content-type": "text/plain" } }), "onRequestGet");
-var onRequestGet6 = /* @__PURE__ */ __name2(async (ctx) => {
-  const url = new URL(ctx.request.url);
-  return new Response(JSON.stringify({
-    ok: true,
-    caught: "catch-all",
-    path: url.pathname
-  }), { status: 200, headers: { "content-type": "application/json" } });
-}, "onRequestGet");
 var CORS2 = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET,POST,PATCH,OPTIONS",
@@ -1146,13 +1138,6 @@ var routes = [
     method: "GET",
     middlewares: [],
     modules: [onRequestGet5]
-  },
-  {
-    routePath: "/:path*",
-    mountPath: "/",
-    method: "GET",
-    middlewares: [],
-    modules: [onRequestGet6]
   },
   {
     routePath: "/",
@@ -1827,7 +1812,7 @@ var jsonError2 = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx
 }, "jsonError");
 var middleware_miniflare3_json_error_default2 = jsonError2;
 
-// .wrangler/tmp/bundle-iSmpEX/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-DAeMbD/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__2 = [
   middleware_ensure_req_body_drained_default2,
   middleware_miniflare3_json_error_default2
@@ -1859,7 +1844,7 @@ function __facade_invoke__2(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__2, "__facade_invoke__");
 
-// .wrangler/tmp/bundle-iSmpEX/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-DAeMbD/middleware-loader.entry.ts
 var __Facade_ScheduledController__2 = class ___Facade_ScheduledController__2 {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
