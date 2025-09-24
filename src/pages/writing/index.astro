@@ -1,37 +1,45 @@
 ---
 // src/pages/writing/index.astro
-import { sanityClient } from "../../lib/sanity";
+export const prerender = true;
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { sanityClient } from "../../lib/sanity";
 
-// 1. Prendiamo tutti i post da Sanity
-const query = `*[_type == "post" && defined(slug.current)] | order(publishedAt desc)`;
-const posts = await sanityClient.fetch(query);
+const SITE = "https://copycodeai-bki.pages.dev";
+const url = `${SITE}/writing`;
 
-console.log("ARTICOLI RICEVUTI DA SANITY:", posts);
+const posts = await sanityClient.fetch(`
+  *[_type == "post" && defined(slug.current)]{
+    title,
+    "slug": slug.current,
+    publishedAt
+  } | order(publishedAt desc)
+`);
+const description = "Articoli e appunti su AI, design e scrittura. Selezione aggiornata dai miei lavori e ricerche.";
 ---
 
-<BaseLayout title="Writing" page="writing">
+<BaseLayout title="Writing" page="writing" description={description} url={url}>
   <div class="container mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold mb-8">Dal mio Blog (da Sanity)</h1>
+    <h1 class="text-4xl font-bold mb-2">Writing</h1>
+    <p class="text-gray-600 mb-8 max-w-2xl">{description}</p>
 
-    <ul class="space-y-6">
-      {
-        posts.length > 0 ? (
-          posts.map((post) => (
-            <li>
-              {/* 2. Il link punta alla pagina dinamica che già esiste */}
-              <a href={`/writing/${post.slug.current}`} class="block p-4 border rounded-lg hover:bg-gray-100">
-                <h2 class="text-2xl font-semibold">{post.title}</h2>
-                <p class="text-gray-600 mt-2">
-                  Pubblicato il: {new Date(post.publishedAt).toLocaleDateString('it-IT')}
-                </p>
-              </a>
-            </li>
-          ))
-        ) : (
-          <p>Nessun articolo trovato. Prova a pubblicarne uno dal CMS!</p>
-        )
-      }
-    </ul>
+    {posts?.length ? (
+      <ul class="space-y-6">
+        {posts.map((post) => (
+          <li>
+            <a href={`/writing/${post.slug}`} class="block p-4 border rounded-lg hover:bg-gray-100">
+              <h2 class="text-2xl font-semibold">{post.title}</h2>
+              <p class="text-gray-600 mt-2">
+                Pubblicato il: {post.publishedAt
+                  ? new Date(post.publishedAt).toLocaleDateString('it-IT')
+                  : '—'}
+              </p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>Nessun articolo trovato. Prova a pubblicarne uno dal CMS!</p>
+    )}
   </div>
 </BaseLayout>

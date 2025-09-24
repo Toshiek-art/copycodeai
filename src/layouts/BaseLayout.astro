@@ -6,7 +6,10 @@ import Footer from "../components/Footer.astro";
 const {
   title = "CopyCodeAi",
   description = "Portfolio – Copywriting, Python, Web, AI visuals",
-  standalone = false
+  standalone = false,
+  // 👇 nuovi props opzionali per SEO
+  url = undefined,        // es. "https://copycodeai-bki.pages.dev/writing/foo"
+  ogImage = undefined     // es. "https://.../og.jpg"
 } = Astro.props;
 ---
 <html lang="en">
@@ -15,11 +18,27 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {/* Canonical (se passato) */}
+    {url && <link rel="canonical" href={url} />}
+
+    {/* Open Graph */}
+    <meta property="og:type" content="article" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta name="twitter:card" content="summary_large_image" />
+    {url && <meta property="og:url" content={url} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
 
+    {/* Twitter */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    {/* Slot per meta/script extra (es. JSON-LD) */}
+    <slot name="head" />
   </head>
+
   <body class="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-900">
     { !standalone && <Nav /> }
 
@@ -33,7 +52,7 @@ const {
       </div>
     )}
 
-    <!-- Sticky CTA solo per le pagine “standalone” (mini-landing) e solo mobile -->
+    {/* Sticky CTA solo per le pagine “standalone” (mini-landing) e solo mobile */}
     { standalone && (
       <div class="fixed inset-x-0 bottom-0 z-50 md:hidden bg-white/90 border-t backdrop-blur">
         <a href="/contact" class="block text-center px-4 py-3 font-medium">
