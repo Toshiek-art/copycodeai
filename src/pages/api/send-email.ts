@@ -86,17 +86,24 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // Invio email con Resend
+    // Invio email con Resend (ritorna id o errore)
     const resend = new Resend(RESEND_API_KEY);
-    await resend.emails.send({
-      from: RESEND_FROM,      // es: "Ajia <hello@tuodominio.com>" (dominio verificato)
-      to: CONTACT_TO,         // es: "you@tuodominio.com"
+    const result = await resend.emails.send({
+      from: RESEND_FROM,      // dominio verificato
+      to: CONTACT_TO,         // la tua casella
       reply_to: email,
       subject: `New contact from ${name}`,
       text: `From: ${name} <${email}>\n\n${message}`,
     });
 
-    return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    if ((result as any)?.error) {
+      return new Response(
+        JSON.stringify({ ok: false, stage: 'resend', error: (result as any).error?.message || 'Resend error' }),
+        { status: 502 }
+      );
+    }
+
+    return new Response(JSON.stringify({ ok: true, id: (result as any)?.data?.id ?? null }), { status: 200 });
   } catch (err: any) {
     return new Response(JSON.stringify({ ok: false, error: err?.message ?? 'Error' }), { status: 500 });
   }
