@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 🎨 Palette chiaro/scuro */
+:root {
+  --bg: #f9fafb;        /* sfondo chiaro */
+  --text: #111827;      /* testo scuro */
+  --accent: #2563eb;    /* blu primario */
+  --muted: #6b7280;     /* testo secondario/grigio */
+}
+
+.dark {
+  --bg: #0f172a;        /* sfondo scuro */
+  --text: #f9fafb;      /* testo chiaro */
+  --accent: #3b82f6;    /* blu in dark mode */
+  --muted: #9ca3af;     /* testo secondario */
+}
+
+/* Applica di default */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}

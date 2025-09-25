@@ -2,7 +2,7 @@
 // src/pages/writing/index.astro
 export const prerender = true;
 
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteLayout from "@core/layouts/SiteLayout.astro";
 import { sanityClient } from "../../lib/sanity";
 
 const SITE = "https://copycodeai-bki.pages.dev";
@@ -15,31 +15,39 @@ const posts = await sanityClient.fetch(`
     publishedAt
   } | order(publishedAt desc)
 `);
-const description = "Articoli e appunti su AI, design e scrittura. Selezione aggiornata dai miei lavori e ricerche.";
----
 
-<BaseLayout title="Writing" page="writing" description={description} url={url}>
-  <div class="container mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold mb-2">Writing</h1>
-    <p class="text-gray-600 mb-8 max-w-2xl">{description}</p>
+const description = "Articoli e appunti su AI, design e scrittura. Selezione aggiornata dai miei lavori e ricerche.";
+
+// util piccola x data IT
+const fmt = (d?: string) => d ? new Date(d).toLocaleDateString('it-IT', { day:'2-digit', month:'2-digit', year:'numeric' }) : '—';
+---
+<SiteLayout title="Writing — CopyCodeAI" description={description} url={url}>
+  <main class="mx-auto max-w-6xl px-4 py-12">
+    <header class="mb-8">
+      <h1 class="font-head text-4xl text-[var(--text)]">Writing</h1>
+      <p class="text-[var(--muted)] mt-1 max-w-2xl">{description}</p>
+    </header>
 
     {posts?.length ? (
-      <ul class="space-y-6">
-        {posts.map((post) => (
-          <li>
-            <a href={`/writing/${post.slug}`} class="block p-4 border rounded-lg hover:bg-gray-100">
-              <h2 class="text-2xl font-semibold">{post.title}</h2>
-              <p class="text-gray-600 mt-2">
-                Pubblicato il: {post.publishedAt
-                  ? new Date(post.publishedAt).toLocaleDateString('it-IT')
-                  : '—'}
-              </p>
-            </a>
-          </li>
-        ))}
-      </ul>
+<ul class="space-y-6">
+  {posts.map((post, i) => (
+    <li
+      data-aos="fade-up"
+      data-aos-delay={i * 100}  // effetto stagger
+    >
+      <a href={`/writing/${post.slug}`} class="block p-4 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+        <h2 class="text-2xl font-semibold">{post.title}</h2>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">
+          Pubblicato il: {post.publishedAt
+            ? new Date(post.publishedAt).toLocaleDateString('it-IT')
+            : '—'}
+        </p>
+      </a>
+    </li>
+  ))}
+</ul>
     ) : (
-      <p>Nessun articolo trovato. Prova a pubblicarne uno dal CMS!</p>
+      <p class="text-[var(--muted)]">Nessun articolo trovato. Pubblicane uno dal CMS.</p>
     )}
-  </div>
-</BaseLayout>
+  </main>
+</SiteLayout>

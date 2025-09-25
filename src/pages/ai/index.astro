@@ -1,7 +1,7 @@
 ---
 // In: src/pages/ai/index.astro
 import { sanityClient } from "../../lib/sanity";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteLayout from "@core/layouts/SiteLayout.astro";
 import { Image } from "astro:assets";
 
 // Funzione helper per l'URL dell'immagine
@@ -22,21 +22,32 @@ const typeLabels: { [key: string]: string } = {
   'gpt': 'Custom GPT',
   'visual': 'Brand Visuals'
 };
+
+const description = "Case study AI, GPT su misura e visual assets generativi per brand tech.";
+const SITE = "https://copycodeai-bki.pages.dev";
+const url = `${SITE}/ai`;
 ---
 
-<BaseLayout title="AI Solutions" page="ai">
+<SiteLayout title="AI Solutions" description={description} url={url}>
   <div class="container mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold mb-2">AI Solutions</h1>
-    <p class="text-xl text-gray-600 mb-10">A collection of case studies, custom GPTs, and visual assets for brands.</p>
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold">AI Solutions</h1>
+      <p class="mt-2 max-w-2xl text-lg text-[var(--muted)]">
+        {description}
+      </p>
+    </header>
     
-    {/* In futuro, qui potremmo aggiungere dei pulsanti per filtrare i risultati */}
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
       {
-        solutions.map((solution) => {
+        solutions.map((solution, index) => {
           const imageUrl = getSanityImageUrl(solution.mainImage);
           return (
-            <a href={`/ai/solutions/${solution.slug.current}`} class="group block border rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+            <a
+              href={`/ai/solutions/${solution.slug.current}`}
+              class="group block overflow-hidden rounded-lg border border-black/5 bg-[var(--surface)] shadow-sm transition hover:shadow-lg dark:border-white/10"
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+            >
               {imageUrl && (
                 <div class="relative h-48 overflow-hidden">
                   <Image
@@ -44,22 +55,21 @@ const typeLabels: { [key: string]: string } = {
                     alt={`Image for ${solution.title}`}
                     width={600}
                     height={400}
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                  {/* Etichetta della categoria in un angolo */}
-                  <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                  <span class="absolute right-3 top-3 rounded-md bg-blue-600 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow">
                     {typeLabels[solution.solutionType] || 'Solution'}
                   </span>
                 </div>
               )}
               <div class="p-6">
-                <h2 class="text-xl font-semibold mb-2">{solution.title}</h2>
-                <p class="text-gray-700 text-sm">{solution.summary}</p>
+                <h2 class="text-xl font-semibold text-[var(--text)]">{solution.title}</h2>
+                <p class="mt-2 text-sm text-[var(--muted)]">{solution.summary}</p>
               </div>
             </a>
-          )
+          );
         })
       }
     </div>
   </div>
-</BaseLayout>
+</SiteLayout>

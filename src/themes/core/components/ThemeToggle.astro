@@ -1,0 +1,51 @@
+---
+const id = "theme-toggle-" + Math.random().toString(36).slice(2);
+---
+
+<button
+  id={id}
+  type="button"
+  class="ml-3 px-3 py-1 rounded border text-sm bg-gray-100 dark:bg-gray-800 dark:text-gray-200"
+  client:load
+  data-theme-toggle
+>
+  🌙 Dark
+</button>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.querySelector("[data-theme-toggle]");
+
+    if (!btn) return; // sicurezza
+
+    function setTheme(mode) {
+      if (mode === "dark") {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+        btn.textContent = "☀️ Light";
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+        btn.textContent = "🌙 Dark";
+      }
+    }
+
+    // On load
+    const saved = localStorage.getItem("theme");
+    if (saved) {
+      setTheme(saved);
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+
+    // On click
+    btn.addEventListener("click", () => {
+      const current = document.documentElement.classList.contains("dark")
+        ? "dark"
+        : "light";
+      setTheme(current === "dark" ? "light" : "dark");
+    });
+  });
+</script>

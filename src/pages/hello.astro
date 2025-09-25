@@ -1,0 +1,64 @@
+---
+import SiteLayout from "@core/layouts/SiteLayout.astro";
+
+const SITE = "https://copycodeai-bki.pages.dev";
+const url = `${SITE}/hello`;
+const description = "Aldo è un copywriter, developer e AI specialist che unisce parole, codice e intelligenza artificiale con CopyCodeAI.";
+
+const supportAreas = [
+  {
+    title: "Content creation",
+    detail: "(articles, blogs, website copy, brand storytelling)",
+  },
+  {
+    title: "Web development",
+    detail: "(Astro, Tailwind, headless CMS solutions)",
+  },
+  {
+    title: "AI-driven solutions",
+    detail: "(advanced prompting, custom GPTs, brand assistants, AI-powered visuals)",
+  },
+];
+---
+
+<SiteLayout title="Hello — CopyCodeAI" description={description} url={url}>
+  <main class="mx-auto max-w-4xl px-4 py-16 space-y-12">
+    <section class="space-y-6">
+      <h1 class="font-head text-5xl font-semibold text-[var(--text)]">Hello</h1>
+      <p class="text-lg leading-relaxed text-[var(--text)]">
+        I’m Aldo — a copywriter, developer and AI specialist.
+      </p>
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up">
+        With a background in digital art and writing, I bring together words, code, and artificial intelligence under one roof: CopyCodeAI.
+      </p>
+    </section>
+
+    <section class="space-y-6" data-aos="fade-up" data-aos-delay="100">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">What I work on</h2>
+      <p class="text-[var(--muted)]">
+        I support freelancers, startups, and companies with:
+      </p>
+      <div class="grid gap-4 md:grid-cols-3">
+        {supportAreas.map((area, index) => (
+          <div
+            class="rounded-xl border border-black/5 bg-[var(--surface)] p-5 shadow-sm transition hover:shadow-lg dark:border-white/10"
+            data-aos="fade-up"
+            data-aos-delay={150 + index * 100}
+          >
+            <h3 class="font-head text-lg font-semibold text-[var(--text)]">{area.title}</h3>
+            <p class="mt-2 text-sm text-[var(--muted)]">{area.detail}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up">
+        I currently work as a freelancer, and I’m in the process of setting up my own company to expand services and collaborations.
+      </p>
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="100">
+        My mission is to make AI and digital tools practical, creative, and accessible — helping projects grow with innovation and clarity.
+      </p>
+    </section>
+  </main>
+</SiteLayout>

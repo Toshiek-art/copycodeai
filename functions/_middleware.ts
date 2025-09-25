@@ -28,6 +28,7 @@ export const onRequest: PagesFunction = async ({ request, next }) => {
     // Pagine pubbliche sotto /admin
     if (
       url.pathname.startsWith("/admin/login") ||
+      url.pathname.startsWith("/admin/access") ||
       url.pathname.startsWith("/admin/logout") ||
       url.pathname.startsWith("/admin/_debug")
     ) {

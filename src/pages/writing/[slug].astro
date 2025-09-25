@@ -71,11 +71,11 @@ const jsonLd = {
 
     <article>
       <h1 class="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
-      <p class="text-gray-600 mb-8">
+      <p class="mb-8 text-[var(--muted)] dark:text-[var(--muted)]">
         Pubblicato il: {new Date(post.publishedAt).toLocaleDateString('it-IT')}
       </p>
 
-      <div class="prose lg:prose-xl max-w-none">
+      <div class="prose lg:prose-xl max-w-none dark:prose-invert">
         <PortableText value={post.body} />
       </div>
     </article>

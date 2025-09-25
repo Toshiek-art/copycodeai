@@ -7,23 +7,23 @@ const turnstileSiteKey = import.meta.env.TURNSTILE_SITE_KEY ?? '';
 <BaseLayout title="Contact Me">
   {/* DEBUG: lasciami questo H1 per capire subito se rende */}
   <div class="container mx-auto px-4 py-16">
-    <h1 class="text-4xl font-bold mb-6">Contact — should render</h1>
+    <h1 class="text-4xl font-bold mb-6">Contact</h1>
 
     <form id="contact-form" class="max-w-2xl mx-auto space-y-6">
       <div id="form-result" class="hidden"></div>
 
       <div>
-        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+        <label for="name" class="block text-sm font-medium text-[var(--muted)]">Name</label>
         <input id="name" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
       </div>
 
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <label for="email" class="block text-sm font-medium text-[var(--muted)]">Email</label>
         <input id="email" type="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
       </div>
 
       <div>
-        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+        <label for="message" class="block text-sm font-medium text-[var(--muted)]">Message</label>
         <textarea id="message" name="message" rows="4" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
       </div>
 

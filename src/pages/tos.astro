@@ -1,0 +1,54 @@
+---
+export const prerender = true;
+
+import SiteLayout from "@core/layouts/SiteLayout.astro";
+
+const SITE = "https://copycodeai-bki.pages.dev";
+const url = `${SITE}/tos`;
+const description = "Terms of Service for CopyCodeAI: usage conditions for the portfolio website.";
+const lastUpdated = "25 September 2025";
+---
+
+<SiteLayout title="Terms of Service — CopyCodeAI" description={description} url={url}>
+  <main class="mx-auto max-w-4xl px-4 py-16 space-y-12">
+    <header class="space-y-4">
+      <p class="text-xs uppercase tracking-[0.3em] text-[var(--muted)]">Terms of Service</p>
+      <h1 class="font-head text-4xl font-semibold text-[var(--text)]">Terms of Service</h1>
+      <p class="text-[var(--muted)]">Last updated: {lastUpdated}</p>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        This website serves as a professional portfolio and presentation of services offered by CopyCodeAI.
+        By accessing the site, you agree to respect the intellectual property of the materials published here.
+      </p>
+    </header>
+
+    <section class="space-y-4" data-aos="fade-up">
+      <h2 class="font-head text-2xl text-[var(--text)]">Copyright</h2>
+      <p class="text-[var(--muted)]">
+        All content — including text, images, code samples, and design assets — is protected by copyright.
+        You may not copy, distribute, or reuse any material without prior written authorization from CopyCodeAI or the respective rights holders.
+      </p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="100">
+      <h2 class="font-head text-2xl text-[var(--text)]">Disclaimer</h2>
+      <p class="text-[var(--muted)]">
+        The information provided on this site is offered “as is,” without warranties as to completeness, accuracy, or continuous updates.
+        Any references to collaborations, projects, or services do not constitute a direct commercial offer and are subject to separate agreements.
+      </p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="font-head text-2xl text-[var(--text)]">Changes to these terms</h2>
+      <p class="text-[var(--muted)]">
+        CopyCodeAI reserves the right to modify these Terms of Service at any time. Updates will be posted on this page with an amended “Last updated” date.
+      </p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="250">
+      <h2 class="font-head text-2xl text-[var(--text)]">Contact</h2>
+      <p class="text-[var(--muted)]">
+        For questions regarding these terms, please get in touch via the <a class="text-[var(--accent)] hover:underline" href="/contact">contact page</a>.
+      </p>
+    </section>
+  </main>
+</SiteLayout>

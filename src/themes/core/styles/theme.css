@@ -1,0 +1,21 @@
+:root {
+  --bg: #f9fafb;
+  --text: #111827;
+  --accent: #2563eb;
+  --muted: #6b7280;
+  --surface: #ffffff;     /* superfici: header, dropdown, card */
+}
+
+.dark {
+  --bg: #0f172a;
+  --text: #f9fafb;
+  --accent: #3b82f6;
+  --muted: #9ca3af;
+  --surface: #0b1220;     /* variante scura per superfici */
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+

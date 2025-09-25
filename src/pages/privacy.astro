@@ -1,0 +1,80 @@
+---
+export const prerender = true;
+
+import SiteLayout from "@core/layouts/SiteLayout.astro";
+
+const SITE = "https://copycodeai-bki.pages.dev";
+const url = `${SITE}/privacy`;
+const description = "CopyCodeAI privacy policy: how personal data is collected, used, and protected.";
+const lastUpdated = "25 September 2025";
+const contactEmail = "hello@copycodeai.online";
+---
+
+<SiteLayout title="Privacy Policy — CopyCodeAI" description={description} url={url}>
+  <main class="mx-auto max-w-4xl px-4 py-16 space-y-12">
+    <header class="space-y-4">
+      <p class="text-xs uppercase tracking-[0.3em] text-[var(--muted)]">Privacy Policy</p>
+      <h1 class="font-head text-4xl font-semibold text-[var(--text)]">Privacy Policy</h1>
+      <p class="text-[var(--muted)]">Last updated: {lastUpdated}</p>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        This website (copycodeai.online) is managed by <strong class="text-[var(--text)]">Aldo Gustavo Malasomma</strong>, tax code MLSLGS74P09F205X. I currently operate as a freelance professional
+        under the Italian "withholding tax" regime and collect only the information that is necessary to respond to enquiries
+        and organise project work. I never sell personal data or use profiling cookies.
+      </p>
+    </header>
+
+    <section class="space-y-4" data-aos="fade-up">
+      <h2 class="font-head text-2xl text-[var(--text)]">Data collection</h2>
+      <p class="text-[var(--muted)]">
+        This website does not use profiling cookies or third-party tracking tools. The only personal data collected is what you voluntarily provide,
+        for example when you submit a contact request or send an email.
+      </p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="100">
+      <h2 class="font-head text-2xl text-[var(--text)]">Why we use your data</h2>
+      <p class="text-[var(--muted)]">
+        The information you share is used exclusively to:
+      </p>
+      <ul class="space-y-3 text-[var(--muted)]">
+        <li>respond to your enquiries;</li>
+        <li>manage collaboration or quotation requests.</li>
+      </ul>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="150">
+      <h2 class="font-head text-2xl text-[var(--text)]">Legal basis</h2>
+      <p class="text-[var(--muted)]">
+        Processing is carried out on the basis of your explicit consent in accordance with Article 6 of the GDPR.
+      </p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="font-head text-2xl text-[var(--text)]">Storage, retention, and third parties</h2>
+      <p class="text-[var(--muted)]">
+        Your data is stored only for the time needed to respond to your request and, in any case, no longer than 12 months unless legal obligations require otherwise.
+        Data is held within services that comply with EU and international privacy standards:
+      </p>
+      <ul class="space-y-3 text-[var(--muted)]">
+        <li><strong class="text-[var(--text)]">Cloudflare Pages &amp; Workers:</strong> hosting infrastructure and access management.</li>
+        <li><strong class="text-[var(--text)]">Sanity.io:</strong> content management for portfolio entries and related assets.</li>
+        <li><strong class="text-[var(--text)]">Email providers:</strong> transactional email services used to reply to enquiries.</li>
+      </ul>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="250">
+      <h2 class="font-head text-2xl text-[var(--text)]">Your rights</h2>
+      <p class="text-[var(--muted)]">
+        Under Articles 15–22 of the GDPR you may request access, rectification, deletion, restriction, or objection to processing at any time. Requests are processed within 30 days.
+      </p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="300">
+      <h2 class="font-head text-2xl text-[var(--text)]">Contact</h2>
+      <p class="text-[var(--muted)]">
+        To exercise your rights or ask privacy-related questions, email <a class="text-[var(--accent)] hover:underline" href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+        Please include the email address you used when contacting CopyCodeAI so I can verify your request.
+      </p>
+    </section>
+  </main>
+</SiteLayout>

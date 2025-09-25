@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import tailwind from '@astrojs/tailwind';
 import sanity from '@sanity/astro';
+import path from 'node:path';
 
 // Dev-only: silenzia il warning "Since you haven't set a value for `useCdn`"
 const silenceSanityUseCdnWarn = () => ({
@@ -22,11 +23,11 @@ export default defineConfig({
   output: 'server',
   adapter: cloudflare({ mode: 'directory' }),
 
-  // ✅ Usa Squoosh (WASM) -> compatibile con Cloudflare Pages, evita moduli Node
+  // Usa Squoosh (WASM) -> compatibile con Cloudflare Pages
   image: {
     service: {
-      entrypoint: 'astro/assets/services/squoosh'
-    }
+      entrypoint: 'astro/assets/services/squoosh',
+    },
   },
 
   integrations: [
@@ -34,11 +35,22 @@ export default defineConfig({
     sanity({
       projectId: '1avzsmsi',
       dataset: 'production',
-      studio: { base: '/admin' }
-    })
+      studio: { base: '/admin' },
+      // Suggerimento: puoi anche settare esplicitamente useCdn per evitare il warn:
+      // useCdn: true,
+    }),
   ],
 
   vite: {
-    plugins: [silenceSanityUseCdnWarn()]
-  }
+    plugins: [silenceSanityUseCdnWarn()],
+    resolve: {
+      alias: {
+        '@layouts': path.resolve('./src/layouts'),
+        '@themes': path.resolve('./src/themes'),
+        '@core': path.resolve('./src/themes/core'),
+        '@components': path.resolve('./src/components'),
+        '@styles': path.resolve('./src/styles'),
+      },
+    },
+  },
 });

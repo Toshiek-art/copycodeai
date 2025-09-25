@@ -1,19 +1,16 @@
----
-// In: src/components/Footer.astro
-const currentYear = new Date( ).getFullYear();
----
-<footer class="bg-gray-100 border-t mt-20">
-  <div class="container mx-auto px-4 py-8">
-    <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-      <div class="mb-4 md:mb-0">
-        <p class="text-sm text-gray-600">&copy; {currentYear} CopyCodeAI. All rights reserved.</p>
-      </div>
-      <nav class="flex gap-6 text-sm text-gray-700">
-        <a href="/work" class="hover:underline">Web Design</a>
-        <a href="/writing" class="hover:underline">Blog</a>
-        <a href="/ai" class="hover:underline">AI Solutions</a>
-        <a href="/contact" class="hover:underline">Contact</a>
-      </nav>
-    </div>
+<footer
+  class="w-full bg-[var(--surface)] text-[var(--text)]
+         border-t border-black/5 dark:border-white/10"
+>
+  <div class="mx-auto max-w-6xl px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+    <p class="font-head text-sm tracking-tight opacity-80">
+      [copy] by CopyCodeAI {new Date().getFullYear()}
+    </p>
+
+    <nav class="flex items-center gap-4 text-sm font-sans">
+      <a href="/privacy" class="hover:text-[var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded">Privacy</a>
+      <a href="/terms" class="hover:text-[var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded">ToS</a>
+      <a href="/changelog" class="hover:text-[var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded">Changelog</a>
+    </nav>
   </div>
 </footer>

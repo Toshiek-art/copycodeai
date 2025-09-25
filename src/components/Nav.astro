@@ -1,12 +1,12 @@
 ---
-// src/components/Nav.astro
+import ThemeToggle from "@core/components/ThemeToggle.astro";
+
 const navLinks = [
+  { href: "/hello", text: "Hello" },
   { href: "/work", text: "Web Design" },
-  { href: "/writing", text: "Blog" },
+  { href: "/writing", text: "Writing" },           // rinomino "Blog" -> "Writing"
   { 
-    href: "/ai",
-    text: "AI Solutions",
-    isDropdown: true,
+    href: "/ai", text: "AI Solutions", isDropdown: true,
     subLinks: [
       { href: "/ai", text: "All Solutions" }, 
       { href: "/ai/prompt-engineering", text: "Prompt Engineering" },
@@ -17,35 +17,63 @@ const navLinks = [
   { href: "/contact", text: "Contact" },
 ];
 ---
-<header class="w-full flex items-center justify-between p-4 bg-white shadow-sm sticky top-0 z-50">
-  <a href="/" class="font-bold text-xl">CopyCodeAI</a>
+
+<header class="w-full flex items-center justify-between p-4
+               bg-[var(--surface)] text-[var(--text)]
+               border-b border-black/5 dark:border-white/10
+               sticky top-0 z-50">
+  <!-- Logo -->
+  <a href="/" class="font-head font-bold text-xl tracking-tight hover:opacity-90">
+    CopyCodeAI
+  </a>
   
-  <!-- Menu Desktop (visibile da 'md' in su) -->
-  <nav class="hidden md:flex items-center gap-6 text-gray-700">
+  <!-- Menu Desktop -->
+  <nav class="hidden md:flex items-center gap-6 font-sans text-[var(--text)]">
     {navLinks.map(link => (
       !link.isDropdown ? (
-        <a href={link.href} class="hover:text-blue-600 hover:underline">{link.text}</a>
+        <a href={link.href}
+           class="hover:text-[var(--accent)] hover:underline underline-offset-4">
+          {link.text}
+        </a>
       ) : (
         <div class="relative group">
-          <a href={link.href} class="hover:text-blue-600 flex items-center gap-1 cursor-pointer">
+          <a href={link.href}
+             class="flex items-center gap-1 cursor-pointer hover:text-[var(--accent)]">
             <span>{link.text}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-4 w-4 transition-transform duration-300 group-hover:rotate-180"
+                 viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
           </a>
-          <div class="absolute left-1/2 -translate-x-1/2 mt-2 w-56 bg-white border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+          <div class="absolute left-1/2 -translate-x-1/2 mt-2 w-56
+                      bg-[var(--surface)] text-[var(--text)]
+                      border border-black/5 dark:border-white/10
+                      rounded-lg shadow-lg opacity-0 invisible
+                      group-hover:opacity-100 group-hover:visible
+                      transition-all duration-200 z-10">
             <div class="py-1">
               {link.subLinks?.map(subLink => (
-                <a href={subLink.href} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{subLink.text}</a>
-                ))}
+                <a href={subLink.href}
+                   class="block px-4 py-2 text-sm text-[var(--text)]
+                          hover:bg-black/5 dark:hover:bg-white/5">
+                  {subLink.text}
+                </a>
+              ))}
             </div>
           </div>
         </div>
       )
     ))}
+
+    <!-- Toggle tema -->
+    <ThemeToggle />
   </nav>
 
-  <!-- Bottone Hamburger (visibile solo fino a 'md') -->
+  <!-- Bottone Hamburger -->
   <div class="md:hidden">
-    <button id="menu-btn" class="z-50 block hamburger md:hidden focus:outline-none">
+    <button id="menu-btn" class="z-50 block hamburger md:hidden focus:outline-none"
+            aria-label="Open menu" aria-expanded="false" aria-controls="menu">
       <span class="hamburger-top"></span>
       <span class="hamburger-middle"></span>
       <span class="hamburger-bottom"></span>
@@ -53,23 +81,34 @@ const navLinks = [
   </div>
 </header>
 
-<!-- Menu Mobile (pannello a comparsa) -->
-<div id="menu" class="fixed inset-0 z-40 flex-col items-center self-end w-full h-full m-h-screen px-6 py-1 pt-24 pb-4 tracking-widest bg-white bg-opacity-95 backdrop-blur-sm hidden">
-  <div class="w-full py-3 text-center">
+<!-- Menu Mobile -->
+<div id="menu"
+     class="fixed inset-0 z-40 flex-col items-center self-end w-full h-full
+            px-6 pt-24 pb-4 tracking-widest
+            bg-[color-mix(in_oklab, var(--surface) 95%, transparent)]
+            backdrop-blur-sm hidden">
+  <div class="w-full py-3 text-center font-sans">
     {navLinks.map(link => (
       !link.isDropdown ? (
-        <a href={link.href} class="block py-3 hover:text-blue-600">{link.text}</a>
+        <a href={link.href} class="block py-3 hover:text-[var(--accent)]">{link.text}</a>
       ) : (
         <div class="py-3">
-          <a href={link.href} class="font-bold">{link.text}</a>
+          <a href={link.href} class="font-bold hover:text-[var(--accent)]">{link.text}</a>
           <div class="flex flex-col items-center mt-2">
             {link.subLinks?.map(subLink => (
-              <a href={subLink.href} class="block py-2 text-sm text-gray-600 hover:text-blue-600">{subLink.text}</a>
+              <a href={subLink.href}
+                 class="block py-2 text-sm text-[var(--text)] hover:text-[var(--accent)]">
+                {subLink.text}
+              </a>
             ))}
           </div>
         </div>
       )
     ))}
+    <!-- Toggle anche nel menu mobile -->
+    <div class="mt-4">
+      <ThemeToggle />
+    </div>
   </div>
 </div>
 
@@ -78,7 +117,8 @@ const navLinks = [
   const menu = document.getElementById('menu');
 
   btn.addEventListener('click', () => {
-    btn.classList.toggle('open');
+    const isOpen = btn.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(isOpen));
     menu.classList.toggle('hidden');
     menu.classList.toggle('flex');
     document.body.classList.toggle('overflow-hidden');
@@ -87,6 +127,7 @@ const navLinks = [
   menu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
       menu.classList.add('hidden');
       menu.classList.remove('flex');
       document.body.classList.remove('overflow-hidden');
@@ -96,7 +137,9 @@ const navLinks = [
 
 <style>
   .hamburger { cursor: pointer; width: 24px; height: 24px; transition: all 0.25s; position: relative; }
-  .hamburger-top, .hamburger-middle, .hamburger-bottom { position: absolute; width: 24px; height: 2px; top: 0; left: 0; background: #333; transform: rotate(0); transition: all 0.5s; }
+  .hamburger-top, .hamburger-middle, .hamburger-bottom {
+    position: absolute; width: 24px; height: 2px; top: 0; left: 0; background: currentColor; transform: rotate(0); transition: all 0.5s;
+  }
   .hamburger-middle { transform: translateY(7px); }
   .hamburger-bottom { transform: translateY(14px); }
   .open { transform: rotate(90deg); }

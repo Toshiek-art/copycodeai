@@ -3,7 +3,7 @@ export const prerender = true;
 
 // In: src/pages/work/[slug].astro
 import { sanityClient } from "../../lib/sanity";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteLayout from "@core/layouts/SiteLayout.astro";
 import { PortableText } from "astro-portabletext";
 import { Image } from "astro:assets";
 
@@ -11,13 +11,13 @@ import { Image } from "astro:assets";
 function getSanityImageUrl(sanityImage: any) {
   if (!sanityImage || !sanityImage.asset) return "";
   const ref = sanityImage.asset._ref;
-  const [_type, assetId, dimensions, format] = ref.split('-');
-  const [width, height] = dimensions.split('x').map(Number);
+  const [_type, assetId, dimensions, format] = ref.split("-");
+  const [width, height] = dimensions.split("x").map(Number);
   return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${width}x${height}.${format}`;
 }
 
 // getStaticPaths chiede a Sanity quali pagine progetto creare
-export async function getStaticPaths( ) {
+export async function getStaticPaths() {
   const query = `*[_type == "project" && defined(slug.current)]{"slug": slug.current}`;
   const projects = await sanityClient.fetch(query);
   return projects.map((project) => ({
@@ -26,25 +26,34 @@ export async function getStaticPaths( ) {
 }
 
 const { slug } = Astro.params;
+const SITE = "https://copycodeai-bki.pages.dev";
+const fallbackDescription = "Case study realizzati con un mix di design sistemico e scrittura persuasiva.";
 
 // Query per i dati del singolo progetto
 const singleProjectQuery = `*[_type == "project" && slug.current == $slug][0]`;
 const project = await sanityClient.fetch(singleProjectQuery, { slug });
 
 if (!project) return Astro.redirect("/404");
+
+const url = `${SITE}/work/${slug}`;
+const description = project?.excerpt ?? project?.overview ?? fallbackDescription;
 ---
 
-<BaseLayout title={project.title}>
+<SiteLayout title={project.title} description={description} url={url}>
   <div class="container mx-auto px-4 py-12">
-    <nav class="mb-6">
+    <nav class="mb-6" data-aos="fade-right">
       <a href="/work" class="text-blue-600 hover:underline">← Torna ai Progetti</a>
     </nav>
 
-    <article>
-      <h1 class="text-4xl md:text-5xl font-bold mb-8">{project.title}</h1>
+    <article class="space-y-10">
+      <header data-aos="fade-up">
+        <h1 class="text-4xl font-bold md:text-5xl">{project.title}</h1>
+        {project.subtitle && (
+          <p class="mt-3 max-w-2xl text-lg text-[var(--muted)]">{project.subtitle}</p>
+        )}
+      </header>
 
-      {/* Immagine Desktop (Visibile solo da schermi 'md' in su) */}
-      <div class="hidden md:block mb-8">
+      <div class="hidden md:block" data-aos="fade-up" data-aos-delay="100">
         <h2 class="text-2xl font-semibold mb-4">Anteprima Desktop</h2>
         <Image
           src={getSanityImageUrl(project.mainImage)}
@@ -55,9 +64,8 @@ if (!project) return Astro.redirect("/404");
         />
       </div>
 
-      {/* Immagine Mobile (Visibile solo su schermi piccoli, fino a 'md') */}
       {project.mobileImage && (
-        <div class="md:hidden mb-8 max-w-sm mx-auto">
+        <div class="md:hidden max-w-sm mx-auto" data-aos="fade-up" data-aos-delay="150">
           <h2 class="text-2xl font-semibold mb-4 text-center">Anteprima Mobile</h2>
           <Image
             src={getSanityImageUrl(project.mobileImage)}
@@ -69,20 +77,23 @@ if (!project) return Astro.redirect("/404");
         </div>
       )}
 
-      {/* Descrizione */}
-      <div class="prose lg:prose-xl max-w-none mt-12">
+      <section class="prose max-w-none lg:prose-xl dark:prose-invert" data-aos="fade-up" data-aos-delay="200">
         <h2 class="text-2xl font-semibold mb-4">Dettagli del Progetto</h2>
         <PortableText value={project.description} />
-      </div>
+      </section>
 
-      {/* Link al sito demo */}
       {project.projectUrl && (
-        <div class="mt-12 text-center">
-          <a href={project.projectUrl} target="_blank" rel="noopener noreferrer" class="inline-block bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors">
+        <div class="mt-12 text-center" data-aos="zoom-in" data-aos-delay="250">
+          <a
+            href={project.projectUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block rounded-lg bg-blue-600 px-6 py-3 font-bold text-white transition-colors hover:bg-blue-700"
+          >
             Visita il Sito Demo
           </a>
         </div>
       )}
     </article>
   </div>
-</BaseLayout>
+</SiteLayout>

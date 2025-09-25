@@ -1,10 +1,9 @@
 ---
-// In: src/pages/ai/prompt-engineering.astro
+// In: src/pages/ai/brand-visuals.astro
 import { sanityClient } from "../../lib/sanity";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteLayout from "@core/layouts/SiteLayout.astro";
 import { Image } from "astro:assets";
 
-// Funzione helper per l'URL dell'immagine
 function getSanityImageUrl(sanityImage: any) {
   if (!sanityImage || !sanityImage.asset) return null;
   const ref = sanityImage.asset._ref;
@@ -12,22 +11,34 @@ function getSanityImageUrl(sanityImage: any) {
   return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
 }
 
-// 1. Query per prendere SOLO i casi studio
 const query = '*[_type == "aiSolution" && solutionType == "visual" && defined(slug.current)] | order(_createdAt desc)';
 const solutions = await sanityClient.fetch(query);
+
+const description = "Moodboard e visual concept generati con AI per branding, campagne e pitch creativi.";
+const SITE = "https://copycodeai-bki.pages.dev";
+const url = `${SITE}/ai/brand-visuals`;
 ---
 
-<BaseLayout title="Prompt Engineering - Case Studies" page="ai">
+<SiteLayout title="Brand Visuals" description={description} url={url}>
   <div class="container mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold mb-2">Galleries of AI-generated images tailored for brand identity and marketing campaigns.</h1>
-    <p class="text-xl text-gray-600 mb-10">Case studies demonstrating how I engineer prompt solutions to solve complex problems.</p>
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold">Brand Visuals</h1>
+      <p class="mt-2 max-w-2xl text-lg text-[var(--muted)]">
+        {description}
+      </p>
+    </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
       {
-        solutions.map((solution) => {
+        solutions.map((solution, index) => {
           const imageUrl = getSanityImageUrl(solution.mainImage);
           return (
-            <a href={`/ai/solutions/${solution.slug.current}`} class="group block border rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+            <a
+              href={`/ai/solutions/${solution.slug.current}`}
+              class="group block overflow-hidden rounded-lg border border-black/5 bg-[var(--surface)] shadow-sm transition hover:shadow-lg dark:border-white/10"
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
+            >
               {imageUrl && (
                 <div class="relative h-48 overflow-hidden">
                   <Image
@@ -35,18 +46,18 @@ const solutions = await sanityClient.fetch(query);
                     alt={`Image for ${solution.title}`}
                     width={600}
                     height={400}
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
               )}
               <div class="p-6">
-                <h2 class="text-xl font-semibold mb-2">{solution.title}</h2>
-                <p class="text-gray-700 text-sm">{solution.summary}</p>
+                <h2 class="text-xl font-semibold text-[var(--text)]">{solution.title}</h2>
+                <p class="mt-2 text-sm text-[var(--muted)]">{solution.summary}</p>
               </div>
             </a>
-          )
+          );
         })
       }
     </div>
   </div>
-</BaseLayout>
+</SiteLayout>

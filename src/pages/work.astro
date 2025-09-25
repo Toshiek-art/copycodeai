@@ -1,7 +1,7 @@
 ---
 // In: src/pages/work.astro
 import { sanityClient } from "../lib/sanity";
-import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteLayout from "@core/layouts/SiteLayout.astro";
 import { Image } from "astro:assets"; // Usiamo il componente Image di Astro per ottimizzare le immagini
 
 // 1. Query per prendere tutti i progetti da Sanity
@@ -17,31 +17,45 @@ function getSanityImageUrl(sanityImage: any) {
   const [width, height] = dimensions.split('x').map(Number);
   return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${width}x${height}.${format}`;
 }
+
+const description = "Selezione di progetti web e UI curati per brand tech e digitali.";
+const SITE = "https://copycodeai-bki.pages.dev";
+const url = `${SITE}/work`;
 ---
 
-<BaseLayout title="Web Design" page="work">
+<SiteLayout title="Web Design" description={description} url={url}>
   <div class="container mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold mb-8">I Miei Progetti di Web Design</h1>
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold">I Miei Progetti di Web Design</h1>
+      <p class="mt-2 max-w-2xl text-[var(--muted)]">
+        {description}
+      </p>
+    </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
       {
-        projects.map((project ) => (
-          <a href={`/work/${project.slug.current}`} class="group block border rounded-lg overflow-hidden">
+        projects.map((project, index) => (
+          <a
+            href={`/work/${project.slug.current}`}
+            class="group block overflow-hidden rounded-lg border border-black/5 bg-[var(--surface)] transition hover:shadow-lg dark:border-white/10"
+            data-aos="fade-up"
+            data-aos-delay={index * 100}
+          >
             <div class="relative">
               <Image
                 src={getSanityImageUrl(project.mainImage)}
                 alt={`Anteprima del progetto ${project.title}`}
                 width={600}
                 height={400}
-                class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+                class="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
-            <div class="p-4">
-              <h2 class="text-xl font-semibold">{project.title}</h2>
+            <div class="p-5">
+              <h2 class="text-xl font-semibold text-[var(--text)]">{project.title}</h2>
             </div>
           </a>
         ))
       }
     </div>
   </div>
-</BaseLayout>
+</SiteLayout>

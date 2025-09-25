@@ -1,0 +1,16 @@
+/* Variable fonts */
+@import "@fontsource-variable/inter/index.css";
+@import "@fontsource-variable/space-grotesk/index.css";
+
+/* Static mono */
+@import "@fontsource/jetbrains-mono/400.css";
+
+/* Alias coerenti con Tailwind */
+:root{
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+  --font-head: "Space Grotesk Variable", "Inter Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Applica di default il sans */
+html { font-family: var(--font-sans); }

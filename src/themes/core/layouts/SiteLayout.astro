@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import "aos/dist/aos.css";
+
+const { title, description, url, ogImage, ...rest } = Astro.props;
+---
+<BaseLayout {title} {description} {url} {ogImage} {...rest}>
+  <slot />
+  <script>
+    import initAos from "../../../scripts/aos-init";
+    initAos();
+  </script>
+</BaseLayout>

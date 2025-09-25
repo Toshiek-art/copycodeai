@@ -1,16 +1,180 @@
 ---
-// src/pages/index.astro
-import BaseLayout from '../layouts/BaseLayout.astro'; // se non hai un layout, toglilo
-const title = 'CopyCodeArt';
+export const prerender = true;
+
+import SiteLayout from "@core/layouts/SiteLayout.astro";
+import { sanityClient } from "../lib/sanity";
+
+const SITE = "https://copycodeai-bki.pages.dev";
+const url = SITE;
+const description = "Strategic copywriting, fast web builds, and bespoke AI systems for digital-first teams.";
+
+const services = [
+  {
+    title: "Copywriting",
+    body: "Naming, storytelling, long-form articles, and UX writing that give products and brands a clear voice.",
+  },
+  {
+    title: "Web Development",
+    body: "Design-to-code delivery with Astro and Tailwind, headless CMS integrations, and performance-first shipping.",
+  },
+  {
+    title: "AI Solutions",
+    body: "Advanced prompting, custom GPTs, brand assistants, and AI-generated visuals to extend your workflows.",
+  }
+];
+
+const postsQuery = `
+  *[_type == "post" && defined(slug.current)]
+    | order(publishedAt desc)[0...3] {
+      title,
+      "slug": slug.current,
+      excerpt,
+      summary,
+      publishedAt
+    }
+`;
+
+let latestPosts = [];
+let postsError: unknown = null;
+
+try {
+  latestPosts = await sanityClient.fetch(postsQuery);
+} catch (error) {
+  postsError = error;
+}
+
+const safeExcerpt = (post: any) => post?.excerpt ?? post?.summary ?? "";
+const formatDate = (value?: string) => value ? new Date(value).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "";
 ---
-<!-- Se non hai un layout, rimuovi il wrapper e lascia solo l'HTML -->
-<BaseLayout title={title}>
-  <main class="mx-auto max-w-3xl p-6">
-    <h1 class="text-3xl font-bold">Hello, Ajia 🐾</h1>
-    <p class="mt-3 opacity-80">Home ok. Astro sta servendo correttamente.</p>
-    <ul class="mt-6 list-disc ml-6">
-      <li><a href="/writing">/writing</a></li>
-      <li><a href="/work">/work</a></li>
-    </ul>
+
+<SiteLayout title="CopyCodeAI — Copywriting, Web & AI" description={description} url={url}>
+  <main class="mx-auto flex max-w-6xl flex-col gap-16 px-4 py-16">
+    <section class="flex flex-col gap-6 text-center md:gap-8" data-aos="fade-up">
+      <div class="space-y-4">
+        <p class="font-sans text-sm uppercase tracking-[0.3em] text-[var(--muted)]">Copywriting · Web · AI</p>
+        <h1 class="font-head text-4xl font-semibold text-[var(--text)] md:text-6xl">Ideas that ship, copy that converts, AI that scales.</h1>
+        <p class="mx-auto max-w-2xl text-lg text-[var(--muted)]">
+          Editorial strategy, high-performance sites, and bespoke AI systems to help digital brands and creators scale with clarity.
+        </p>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href="/writing"
+          class="inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
+        >
+          Explore writing
+          <span aria-hidden="true">→</span>
+        </a>
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-2 rounded-lg border border-black/5 bg-[var(--surface)] px-6 py-3 font-semibold text-[var(--text)] shadow-sm transition hover:shadow-lg dark:border-white/10"
+        >
+          Contact me
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-3xl space-y-4 text-center">
+      <p class="text-lg text-[var(--muted)]">
+        From copy to low-code prototyping, I connect words, code, and AI so teams can launch faster without sacrificing quality.
+      </p>
+      <p class="text-lg text-[var(--muted)]">
+        I work with freelancers, startups, and marketing teams to build measurable digital experiences.
+      </p>
+    </section>
+
+    <section class="space-y-8">
+      <header>
+        <h2 class="font-head text-3xl text-[var(--text)]">Core services</h2>
+        <p class="mt-2 max-w-2xl text-[var(--muted)]">Message architecture, web systems, and AI automations — aligned around your editorial and product goals.</p>
+      </header>
+      <div class="grid gap-6 md:grid-cols-3">
+        {services.map((service, index) => (
+          <article
+            class="rounded-2xl border border-black/5 bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10"
+            data-aos="fade-up"
+            data-aos-delay={index * 120}
+          >
+            <h3 class="font-head text-xl text-[var(--text)]">{service.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-[var(--muted)]">{service.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="space-y-6">
+      <header class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 class="font-head text-3xl text-[var(--text)]">Latest writing</h2>
+          <p class="text-[var(--muted)]">The latest case studies, prompt logs, and essays from the CopyCodeAI library.</p>
+        </div>
+        <a href="/writing" class="font-sans text-sm font-semibold text-[var(--accent)] hover:underline">View all →</a>
+      </header>
+
+      {postsError ? (
+        <pre class="whitespace-pre-wrap rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
+          {String(postsError)}
+        </pre>
+      ) : latestPosts?.length ? (
+        <div class="grid gap-6 md:grid-cols-3">
+          {latestPosts.map((post, index) => (
+            <a
+              href={`/writing/${post.slug}`}
+              class="flex flex-col gap-3 rounded-2xl border border-black/5 bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-white/10"
+              data-aos="fade-up"
+              data-aos-delay={index * 120}
+            >
+              <h3 class="font-head text-xl text-[var(--text)]">{post.title}</h3>
+              {safeExcerpt(post) && (
+                <p class="flex-1 text-sm text-[var(--muted)]">{safeExcerpt(post)}</p>
+              )}
+              <span class="text-xs uppercase tracking-widest text-[var(--muted)]">{formatDate(post.publishedAt)}</span>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="text-[var(--muted)]">No stories yet — publish one from the CMS.</p>
+      )}
+    </section>
+
+    <section class="grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-center">
+      <div class="space-y-4">
+        <h2 class="font-head text-3xl text-[var(--text)]">Hello</h2>
+        <p class="text-lg text-[var(--muted)]">
+          I’m Aldo — a copywriter, developer, and AI specialist. With CopyCodeAI, I bring together words, code, and generative systems to turn ideas into scalable products and content.
+        </p>
+        <p class="text-[var(--muted)]">I collaborate with freelancers, startups, and corporate teams on strategic copy, web prototypes, and AI assistants.</p>
+        <a href="/hello" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">
+          Learn more
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <div
+        class="rounded-2xl border border-black/5 bg-[var(--surface)] p-6 shadow-sm dark:border-white/10"
+        data-aos="fade-up"
+      >
+        <p class="text-sm leading-relaxed text-[var(--muted)]">
+          "My mission is to make AI tools practical, creative, and accessible — so projects grow with innovation and clarity."
+        </p>
+      </div>
+    </section>
+
+    <section class="rounded-3xl border border-black/5 bg-[var(--surface)] p-10 text-center shadow-lg dark:border-white/10" data-aos="fade-up">
+      <h2 class="font-head text-3xl text-[var(--text)]">Ready to build something together?</h2>
+      <p class="mt-3 text-[var(--muted)]">Let’s move your idea to the next phase with strategic copy, Astro development, and tailored AI systems.</p>
+      <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
+        >
+          Contact me
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a href="/work" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">
+          View recent work →
+        </a>
+      </div>
+    </section>
   </main>
-</BaseLayout>
+</SiteLayout>

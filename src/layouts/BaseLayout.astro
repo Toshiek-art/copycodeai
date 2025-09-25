@@ -1,23 +1,26 @@
 ---
 import "../styles/global.css";
+import "../../src/themes/core/styles/theme.css";
+import "../styles/fonts.css";   // ⬅️ aggiungi questo
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+
 
 const {
   title = "CopyCodeAi",
   description = "Portfolio – Copywriting, Python, Web, AI visuals",
   standalone = false,
-  // 👇 nuovi props opzionali per SEO
-  url = undefined,        // es. "https://copycodeai-bki.pages.dev/writing/foo"
-  ogImage = undefined     // es. "https://.../og.jpg"
+  url = undefined,
+  ogImage = undefined
 } = Astro.props;
 ---
 <html lang="en">
   <head>
+    <!-- Encoding prima di tutto -->
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     {/* Canonical (se passato) */}
     {url && <link rel="canonical" href={url} />}
@@ -35,11 +38,23 @@ const {
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
 
-    {/* Slot per meta/script extra (es. JSON-LD) */}
+    {/* Anti-FOUC: imposta subito il tema */}
+    <script is:inline>
+      (function () {
+        try {
+          const saved = localStorage.getItem("theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const mode = saved ?? (prefersDark ? "dark" : "light");
+          if (mode === "dark") document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
+
+    {/* Slot per meta/script extra */}
     <slot name="head" />
   </head>
 
-  <body class="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-900">
+  <body class="min-h-screen flex flex-col font-sans">
     { !standalone && <Nav /> }
 
     <main class={`flex-1 ${standalone ? 'pb-20' : ''}`}>
@@ -52,10 +67,9 @@ const {
       </div>
     )}
 
-    {/* Sticky CTA solo per le pagine “standalone” (mini-landing) e solo mobile */}
     { standalone && (
-      <div class="fixed inset-x-0 bottom-0 z-50 md:hidden bg-white/90 border-t backdrop-blur">
-        <a href="/contact" class="block text-center px-4 py-3 font-medium">
+      <div class="fixed inset-x-0 bottom-0 z-50 md:hidden bg-[var(--surface)]/90 border-t backdrop-blur">
+        <a href="/contact" class="block text-center px-4 py-3 font-medium text-[var(--text)]">
           Get in touch
         </a>
       </div>
