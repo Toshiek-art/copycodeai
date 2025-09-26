@@ -23,6 +23,7 @@
     "@portabletext/to-html": "^3.0.0",
     "@sanity/astro": "^3.2.10",
     "@sanity/client": "^7.11.2",
+    "@sanity/vision": "^4.10.1",
     "@tailwindcss/typography": "^0.5.17",
     "aos": "^2.3.4",
     "astro": "^5.13.10",
