@@ -35,7 +35,7 @@ export default defineConfig({
     sanity({
       projectId: '1avzsmsi',
       dataset: 'production',
-      studio: { base: '/admin' },
+      studio: { base: '/admin/studio' }, // Studio protetto da Access ma separato dalla dashboard
       // Suggerimento: puoi anche settare esplicitamente useCdn per evitare il warn:
       // useCdn: true,
     }),
