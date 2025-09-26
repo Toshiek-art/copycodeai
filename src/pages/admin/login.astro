@@ -1,8 +1,14 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const loginHref = import.meta.env.DEV ? "/admin/" : "/admin/access";
+const redirect = Astro.url.searchParams.get('redirect') ?? '/admin';
+const normalizedRedirect = redirect.startsWith('/') ? redirect : '/admin';
+
+const loginHref = import.meta.env.DEV
+  ? normalizedRedirect
+  : `/admin/access?redirect=${encodeURIComponent(normalizedRedirect)}`;
 ---
+
 <BaseLayout title="Admin Login — CopyCodeAI">
   <section class="min-h-[60vh] max-w-md mx-auto flex flex-col items-center justify-center p-8 text-center">
     <h1 class="text-3xl font-bold mb-3">Private Area</h1>

@@ -1,22 +1,38 @@
 ---
 import ThemeToggle from "@core/components/ThemeToggle.astro";
 
-const navLinks = [
+const { adminSession = false, adminEmail } = Astro.props;
+
+const baseLinks = [
   { href: "/hello", text: "Hello" },
   { href: "/work", text: "Web Design" },
   { href: "/writing", text: "Writing" },           // rinomino "Blog" -> "Writing"
-  { 
+  {
     href: "/ai", text: "AI Solutions", isDropdown: true,
     subLinks: [
-      { href: "/ai", text: "All Solutions" }, 
+      { href: "/ai", text: "All Solutions" },
       { href: "/ai/prompt-engineering", text: "Prompt Engineering" },
       { href: "/ai/gpt-custom", text: "GPT Custom" },
       { href: "/ai/brand-visuals", text: "Brand Visuals" },
     ]
   },
   { href: "/contact", text: "Contact" },
-  { href: "/admin", text: "Admin" },
 ];
+
+const adminLinks = adminSession
+  ? {
+      href: "/admin",
+      text: "Admin",
+      isDropdown: true,
+      subLinks: [
+        { href: "/admin", text: "Dashboard" },
+        { href: "/admin/studio", text: "Sanity Studio" },
+        { href: "/admin/logout", text: "Logout" },
+      ],
+    }
+  : { href: "/admin/login", text: "Admin Login" };
+
+const navLinks = [...baseLinks, adminLinks];
 ---
 
 <header class="w-full flex items-center justify-between p-4
@@ -61,6 +77,11 @@ const navLinks = [
                   {subLink.text}
                 </a>
               ))}
+              {link.text === 'Admin' && adminSession && adminEmail && (
+                <div class="border-t border-black/5 px-4 py-2 text-xs text-[var(--muted)] dark:border-white/10">
+                  Signed in as {adminEmail}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -102,6 +123,9 @@ const navLinks = [
                 {subLink.text}
               </a>
             ))}
+            {link.text === 'Admin' && adminSession && adminEmail && (
+              <p class="mt-3 text-xs text-[var(--muted)]">Logged in as {adminEmail}</p>
+            )}
           </div>
         </div>
       )

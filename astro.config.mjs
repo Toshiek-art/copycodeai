@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import tailwind from '@astrojs/tailwind';
+import react from '@astrojs/react';
 import sanity from '@sanity/astro';
 import path from 'node:path';
 
@@ -32,10 +33,13 @@ export default defineConfig({
 
   integrations: [
     tailwind(),
+    react({
+      include: ['**/studio/**', '**/@sanity/**']
+    }),
     sanity({
       projectId: '1avzsmsi',
       dataset: 'production',
-      studio: { base: '/admin/studio' }, // Studio protetto da Access ma separato dalla dashboard
+      studioBasePath: '/admin/studio', // Studio protetto da Access ma separato dalla dashboard
       // Suggerimento: puoi anche settare esplicitamente useCdn per evitare il warn:
       // useCdn: true,
     }),

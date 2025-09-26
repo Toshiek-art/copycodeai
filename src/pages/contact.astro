@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// evita crash se la env manca
-const turnstileSiteKey = import.meta.env.TURNSTILE_SITE_KEY ?? '';
+// la chiave deve iniziare con PUBLIC_ per arrivare lato client
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+const turnstileEnabled = Boolean(turnstileSiteKey);
 ---
 <BaseLayout title="Contact Me">
   {/* DEBUG: lasciami questo H1 per capire subito se rende */}
@@ -28,9 +29,9 @@ const turnstileSiteKey = import.meta.env.TURNSTILE_SITE_KEY ?? '';
       </div>
 
       {/* Turnstile widget: se la key non c'è, mostra un hint ma NON crasha */}
-      {turnstileSiteKey
+      {turnstileEnabled
         ? <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>
-        : <p class="text-sm text-amber-600">TURNSTILE_SITE_KEY mancante (solo dev hint)</p>}
+        : <p class="text-sm text-amber-600">PUBLIC_TURNSTILE_SITE_KEY mancante (solo dev hint)</p>}
 
       <button id="submit-btn" type="submit" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors text-lg disabled:bg-gray-400">
         Send Message
@@ -60,9 +61,11 @@ const turnstileSiteKey = import.meta.env.TURNSTILE_SITE_KEY ?? '';
 
         try {
           const fd = new FormData(form);
-          if (!fd.get('cf-turnstile-response') && window.turnstile?.getResponse) {
-            const token = window.turnstile.getResponse();
-            if (token) fd.set('cf-turnstile-response', token);
+          if (${turnstileEnabled ? 'true' : 'false'}) {
+            const token = fd.get('cf-turnstile-response') || window.turnstile?.getResponse?.();
+            if (token) {
+              fd.set('cf-turnstile-response', token);
+            }
           }
 
           const res = await fetch('/api/send-email', { method: 'POST', body: fd });

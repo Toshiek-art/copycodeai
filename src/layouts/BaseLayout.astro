@@ -13,6 +13,10 @@ const {
   url = undefined,
   ogImage = undefined
 } = Astro.props;
+
+const hasAccessHeader = Astro.request.headers.get("CF-Access-Jwt-Assertion");
+const adminSession = Boolean(hasAccessHeader);
+const adminEmail = Astro.request.headers.get("CF-Access-Authenticated-User-Email") ?? undefined;
 ---
 <html lang="en">
   <head>
@@ -55,7 +59,7 @@ const {
   </head>
 
   <body class="min-h-screen flex flex-col font-sans">
-    { !standalone && <Nav /> }
+    { !standalone && <Nav adminSession={adminSession} adminEmail={adminEmail} /> }
 
     <main class={`flex-1 ${standalone ? 'pb-20' : ''}`}>
       <slot />
