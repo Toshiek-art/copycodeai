@@ -1,16 +1,24 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
----
-<BaseLayout title="Accedi — CopyCodeArt">
-  <section class="min-h-[60vh] max-w-md mx-auto flex flex-col items-center justify-center p-8 text-center">
-    <h1 class="text-3xl font-bold mb-3">Area privata</h1>
-    <p class="text-gray-600 mb-8">Entra per accedere agli strumenti riservati.</p>
 
-    <a href="/admin/access"
+const loginHref = import.meta.env.DEV ? "/admin/" : "/admin/access";
+---
+<BaseLayout title="Admin Login — CopyCodeAI">
+  <section class="min-h-[60vh] max-w-md mx-auto flex flex-col items-center justify-center p-8 text-center">
+    <h1 class="text-3xl font-bold mb-3">Private Area</h1>
+    <p class="text-[var(--muted)] mb-8">Sign in to reach the internal tools.</p>
+
+    <a href={loginHref}
        class="inline-flex items-center gap-2 rounded-2xl px-6 py-3 shadow hover:shadow-md transition bg-black text-white">
-      Entra con Access
+      Continue with Cloudflare Access
     </a>
 
-    <p class="mt-6 text-xs text-gray-500">Single Sign-On protetto da Cloudflare Access.</p>
+    <p class="mt-6 text-xs text-[var(--muted)]">Single Sign-On powered by Cloudflare Access.</p>
+
+    {import.meta.env.DEV && (
+      <p class="mt-6 text-xs text-[var(--muted)]">
+        Local dev mode skips Access and links directly to the admin dashboard.
+      </p>
+    )}
   </section>
 </BaseLayout>
