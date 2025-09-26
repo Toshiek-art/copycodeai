@@ -6,6 +6,22 @@ import react from '@astrojs/react';
 import sanity from '@sanity/astro';
 import path from 'node:path';
 
+const parseBoolean = (value, fallback) => {
+  if (typeof value !== 'string') return fallback;
+  const normalized = value.trim().toLowerCase();
+  if (normalized === 'true') return true;
+  if (normalized === 'false') return false;
+  return fallback;
+};
+
+const sanityUseCdn = (() => {
+  const raw = process.env.SANITY_USE_CDN;
+  if (typeof raw === 'string') return parseBoolean(raw, false);
+  // Cloudflare Pages build environment struggles to resolve *.apicdn.sanity.io.
+  // Default to the live API (no CDN) unless explicitly enabled via env.
+  return false;
+})();
+
 // Dev-only: silenzia il warning "Since you haven't set a value for `useCdn`"
 const silenceSanityUseCdnWarn = () => ({
   name: 'silence-sanity-usecdn-warn',
@@ -40,8 +56,7 @@ export default defineConfig({
       projectId: '1avzsmsi',
       dataset: 'production',
       studioBasePath: '/admin/studio', // Studio protetto da Access ma separato dalla dashboard
-      // Suggerimento: puoi anche settare esplicitamente useCdn per evitare il warn:
-      // useCdn: true,
+      useCdn: sanityUseCdn,
     }),
   ],
 
