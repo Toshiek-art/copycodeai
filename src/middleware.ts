@@ -17,12 +17,26 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const hasCloudflareAccess = Boolean(accessJwt || hasAccessCookie);
 
   if (hasCloudflareAccess) {
+    const res = await next();
+
+    if (res.redirected) {
+      const location = res.headers.get('Location') ?? '';
+      if (location.endsWith('/admin/login') || location.endsWith('/admin/login/')) {
+        const safeRedirectTarget = url.pathname + (url.search || '') || '/admin';
+        const accessRedirect = `/admin/access?redirect=${encodeURIComponent(safeRedirectTarget)}`;
+        return new Response(null, {
+          status: 302,
+          headers: { Location: accessRedirect },
+        });
+      }
+    }
+
     (locals as any).adminSession = {
       sub: accessEmail ?? 'cf-access-user',
       exp: Math.floor(Date.now() / 1000) + 60,
       source: 'cloudflare-access',
     };
-    return next();
+    return res;
   }
 
   if (import.meta.env.DEV) {

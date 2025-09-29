@@ -147,7 +147,9 @@ export function isPublicPath(pathname: string): boolean {
   return (
     pathname === '/admin/login' ||
     pathname === '/admin/logout' ||
+    pathname === '/admin/access' ||
     pathname === '/admin/login/' ||
-    pathname === '/admin/logout/'
+    pathname === '/admin/logout/' ||
+    pathname === '/admin/access/'
   );
 }
