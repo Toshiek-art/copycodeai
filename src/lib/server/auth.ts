@@ -136,14 +136,14 @@ export function clearSessionCookie(options: CookieOptions = {}): string {
   return cookie;
 }
 
-export const PROTECTED_PATHS = ['/admin', '/studio'];
+export const PROTECTED_PATHS = ['/admin'];
 
 export function isProtectedPath(pathname: string): boolean {
   return PROTECTED_PATHS.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
 }
 
 export function isPublicPath(pathname: string): boolean {
-  if (!pathname.startsWith('/admin') && !pathname.startsWith('/studio')) return true;
+  if (!pathname.startsWith('/admin')) return true;
   return (
     pathname === '/admin/login' ||
     pathname === '/admin/logout' ||

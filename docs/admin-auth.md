@@ -64,7 +64,7 @@ Copia l'output in `ADMIN_PASSWORD_HASH` e conserva la password in un password ma
 
 1. `/admin/login` mostra un form con password singola.
 2. La Pages Function `functions/admin/login.ts` verifica la password, crea un token firmato e imposta il cookie `ccai_admin_session` (validità 8 ore).
-3. Il middleware (`functions/_middleware.ts` su Cloudflare, `src/middleware.ts` in sviluppo) controlla il cookie per tutte le rotte sotto `/admin` e `/studio`.
+3. Il middleware (`functions/_middleware.ts` su Cloudflare, `src/middleware.ts` in sviluppo) controlla il cookie per tutte le rotte sotto `/admin`.
 4. `/admin/logout` elimina il cookie e reindirizza alla pagina di login.
 5. `/admin/_debug` restituisce un JSON con lo stato della sessione attuale.
 

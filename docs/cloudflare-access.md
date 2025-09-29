@@ -8,7 +8,7 @@ visitor to your Zero Trust application.
 
 1. **Create an Access application** in Cloudflare Zero Trust (My Team → Access → Add an application).
    - Application type: *Self-hosted*.
-   - Application domain: `copycodeai.online/admin` (or a staging domain/subdomain).
+   - Application domain: `copycodeai.online/admin` (or a staging domain/subdomain). Se servi anche `www.copycodeai.online`, aggiungi una seconda entry `www.copycodeai.online/admin` e riutilizza lo stesso AUD.
    - Session duration: choose what works for you.
 2. After saving the application, copy the values from **Domain** and **Audience (AUD)**.
    - `Domain` has the form `https://<team>.cloudflareaccess.com`.
