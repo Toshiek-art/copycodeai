@@ -1,6 +1,13 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+const hasAccessHeader = Astro.request.headers.get('CF-Access-Jwt-Assertion');
+const hasAccessCookie = (Astro.request.headers.get('cookie') ?? '').includes('CF_Authorization=');
+
+if (!import.meta.env.DEV && (hasAccessHeader || hasAccessCookie)) {
+  return Astro.redirect('/admin');
+}
+
 const redirect = Astro.url.searchParams.get('redirect') ?? '/admin';
 const normalizedRedirect = redirect.startsWith('/') ? redirect : '/admin';
 

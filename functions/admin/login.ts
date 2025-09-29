@@ -15,6 +15,13 @@ export const onRequest: PagesFunction = async ({ request }) => {
   }
 
   const url = new URL(request.url);
+  const hasAccessHeader = request.headers.get('cf-access-jwt-assertion');
+  const hasAccessCookie = (request.headers.get('cookie') ?? '').includes('CF_Authorization=');
+
+  if (hasAccessHeader || hasAccessCookie) {
+    return Response.redirect(new URL('/admin', url.origin).toString(), 302);
+  }
+
   const form = await request.formData();
   const redirectTarget = safeRedirect(form.get('redirect'));
 
