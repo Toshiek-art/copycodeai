@@ -49,15 +49,22 @@ const formatDate = (value?: string) => value ? new Date(value).toLocaleDateStrin
 
 <SiteLayout title="CopyCodeAI — Copywriting, Web & AI" description={description} url={url}>
   <main class="mx-auto flex max-w-6xl flex-col gap-16 px-4 py-16">
-    <section class="flex flex-col gap-6 text-center md:gap-8" data-aos="fade-up">
+    <section class="flex flex-col gap-6 text-center md:gap-8">
       <div class="space-y-4">
         <p class="font-sans text-sm uppercase tracking-[0.3em] text-[var(--muted)]">Copywriting · Web · AI</p>
         <h1 class="font-head text-4xl font-semibold text-[var(--text)] md:text-6xl">Ideas that ship, copy that converts, AI that scales.</h1>
-        <p class="mx-auto max-w-2xl text-lg text-[var(--muted)]">
+        <p
+          class="mx-auto max-w-2xl text-lg text-[var(--muted)]"
+          data-aos="fade-up"
+        >
           Editorial strategy, high-performance sites, and bespoke AI systems to help digital brands and creators scale with clarity.
         </p>
       </div>
-      <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <div
+        class="flex flex-col items-center justify-center gap-4 sm:flex-row"
+        data-aos="fade-up"
+        data-aos-delay="120"
+      >
         <a
           href="/writing"
           class="inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"

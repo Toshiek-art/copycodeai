@@ -14,25 +14,22 @@ const id = "theme-toggle-" + Math.random().toString(36).slice(2);
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const btn = document.querySelector("[data-theme-toggle]");
+    const buttons = Array.from(document.querySelectorAll("[data-theme-toggle]"));
 
-    if (!btn) return; // sicurezza
+    if (!buttons.length) return; // sicurezza
 
     function setTheme(mode) {
-      if (mode === "dark") {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-        btn.textContent = "☀️ Light";
-      } else {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-        btn.textContent = "🌙 Dark";
-      }
+      const isDark = mode === "dark";
+      document.documentElement.classList.toggle("dark", isDark);
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      buttons.forEach((btn) => {
+        btn.textContent = isDark ? "☀️ Light" : "🌙 Dark";
+      });
     }
 
     // On load
     const saved = localStorage.getItem("theme");
-    if (saved) {
+    if (saved === "dark" || saved === "light") {
       setTheme(saved);
     } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       setTheme("dark");
@@ -41,11 +38,11 @@ const id = "theme-toggle-" + Math.random().toString(36).slice(2);
     }
 
     // On click
-    btn.addEventListener("click", () => {
-      const current = document.documentElement.classList.contains("dark")
-        ? "dark"
-        : "light";
-      setTheme(current === "dark" ? "light" : "dark");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        setTheme(isDark ? "light" : "dark");
+      });
     });
   });
 </script>
