@@ -4,6 +4,8 @@ import { Resend } from 'resend';
 
 export const prerender = false;
 
+const logPrefix = "[api/send-email]";
+
 type ParsedBody = {
   name: string;
   email: string;
@@ -55,22 +57,34 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const CONTACT_TO           = env.CONTACT_TO           ?? import.meta.env.CONTACT_TO;
     const TURNSTILE_SECRET_KEY = env.TURNSTILE_SECRET_KEY ?? import.meta.env.TURNSTILE_SECRET_KEY;
 
+    console.log(`${logPrefix} env resolved`, {
+      hasResendKey: Boolean(RESEND_API_KEY),
+      hasResendFrom: Boolean(RESEND_FROM),
+      hasContactTo: Boolean(CONTACT_TO),
+      hasTurnstileSecret: Boolean(TURNSTILE_SECRET_KEY),
+    });
+
     // Body
     const { name, email, message, token } = await parseBody(request);
+    console.log(`${logPrefix} parsed body`, { hasName: Boolean(name), hasEmail: Boolean(email), hasMessage: Boolean(message), hasToken: Boolean(token) });
 
     // Validazioni base
     if (!name || !email || !message) {
-      return new Response(JSON.stringify({ ok: false, error: 'Missing fields' }), { status: 400 });
+      console.warn(`${logPrefix} validation failed`, { stage: 'validation', reason: 'missing-fields' });
+      return new Response(JSON.stringify({ ok: false, stage: 'validation', error: 'Missing fields' }), { status: 400 });
     }
     if (!token) {
-      return new Response(JSON.stringify({ ok: false, error: 'Missing Turnstile token' }), { status: 401 });
+      console.warn(`${logPrefix} validation failed`, { stage: 'validation', reason: 'missing-turnstile-token' });
+      return new Response(JSON.stringify({ ok: false, stage: 'validation', error: 'Missing Turnstile token' }), { status: 401 });
     }
     if (!TURNSTILE_SECRET_KEY) {
-      return new Response(JSON.stringify({ ok: false, error: 'TURNSTILE_SECRET_KEY not set' }), { status: 500 });
+      console.error(`${logPrefix} config error`, { stage: 'config', reason: 'missing-turnstile-secret' });
+      return new Response(JSON.stringify({ ok: false, stage: 'config', error: 'TURNSTILE_SECRET_KEY not set' }), { status: 500 });
     }
     if (!RESEND_API_KEY || !RESEND_FROM || !CONTACT_TO) {
+      console.error(`${logPrefix} config error`, { stage: 'config', reason: 'missing-resend-config', hasResendKey: Boolean(RESEND_API_KEY), hasResendFrom: Boolean(RESEND_FROM), hasContactTo: Boolean(CONTACT_TO) });
       return new Response(
-        JSON.stringify({ ok: false, error: 'Email env vars not set (RESEND_API_KEY, RESEND_FROM, CONTACT_TO)' }),
+        JSON.stringify({ ok: false, stage: 'config', error: 'Email env vars not set (RESEND_API_KEY, RESEND_FROM, CONTACT_TO)' }),
         { status: 500 }
       );
     }
@@ -78,10 +92,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // Verifica Turnstile
     const ip = request.headers.get('CF-Connecting-IP');
     const verify = await verifyTurnstile(token, ip, TURNSTILE_SECRET_KEY);
+    console.log(`${logPrefix} turnstile verify`, { success: verify?.success ?? false, codes: verify['error-codes'] });
 
     if (!verify.success) {
+      console.warn(`${logPrefix} turnstile failed`, { stage: 'turnstile', codes: verify['error-codes'] });
       return new Response(
-        JSON.stringify({ ok: false, error: 'Turnstile failed', codes: verify['error-codes'] }),
+        JSON.stringify({ ok: false, stage: 'turnstile', error: 'Turnstile failed', codes: verify['error-codes'] }),
         { status: 403 }
       );
     }
@@ -93,18 +109,25 @@ export const POST: APIRoute = async ({ request, locals }) => {
       to: CONTACT_TO,         // la tua casella
       reply_to: email,
       subject: `New contact from ${name}`,
-      text: `From: ${name} <${email}>\n\n${message}`,
+      text: `From: ${name} <${email}>\n\n${message}`
     });
 
-    if ((result as any)?.error) {
+    const resendError = (result as any)?.error?.message ?? null;
+    const resendId = (result as any)?.data?.id ?? null;
+    console.log(`${logPrefix} resend response`, { hasError: Boolean(resendError), resendId });
+
+    if (resendError) {
+      console.error(`${logPrefix} resend failed`, { stage: 'resend', error: resendError });
       return new Response(
-        JSON.stringify({ ok: false, stage: 'resend', error: (result as any).error?.message || 'Resend error' }),
+        JSON.stringify({ ok: false, stage: 'resend', error: resendError || 'Resend error' }),
         { status: 502 }
       );
     }
 
-    return new Response(JSON.stringify({ ok: true, id: (result as any)?.data?.id ?? null }), { status: 200 });
+    console.log(`${logPrefix} email sent`, { resendId });
+    return new Response(JSON.stringify({ ok: true, stage: 'success', id: resendId }), { status: 200 });
   } catch (err: any) {
-    return new Response(JSON.stringify({ ok: false, error: err?.message ?? 'Error' }), { status: 500 });
+    console.error(`${logPrefix} unhandled exception`, err);
+    return new Response(JSON.stringify({ ok: false, stage: 'exception', error: err?.message ?? 'Error' }), { status: 500 });
   }
 };

@@ -10,7 +10,7 @@ const turnstileEnabled = Boolean(turnstileSiteKey);
   <div class="container mx-auto px-4 py-16">
     <h1 class="text-4xl font-bold mb-6">Contact</h1>
 
-    <form id="contact-form" class="max-w-2xl mx-auto space-y-6">
+    <form id="contact-form" class="max-w-2xl mx-auto space-y-6" data-turnstile-enabled={turnstileEnabled ? 'true' : 'false'}>
       <div id="form-result" class="hidden"></div>
 
       <div>
@@ -70,6 +70,8 @@ const turnstileEnabled = Boolean(turnstileSiteKey);
       const submitBtn = document.getElementById('submit-btn');
       if (!form || !formResult || !submitBtn) return;
 
+      const enableTurnstile = form.dataset.turnstileEnabled === 'true';
+
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         submitBtn.disabled = true;
@@ -78,29 +80,44 @@ const turnstileEnabled = Boolean(turnstileSiteKey);
 
         try {
           const fd = new FormData(form);
-          if (${turnstileEnabled ? 'true' : 'false'}) {
-            const token = fd.get('cf-turnstile-response') || window.turnstile?.getResponse?.();
-            if (token) {
-              fd.set('cf-turnstile-response', token);
+
+          if (enableTurnstile) {
+            const existingToken = fd.get('cf-turnstile-response');
+            if (!existingToken && window.turnstile) {
+              const widget = form.querySelector('.cf-turnstile');
+              if (widget && typeof window.turnstile.getResponse === 'function') {
+                const resolved = window.turnstile.getResponse(widget);
+                if (resolved) {
+                  fd.set('cf-turnstile-response', resolved);
+                }
+              }
             }
           }
 
           const res = await fetch('/api/send-email', { method: 'POST', body: fd });
           const payload = await res.json().catch(() => ({}));
+          console.log('[contact-form] response', { status: res.status, payload });
+
           if (res.ok && payload.ok) {
             formResult.className = 'p-4 mb-6 text-green-800 bg-green-100 border border-green-200 rounded-lg';
-            formResult.textContent = 'Thank you! Your message has been sent successfully.';
+            const info = payload.id ? ' (id: ' + payload.id + ')' : '';
+            formResult.textContent = 'Thank you! Your message has been sent successfully' + info + '.';
             form.reset();
           } else {
-            throw new Error(payload.error || `Failed with status ${res.status}`);
+            const stage = payload.stage ? ' [stage: ' + payload.stage + ']' : '';
+            const detail = payload.error ? payload.error + stage : 'Failed with status ' + res.status;
+            throw new Error(detail);
           }
         } catch (err) {
+          console.error('[contact-form] error', err);
           formResult.className = 'p-4 mb-6 text-red-800 bg-red-100 border border-red-200 rounded-lg';
           formResult.textContent = (err && err.message) || 'Something went wrong.';
         } finally {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Send Message';
-          window.turnstile?.reset?.();
+          if (enableTurnstile && window.turnstile && typeof window.turnstile.reset === 'function') {
+            window.turnstile.reset();
+          }
         }
       });
     });

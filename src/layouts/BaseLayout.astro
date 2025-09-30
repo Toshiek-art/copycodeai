@@ -25,6 +25,7 @@ const adminEmail = Astro.request.headers.get("CF-Access-Authenticated-User-Email
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     {/* Canonical (se passato) */}
     {url && <link rel="canonical" href={url} />}
@@ -47,9 +48,11 @@ const adminEmail = Astro.request.headers.get("CF-Access-Authenticated-User-Email
       (function () {
         try {
           const saved = localStorage.getItem("theme");
-          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          const mode = saved ?? (prefersDark ? "dark" : "light");
-          if (mode === "dark") document.documentElement.classList.add("dark");
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
         } catch (e) {}
       })();
     </script>
