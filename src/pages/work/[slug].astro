@@ -27,7 +27,7 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const SITE = "https://copycodeai-bki.pages.dev";
-const fallbackDescription = "Case study realizzati con un mix di design sistemico e scrittura persuasiva.";
+const fallbackDescription = "Case studies built with a mix of systemic design and persuasive copywriting.";
 
 // Query per i dati del singolo progetto
 const singleProjectQuery = `*[_type == "project" && slug.current == $slug][0]`;
@@ -42,7 +42,7 @@ const description = project?.excerpt ?? project?.overview ?? fallbackDescription
 <SiteLayout title={project.title} description={description} url={url}>
   <div class="container mx-auto px-4 py-12">
     <nav class="mb-6" data-aos="fade-right">
-      <a href="/work" class="text-blue-600 hover:underline">← Torna ai Progetti</a>
+      <a href="/work" class="text-blue-600 hover:underline">← Back to Projects</a>
     </nav>
 
     <article class="space-y-10">
@@ -54,10 +54,10 @@ const description = project?.excerpt ?? project?.overview ?? fallbackDescription
       </header>
 
       <div class="hidden md:block" data-aos="fade-up" data-aos-delay="100">
-        <h2 class="text-2xl font-semibold mb-4">Anteprima Desktop</h2>
+        <h2 class="text-2xl font-semibold mb-4">Desktop Preview</h2>
         <Image
           src={getSanityImageUrl(project.mainImage)}
-          alt={`Anteprima desktop del progetto ${project.title}`}
+          alt={`Desktop preview of project ${project.title}`}
           width={1200}
           height={800}
           class="w-full h-auto rounded-lg border"
@@ -66,10 +66,10 @@ const description = project?.excerpt ?? project?.overview ?? fallbackDescription
 
       {project.mobileImage && (
         <div class="md:hidden max-w-sm mx-auto" data-aos="fade-up" data-aos-delay="150">
-          <h2 class="text-2xl font-semibold mb-4 text-center">Anteprima Mobile</h2>
+          <h2 class="text-2xl font-semibold mb-4 text-center">Mobile Preview</h2>
           <Image
             src={getSanityImageUrl(project.mobileImage)}
-            alt={`Anteprima mobile del progetto ${project.title}`}
+            alt={`Mobile preview of project ${project.title}`}
             width={400}
             height={800}
             class="w-full h-auto rounded-lg border"
@@ -78,7 +78,7 @@ const description = project?.excerpt ?? project?.overview ?? fallbackDescription
       )}
 
       <section class="prose max-w-none lg:prose-xl dark:prose-invert" data-aos="fade-up" data-aos-delay="200">
-        <h2 class="text-2xl font-semibold mb-4">Dettagli del Progetto</h2>
+        <h2 class="text-2xl font-semibold mb-4">Project Details</h2>
         <PortableText value={project.description} />
       </section>
 
@@ -90,7 +90,7 @@ const description = project?.excerpt ?? project?.overview ?? fallbackDescription
             rel="noopener noreferrer"
             class="inline-block rounded-lg bg-blue-600 px-6 py-3 font-bold text-white transition-colors hover:bg-blue-700"
           >
-            Visita il Sito Demo
+            Visit the Live Demo
           </a>
         </div>
       )}

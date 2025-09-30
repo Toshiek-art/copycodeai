@@ -25,38 +25,38 @@ const email = Astro.request.headers.get('CF-Access-Authenticated-User-Email');
 const statsCards = [
   {
     key: 'projects',
-    label: 'Progetti',
+    label: 'Projects',
     value: stats.projects,
-    note: 'Documenti Sanity con slug definito.',
+    note: 'Sanity documents with a defined slug.',
   },
   {
     key: 'aiSolutions',
-    label: 'Soluzioni AI',
+    label: 'AI Solutions',
     value: stats.aiSolutions,
-    note: 'Case study, GPT custom e visual nel CMS.',
+    note: 'Case studies, custom GPTs, and visuals in the CMS.',
   },
   {
     key: 'posts',
-    label: 'Articoli',
+    label: 'Articles',
     value: stats.posts,
-    note: 'Post visibili in Writing.',
+    note: 'Posts available in Writing.',
   },
 ];
 const links = [
   {
     href: '/admin/studio',
-    title: 'Apri Sanity Studio',
-    description: 'Gestisci progetti, soluzioni AI e articoli direttamente dal CMS.',
+    title: 'Open Sanity Studio',
+    description: 'Manage projects, AI solutions, and articles straight from the CMS.',
   },
   {
     href: '/admin/_debug',
-    title: 'Headers di Access',
-    description: 'Verifica l\'email autenticata e il JWT restituiti da Cloudflare Access.',
+    title: 'Access Headers',
+    description: 'Check the authenticated email and JWT returned by Cloudflare Access.',
   },
   {
     href: '/admin/logout',
-    title: 'Esci',
-    description: 'Termina la sessione Zero Trust su tutti i dispositivi.',
+    title: 'Sign out',
+    description: 'End the Zero Trust session on every device.',
   },
 ];
 ---
@@ -67,7 +67,7 @@ const links = [
       <p class="text-xs uppercase tracking-[0.3em] text-[var(--muted)]">CopyCodeAI · Internal</p>
       <h1 class="text-3xl font-bold text-[var(--text)] md:text-4xl">Control Center</h1>
       <p class="text-[var(--muted)]">
-        {email ? `Accesso verificato per ${email}.` : 'Ambiente locale: Access è bypassato durante lo sviluppo.'}
+        {email ? `Access verified for ${email}.` : 'Local environment: Access is bypassed during development.'}
       </p>
     </header>
 
@@ -98,7 +98,7 @@ const links = [
             <p class="mt-3 text-sm text-[var(--muted)]">{link.description}</p>
           </div>
           <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)]">
-            Apri
+            Open
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L12 6.414V17a1 1 0 11-2 0V6.414l-4.293 4.293A1 1 0 014.293 9.293l6-6z" clip-rule="evenodd" />
             </svg>
@@ -108,11 +108,11 @@ const links = [
     </section>
 
     <section class="rounded-2xl border border-black/5 bg-[var(--surface)] p-6 text-sm text-[var(--muted)] shadow-sm dark:border-white/10">
-      <h2 class="text-lg font-semibold text-[var(--text)]">Note operative</h2>
+      <h2 class="text-lg font-semibold text-[var(--text)]">Operational notes</h2>
       <ul class="mt-3 list-disc space-y-2 pl-5">
-        <li>Sanity Studio è ora disponibile su <code>/admin/studio</code> e resta protetto da Cloudflare Access.</li>
-        <li>Usa <code>/admin/_debug</code> per confermare email e token ricevuti da Zero Trust.</li>
-        <li>L\'ambiente di sviluppo locale salta Access; testa il flusso completo su una Pages Preview.</li>
+        <li>Sanity Studio is available at <code>/admin/studio</code> and remains protected by Cloudflare Access.</li>
+        <li>Use <code>/admin/_debug</code> to confirm the email and token received from Zero Trust.</li>
+        <li>The local development environment skips Access; test the full flow on a Pages Preview.</li>
       </ul>
     </section>
   </section>

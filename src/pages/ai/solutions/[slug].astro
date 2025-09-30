@@ -30,7 +30,7 @@ const solution = await sanityClient.fetch(singleSolutionQuery, { slug });
 if (!solution) return Astro.redirect("/404");
 
 const mainImageUrl = getSanityImageUrl(solution.mainImage);
-const description = solution.summary ?? "Case study AI sviluppato per CopyCodeAI.";
+const description = solution.summary ?? "AI case study produced for CopyCodeAI.";
 const url = `${SITE}/ai/solutions/${slug}`;
 ---
 
@@ -127,7 +127,7 @@ const url = `${SITE}/ai/solutions/${slug}`;
             rel="noopener noreferrer"
             class="inline-block rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
           >
-            Visita il Sito Demo
+            Visit the Live Demo
           </a>
         </div>
       )}

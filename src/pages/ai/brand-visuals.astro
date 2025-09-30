@@ -1,63 +1,145 @@
 ---
-// In: src/pages/ai/brand-visuals.astro
-import { sanityClient } from "../../lib/sanity";
 import SiteLayout from "@core/layouts/SiteLayout.astro";
+import { sanityClient } from "../../lib/sanity";
 import { Image } from "astro:assets";
 
-function getSanityImageUrl(sanityImage: any) {
-  if (!sanityImage || !sanityImage.asset) return null;
-  const ref = sanityImage.asset._ref;
-  const [_type, assetId, dimensions, format] = ref.split('-');
-  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
-}
-
-const query = '*[_type == "aiSolution" && solutionType == "visual" && defined(slug.current)] | order(_createdAt desc)';
-const solutions = await sanityClient.fetch(query);
-
-const description = "Moodboard e visual concept generati con AI per branding, campagne e pitch creativi.";
 const SITE = "https://copycodeai-bki.pages.dev";
 const url = `${SITE}/ai/brand-visuals`;
+const description = "AI-generated brand visuals, logos, and graphics tailored for startups, freelancers, and creators.";
+
+const solutions = await sanityClient.fetch(`
+  *[_type == "aiSolution" && solutionType == "visual" && defined(slug.current)] | order(_createdAt desc) {
+    title,
+    "slug": slug.current,
+    summary,
+    mainImage
+  }
+`);
+
+const getSanityImageUrl = (image: any) => {
+  const ref = image?.asset?._ref;
+  if (!ref) return '';
+  const [/*type*/, assetId, dimensions, format] = ref.split('-');
+  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
+};
 ---
 
-<SiteLayout title="Brand Visuals" description={description} url={url}>
-  <div class="container mx-auto px-4 py-12">
-    <header class="mb-10">
-      <h1 class="text-4xl font-bold">Brand Visuals</h1>
-      <p class="mt-2 max-w-2xl text-lg text-[var(--muted)]">
-        {description}
+<SiteLayout
+  title="AI Brand Visuals | AI Logo Design & Branding Solutions"
+  description={description}
+  url={url}
+>
+  <main class="mx-auto max-w-4xl px-4 py-16 space-y-12">
+    <section class="space-y-6">
+      <h1 class="font-head text-4xl font-semibold text-[var(--text)]" data-aos="fade-up">AI Brand Visuals</h1>
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="120">
+        Your brand deserves more than generic stock images. I design <strong>AI-generated brand visuals</strong> that are <strong>unique, consistent, and ready to use</strong> across websites, social media, and campaigns. From logos to digital graphics, I help startups, freelancers, and creators build a visual identity that truly stands out.
       </p>
-    </header>
+    </section>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {
-        solutions.map((solution, index) => {
-          const imageUrl = getSanityImageUrl(solution.mainImage);
-          return (
-            <a
-              href={`/ai/solutions/${solution.slug.current}`}
-              class="group block overflow-hidden rounded-lg border border-black/5 bg-[var(--surface)] shadow-sm transition hover:shadow-lg dark:border-white/10"
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
-            >
-              {imageUrl && (
-                <div class="relative h-48 overflow-hidden">
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Why AI Visuals?</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Traditional design can be slow and expensive. With AI, I deliver:
+      </p>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• <strong>Faster</strong> creative workflows</li>
+        <li>• <strong>Cost-effective</strong> design solutions</li>
+        <li>• <strong>Unlimited variations</strong> and styles</li>
+        <li>• <strong>Custom visuals</strong> aligned with your brand identity</li>
+      </ul>
+      <p class="text-sm text-[var(--muted)]">Keywords: AI brand visuals, AI logo design, AI branding solutions.</p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="240">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">What I Create</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        I provide a wide range of <strong>AI-generated visuals</strong> tailored to your project:
+      </p>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• <strong>Logos & branding assets</strong></li>
+        <li>• <strong>Social media graphics</strong></li>
+        <li>• <strong>Website and app visuals</strong></li>
+        <li>• <strong>Campaign and marketing materials</strong></li>
+      </ul>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Every design is refined to ensure <strong>quality, clarity, and consistency</strong>.
+      </p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="280">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Who Benefits</h2>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• <strong>Startups:</strong> launch faster with a professional look</li>
+        <li>• <strong>Freelancers:</strong> boost their online presence with strong visuals</li>
+        <li>• <strong>Creators:</strong> develop a unique style for their personal brand</li>
+      </ul>
+    </section>
+
+    <section class="space-y-6" data-aos="fade-up" data-aos-delay="320">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Portfolio & Visual Experiments</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Browse recent AI-generated branding work. New visuals and style explorations are added regularly.
+      </p>
+
+      {solutions?.length ? (
+        <div class="grid gap-6 md:grid-cols-2">
+          {solutions.map((solution, index) => {
+            const imageUrl = getSanityImageUrl(solution.mainImage);
+            return (
+              <article
+                class="flex h-full flex-col overflow-hidden rounded-2xl border border-black/5 bg-[var(--surface)] shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10"
+                data-aos="fade-up"
+                data-aos-delay={360 + index * 60}
+              >
+                {imageUrl && (
                   <Image
                     src={imageUrl}
-                    alt={`Image for ${solution.title}`}
-                    width={600}
-                    height={400}
-                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    alt={solution.title ?? 'AI branding case study'}
+                    width={800}
+                    height={600}
+                    class="h-auto w-full object-cover"
                   />
+                )}
+                <div class="space-y-3 p-6">
+                  <h3 class="font-head text-lg text-[var(--text)]">{solution.title}</h3>
+                  {solution.summary && <p class="text-sm text-[var(--muted)]">{solution.summary}</p>}
+                  <a href={`/ai/solutions/${solution.slug}`} class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] hover:underline">
+                    View project
+                    <span aria-hidden="true">→</span>
+                  </a>
                 </div>
-              )}
-              <div class="p-6">
-                <h2 class="text-xl font-semibold text-[var(--text)]">{solution.title}</h2>
-                <p class="mt-2 text-sm text-[var(--muted)]">{solution.summary}</p>
-              </div>
-            </a>
-          );
-        })
-      }
-    </div>
-  </div>
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="space-y-4 text-sm text-[var(--muted)]" data-aos="fade-up" data-aos-delay="360">
+          <p>Visual portfolio in progress. Upcoming showcases include brand identity systems, social packs, and product launch visuals.</p>
+        </div>
+      )}
+    </section>
+
+    <section class="space-y-6">
+      <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="160">
+        <a href="/ai" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Back to AI Solutions →</a>
+        <a href="/work" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Web Design →</a>
+        <a href="/writing" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Writing →</a>
+        <a href="/contact" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Contact Me →</a>
+      </div>
+    </section>
+
+    <section class="rounded-3xl border border-black/5 bg-[var(--surface)] p-10 text-center shadow-lg dark:border-white/10" data-aos="fade-up" data-aos-delay="400">
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        ✨ Ready to give your brand a powerful visual identity? Let’s create together.
+      </p>
+      <a
+        href="/contact"
+        class="mt-4 inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
+      >
+        Start Your Visual Project
+        <span aria-hidden="true">↗</span>
+      </a>
+    </section>
+  </main>
 </SiteLayout>

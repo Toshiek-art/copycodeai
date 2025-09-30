@@ -1,75 +1,132 @@
 ---
-// In: src/pages/ai/index.astro
 import { sanityClient } from "../../lib/sanity";
 import SiteLayout from "@core/layouts/SiteLayout.astro";
 import { Image } from "astro:assets";
 
-// Funzione helper per l'URL dell'immagine
-function getSanityImageUrl(sanityImage: any) {
-  if (!sanityImage || !sanityImage.asset) return null;
-  const ref = sanityImage.asset._ref;
-  const [_type, assetId, dimensions, format] = ref.split('-');
-  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
-}
+const SITE = "https://copycodeai-bki.pages.dev";
+const url = `${SITE}/ai`;
+const description = "AI solutions for startups and freelancers: prompt engineering, custom GPT models, and AI brand visuals.";
 
-// Query per prendere TUTTE le soluzioni AI, ordinate per data
-const query = `*[_type == "aiSolution" && defined(slug.current )] | order(_createdAt desc)`;
-const solutions = await sanityClient.fetch(query);
+const solutions = await sanityClient.fetch(`
+  *[_type == "aiSolution" && defined(slug.current)] | order(_createdAt desc) {
+    title,
+    "slug": slug.current,
+    summary,
+    solutionType,
+    mainImage
+  }
+`);
 
-// Oggetto per mappare i tipi di soluzione a etichette leggibili
-const typeLabels: { [key: string]: string } = {
-  'case-study': 'Case Study',
+const typeLabels: Record<string, string> = {
+  'case-study': 'Prompt Engineering',
   'gpt': 'Custom GPT',
   'visual': 'Brand Visuals'
 };
 
-const description = "Case study AI, GPT su misura e visual assets generativi per brand tech.";
-const SITE = "https://copycodeai-bki.pages.dev";
-const url = `${SITE}/ai`;
+const getSanityImageUrl = (image: any) => {
+  const ref = image?.asset?._ref;
+  if (!ref) return '';
+  const [/*type*/, assetId, dimensions, format] = ref.split('-');
+  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
+};
 ---
 
-<SiteLayout title="AI Solutions" description={description} url={url}>
-  <div class="container mx-auto px-4 py-12">
-    <header class="mb-10">
-      <h1 class="text-4xl font-bold">AI Solutions</h1>
-      <p class="mt-2 max-w-2xl text-lg text-[var(--muted)]">
-        {description}
+<SiteLayout title="AI Solutions – Prompt Engineering, Custom GPT Models & Brand Visuals" description={description} url={url}>
+  <main class="mx-auto max-w-4xl px-4 py-16 space-y-12">
+    <section class="space-y-6">
+      <h1 class="font-head text-4xl font-semibold text-[var(--text)]" data-aos="fade-up">AI Solutions – Tailored for Growth</h1>
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="120">
+        I help <strong>startups, freelancers, and creators</strong> unlock the power of Artificial Intelligence. From smarter prompts to custom AI tools and brand visuals, my solutions are designed to <strong>save time, boost creativity, and scale results</strong>.
       </p>
-    </header>
-    
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {
-        solutions.map((solution, index) => {
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Prompt Engineering</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Prompt design is the foundation of effective AI use. I create <strong>custom, optimized prompts</strong> that transform vague outputs into <strong>precise, creative, and business-ready results</strong>. Whether you need better workflows, creative writing, or technical documents, I design prompts tailored to your specific goals.
+      </p>
+      <p class="text-sm text-[var(--muted)]">Keywords: prompt engineering, AI prompt design, optimized prompts for business.</p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="240">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Custom GPT Models</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        When off-the-shelf AI is not enough, I build <strong>custom GPT configurations</strong> through API integration.
+      </p>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• Business workflows</li>
+        <li>• Customer support automation</li>
+        <li>• Content creation and marketing</li>
+      </ul>
+      <p class="text-sm text-[var(--muted)]">Keywords: custom GPT models, GPT API integration, AI tools for startups.</p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="280">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Brand Visuals</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Your brand identity deserves more than stock images. I create <strong>AI-generated brand visuals</strong>: logos, graphics, and visual concepts that reflect your unique style. Using advanced AI tools, I deliver <strong>consistent, scalable, and original visuals</strong> ready for websites, social media, and marketing campaigns.
+      </p>
+      <p class="text-sm text-[var(--muted)]">Keywords: AI brand visuals, AI logo design, AI branding solutions.</p>
+    </section>
+
+    <section class="space-y-6" data-aos="fade-up" data-aos-delay="320">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">All AI Solutions</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Browse case studies, custom builds, and visual experiments. New projects are added regularly.
+      </p>
+      <div class="grid gap-6 md:grid-cols-2">
+        {solutions.map((solution, index) => {
           const imageUrl = getSanityImageUrl(solution.mainImage);
           return (
-            <a
-              href={`/ai/solutions/${solution.slug.current}`}
-              class="group block overflow-hidden rounded-lg border border-black/5 bg-[var(--surface)] shadow-sm transition hover:shadow-lg dark:border-white/10"
+            <article
+              class="flex h-full flex-col overflow-hidden rounded-2xl border border-black/5 bg-[var(--surface)] shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10"
               data-aos="fade-up"
-              data-aos-delay={index * 100}
+              data-aos-delay={360 + index * 60}
             >
               {imageUrl && (
-                <div class="relative h-48 overflow-hidden">
-                  <Image
-                    src={imageUrl}
-                    alt={`Image for ${solution.title}`}
-                    width={600}
-                    height={400}
-                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <span class="absolute right-3 top-3 rounded-md bg-blue-600 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow">
-                    {typeLabels[solution.solutionType] || 'Solution'}
-                  </span>
-                </div>
+                <Image
+                  src={imageUrl}
+                  alt={solution.title ?? 'AI solution preview'}
+                  width={800}
+                  height={600}
+                  class="h-auto w-full object-cover"
+                />
               )}
-              <div class="p-6">
-                <h2 class="text-xl font-semibold text-[var(--text)]">{solution.title}</h2>
-                <p class="mt-2 text-sm text-[var(--muted)]">{solution.summary}</p>
+              <div class="space-y-3 p-6">
+                <span class="text-xs uppercase tracking-widest text-[var(--muted)]">{typeLabels[solution.solutionType] || 'AI Solution'}</span>
+                <h3 class="font-head text-lg text-[var(--text)]">{solution.title}</h3>
+                {solution.summary && <p class="text-sm text-[var(--muted)]">{solution.summary}</p>}
+                <a href={`/ai/solutions/${solution.slug}`} class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] hover:underline">
+                  View solution
+                  <span aria-hidden="true">→</span>
+                </a>
               </div>
-            </a>
+            </article>
           );
-        })
-      }
-    </div>
-  </div>
+        })}
+      </div>
+    </section>
+
+    <section class="space-y-6">
+      <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="160">
+        <a href="/" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Back to Home →</a>
+        <a href="/work" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Visit Web Design →</a>
+        <a href="/writing" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Explore Writing →</a>
+        <a href="/contact" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Contact Me →</a>
+      </div>
+    </section>
+
+    <section class="rounded-3xl border border-black/5 bg-[var(--surface)] p-10 text-center shadow-lg dark:border-white/10" data-aos="fade-up" data-aos-delay="400">
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        ✨ Need AI-powered solutions to grow your business? Contact me today and let’s build the future together.
+      </p>
+      <a
+        href="/contact"
+        class="mt-4 inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
+      >
+        Start Your AI Project
+        <span aria-hidden="true">↗</span>
+      </a>
+    </section>
+  </main>
 </SiteLayout>

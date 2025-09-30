@@ -1,64 +1,139 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// la chiave deve iniziare con PUBLIC_ per arrivare lato client
+const SITE = "https://copycodeai-bki.pages.dev";
+const title = "Contact | CopyCodeAI – Web Design, Writing & AI Solutions";
+const description = "Get in touch for web design, writing, and AI solutions tailored to startups, freelancers, and creators.";
+const contactEmail = 'hello@copycodeai.online';
+
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 const turnstileEnabled = Boolean(turnstileSiteKey);
 ---
-<BaseLayout title="Contact Me">
-  {/* DEBUG: lasciami questo H1 per capire subito se rende */}
-  <div class="container mx-auto px-4 py-16">
-    <h1 class="text-4xl font-bold mb-6">Contact</h1>
+<BaseLayout {title} {description}>
+  <main class="mx-auto max-w-3xl space-y-12 px-4 py-16">
+    <section class="space-y-4 text-center">
+      <!-- H1 più ricco di keyword -->
+      <h1 class="font-head text-4xl font-semibold text-[var(--text)]" data-aos="fade-up">
+        Contact CopyCodeAI – Web Design, Writing & AI Solutions
+      </h1>
 
-    <form id="contact-form" class="max-w-2xl mx-auto space-y-6" data-turnstile-enabled={turnstileEnabled ? 'true' : 'false'}>
-      <div id="form-result" class="hidden"></div>
+      <!-- Intro più “calda” + SEO -->
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="120">
+        Let’s work together. Whether you’re a <strong>startup</strong>, <strong>freelancer</strong>, or <strong>creator</strong>, I’d love to hear about your project.
+        I usually reply within <strong>24 hours</strong>. Use the form below or email me directly.
+      </p>
+    </section>
 
-      <div>
-        <label for="name" class="block text-sm font-medium text-[var(--muted)]">Name</label>
-        <input
-          id="name"
-          name="name"
-          required
-          class="mt-1 block w-full rounded-md border border-gray-300 bg-white text-[var(--text)] shadow-sm placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-0 dark:border-white/15 dark:bg-slate-900 dark:text-[var(--text)] dark:placeholder:text-[var(--muted)]"
-        />
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="180">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">How I Can Help</h2>
+
+      <!-- Frase di contesto per Google + utenti -->
+      <p class="text-[var(--muted)]">
+        From building fast, modern websites to creating SEO-optimized content and <strong>AI-powered tools</strong>,
+        I provide practical solutions that help you grow and save time.
+      </p>
+
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• <strong>Web Design:</strong> custom, performance-driven websites for startups and freelancers</li>
+        <li>• <strong>Writing:</strong> SEO-optimized articles, website copy, landing pages, ghostwriting</li>
+        <li>• <strong>AI Solutions:</strong> prompt engineering, custom GPT models (API), AI brand visuals</li>
+      </ul>
+
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Every project is unique — and I’m here to create the <strong>right solution</strong> for you.
+      </p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="220">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Get in Touch</h2>
+      <p class="text-[var(--muted)]">
+        Prefer email? You can also reach me at
+        <a href={`mailto:${contactEmail}`} class="font-semibold text-[var(--accent)] hover:underline">{contactEmail}</a>.
+      </p>
+
+      <div class="grid items-start gap-8 md:grid-cols-[minmax(0,1fr)_auto]" data-aos="fade-up" data-aos-delay="260">
+        <form
+          id="contact-form"
+          aria-label="Contact form"
+          class="space-y-6 rounded-2xl border border-black/5 bg-[var(--surface)] p-6 shadow-sm dark:border-white/10"
+          data-turnstile-enabled={turnstileEnabled ? 'true' : 'false'}
+        >
+          <div id="form-result" class="hidden"></div>
+
+          <div>
+            <label for="name" class="block text-sm font-medium text-[var(--muted)]">Name</label>
+            <input
+              id="name"
+              name="name"
+              required
+              autocomplete="name"
+              class="mt-1 block w-full rounded-md border border-gray-300 bg-white text-[var(--text)] shadow-sm placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-0 dark:border-white/15 dark:bg-slate-900 dark:text-[var(--text)] dark:placeholder:text-[var(--muted)]"
+            />
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-[var(--muted)]">Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              class="mt-1 block w-full rounded-md border border-gray-300 bg-white text-[var(--text)] shadow-sm placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-0 dark:border-white/15 dark:bg-slate-900 dark:text-[var(--text)] dark:placeholder:text-[var(--muted)]"
+            />
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-[var(--muted)]">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              required
+              class="mt-1 block w-full rounded-md border border-gray-300 bg-white text-[var(--text)] shadow-sm placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-0 dark:border-white/15 dark:bg-slate-900 dark:text-[var(--text)] dark:placeholder:text-[var(--muted)]"
+            ></textarea>
+          </div>
+
+          {turnstileEnabled
+            ? <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>
+            : <p class="text-sm text-amber-600">PUBLIC_TURNSTILE_SITE_KEY missing (dev hint only)</p>}
+
+          <button id="submit-btn" type="submit" class="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90">
+            Send Message
+            <span aria-hidden="true">↗</span>
+          </button>
+
+          <!-- micro trust signal -->
+          <p class="text-xs text-[var(--muted)]">
+            Trusted by startups and freelancers worldwide · 20+ years in web & digital solutions.
+          </p>
+        </form>
+
+        <figure class="relative mt-6 overflow-hidden rounded-2xl border border-black/5 bg-white/90 p-6 shadow-sm backdrop-blur-sm md:mt-0 dark:border-white/10 dark:bg-white/5">
+          <img
+            src="/CopyCodeAI.svg"
+            alt="CopyCodeAI branding illustration"
+            class="mx-auto h-48 w-auto max-w-full object-contain drop-shadow-lg md:mx-0"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption class="sr-only">CopyCodeAI brand illustration</figcaption>
+        </figure>
       </div>
+    </section>
 
-      <div>
-        <label for="email" class="block text-sm font-medium text-[var(--muted)]">Email</label>
-        <input
-          id="email"
-          type="email"
-          name="email"
-          required
-          class="mt-1 block w-full rounded-md border border-gray-300 bg-white text-[var(--text)] shadow-sm placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-0 dark:border-white/15 dark:bg-slate-900 dark:text-[var(--text)] dark:placeholder:text-[var(--muted)]"
-        />
+    <section class="space-y-3 text-sm text-[var(--muted)]" data-aos="fade-up" data-aos-delay="300">
+      <p class="font-semibold text-[var(--text)]">Explore more:</p>
+      <div class="flex flex-wrap gap-4">
+        <a href="/" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Home →</a>
+        <a href="/work" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Web Design →</a>
+        <a href="/writing" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Writing →</a>
+        <a href="/ai" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">AI Solutions →</a>
       </div>
+    </section>
+  </main>
 
-      <div>
-        <label for="message" class="block text-sm font-medium text-[var(--muted)]">Message</label>
-        <textarea
-          id="message"
-          name="message"
-          rows="4"
-          required
-          class="mt-1 block w-full rounded-md border border-gray-300 bg-white text-[var(--text)] shadow-sm placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-0 dark:border-white/15 dark:bg-slate-900 dark:text-[var(--text)] dark:placeholder:text-[var(--muted)]"
-        ></textarea>
-      </div>
-
-      {/* Turnstile widget: se la key non c'è, mostra un hint ma NON crasha */}
-      {turnstileEnabled
-        ? <div class="cf-turnstile" data-sitekey={turnstileSiteKey}></div>
-        : <p class="text-sm text-amber-600">PUBLIC_TURNSTILE_SITE_KEY mancante (solo dev hint)</p>}
-
-      <button id="submit-btn" type="submit" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors text-lg disabled:bg-gray-400">
-        Send Message
-      </button>
-    </form>
-  </div>
-
-  {/* Script SOLIDO: parte solo quando il DOM è pronto, niente TS casts */}
   <script type="module">
-    // carica Turnstile (non blocca render)
     const s = document.createElement('script');
     s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
     s.async = true; s.defer = true;
@@ -87,9 +162,7 @@ const turnstileEnabled = Boolean(turnstileSiteKey);
               const widget = form.querySelector('.cf-turnstile');
               if (widget && typeof window.turnstile.getResponse === 'function') {
                 const resolved = window.turnstile.getResponse(widget);
-                if (resolved) {
-                  fd.set('cf-turnstile-response', resolved);
-                }
+                if (resolved) fd.set('cf-turnstile-response', resolved);
               }
             }
           }

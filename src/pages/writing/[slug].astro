@@ -37,7 +37,7 @@ if (!post) {
 // --- SEO meta
 const SITE = "https://copycodeai-bki.pages.dev";
 const url = `${SITE}/writing/${post.slug}`;
-const description = (post.excerpt ?? post.title ?? "Articolo").trim() + "…";
+const description = (post.excerpt ?? post.title ?? "Article").trim() + "…";
 const ogImage = post?.mainImage?.asset?.url ?? undefined;
 
 // JSON-LD Article
@@ -66,13 +66,13 @@ const jsonLd = {
 
   <div class="container mx-auto px-4 py-12">
     <nav class="mb-6">
-      <a href="/writing" class="text-blue-600 hover:underline">← Torna al Blog</a>
+      <a href="/writing" class="text-blue-600 hover:underline">← Back to Writing</a>
     </nav>
 
     <article>
       <h1 class="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
       <p class="mb-8 text-[var(--muted)] dark:text-[var(--muted)]">
-        Pubblicato il: {new Date(post.publishedAt).toLocaleDateString('it-IT')}
+        Published on: {new Date(post.publishedAt).toLocaleDateString('en-GB')}
       </p>
 
       <div class="prose lg:prose-xl max-w-none dark:prose-invert">

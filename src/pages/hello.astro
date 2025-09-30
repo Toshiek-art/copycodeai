@@ -3,62 +3,75 @@ import SiteLayout from "@core/layouts/SiteLayout.astro";
 
 const SITE = "https://copycodeai-bki.pages.dev";
 const url = `${SITE}/hello`;
-const description = "Aldo è un copywriter, developer e AI specialist che unisce parole, codice e intelligenza artificiale con CopyCodeAI.";
-
-const supportAreas = [
-  {
-    title: "Content creation",
-    detail: "(articles, blogs, website copy, brand storytelling)",
-  },
-  {
-    title: "Web development",
-    detail: "(Astro, Tailwind, headless CMS solutions)",
-  },
-  {
-    title: "AI-driven solutions",
-    detail: "(advanced prompting, custom GPTs, brand assistants, AI-powered visuals)",
-  },
-];
+const description = "Freelancer, digital artist, and AI consultant blending copy, code, and automation for modern teams.";
 ---
 
 <SiteLayout title="Hello — CopyCodeAI" description={description} url={url}>
   <main class="mx-auto max-w-4xl px-4 py-16 space-y-12">
     <section class="space-y-6">
-      <h1 class="font-head text-5xl font-semibold text-[var(--text)]">Hello</h1>
-      <p class="text-lg leading-relaxed text-[var(--text)]">
-        I’m Aldo — a copywriter, developer and AI specialist.
+      <h1 class="font-head text-5xl font-semibold text-[var(--text)]">Hello, I'm Aldo</h1>
+      <p class="text-lg leading-relaxed text-[var(--text)]" data-aos="fade-up">
+        Freelancer, digital artist, and AI consultant with over 20 years of experience in the web industry.
       </p>
-      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up">
-        With a background in digital art and writing, I bring together words, code, and artificial intelligence under one roof: CopyCodeAI.
+
+      <!-- immagine inserita qui -->
+      <figure class="mx-auto max-w-md" data-aos="fade-up" data-aos-delay="100">
+        <img 
+          src="/aldo-hello.png" 
+          alt="Portrait of Aldo, freelancer, digital artist and AI consultant" 
+          class="rounded-2xl shadow-lg object-cover w-full h-auto"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption class="sr-only">Aldo Malasomma — CopyCodeAI founder</figcaption>
+      </figure>
+
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="120">
+        An independent professional who combines creativity and efficiency, with the vision of launching a startup in Estonia.
       </p>
     </section>
 
-    <section class="space-y-6" data-aos="fade-up" data-aos-delay="100">
-      <h2 class="text-2xl font-semibold text-[var(--text)]">What I work on</h2>
-      <p class="text-[var(--muted)]">
-        I support freelancers, startups, and companies with:
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="160">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Who I Am</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        My career began in <strong>2001 as a Web Designer at Informatic & Communication in Milan</strong>. Since then, I've worked across multiple fields: web design, e-commerce, complex logistics, digital art, and artificial intelligence. Today, I work as a <strong>Prompt Designer, Copywriter, and AI Consultant</strong>, helping startups, freelancers, and creators grow with tailored content, websites, and strategies.
       </p>
-      <div class="grid gap-4 md:grid-cols-3">
-        {supportAreas.map((area, index) => (
-          <div
-            class="rounded-xl border border-black/5 bg-[var(--surface)] p-5 shadow-sm transition hover:shadow-lg dark:border-white/10"
-            data-aos="fade-up"
-            data-aos-delay={150 + index * 100}
-          >
-            <h3 class="font-head text-lg font-semibold text-[var(--text)]">{area.title}</h3>
-            <p class="mt-2 text-sm text-[var(--muted)]">{area.detail}</p>
-          </div>
-        ))}
-      </div>
     </section>
 
-    <section class="space-y-4">
-      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up">
-        I currently work as a freelancer, and I’m in the process of setting up my own company to expand services and collaborations.
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Core Skills</h2>
+      <ul class="grid gap-3 text-[var(--muted)] md:grid-cols-2">
+        <li>Copywriting & SEO content writing</li>
+        <li>Prompt design and custom GPT models</li>
+        <li>Digital art & NFT creation</li>
+        <li>Web development (Astro + Tailwind, headless CMS)</li>
+        <li>Business automation and AI-powered solutions</li>
+      </ul>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="240">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">My Approach</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Transparency, efficiency, and creativity guide every project. I listen to goals, deliver practical solutions, and work alongside clients to build digital growth strategies that make a measurable impact.
       </p>
-      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="100">
-        My mission is to make AI and digital tools practical, creative, and accessible — helping projects grow with innovation and clarity.
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="280">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Beyond Freelance</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        My next step is to channel this experience into a <strong>startup based in Tallinn, Estonia</strong>, integrating AI, design, and content into a scalable creative ecosystem. I also collaborate with select freelancers to deliver multidisciplinary solutions tailored to each client.
       </p>
+    </section>
+
+    <section class="space-y-4 text-center" data-aos="fade-up" data-aos-delay="320">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Let's Work Together</h2>
+      <a
+        href="/contact"
+        class="inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
+      >
+        Get in Touch
+        <span aria-hidden="true">↗</span>
+      </a>
     </section>
   </main>
 </SiteLayout>

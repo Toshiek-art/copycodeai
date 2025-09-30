@@ -1,5 +1,4 @@
 ---
-// src/pages/writing/index.astro
 export const prerender = true;
 
 import SiteLayout from "@core/layouts/SiteLayout.astro";
@@ -7,47 +6,106 @@ import { sanityClient } from "../../lib/sanity";
 
 const SITE = "https://copycodeai-bki.pages.dev";
 const url = `${SITE}/writing`;
+const description = "Freelance writing portfolio showcasing SEO content, copywriting, and ghostwriting for startups and creators.";
 
 const posts = await sanityClient.fetch(`
   *[_type == "post" && defined(slug.current)]{
     title,
     "slug": slug.current,
+    excerpt,
+    summary,
     publishedAt
   } | order(publishedAt desc)
 `);
 
-const description = "Articoli e appunti su AI, design e scrittura. Selezione aggiornata dai miei lavori e ricerche.";
+const formatDate = (value?: string) =>
+  value ? new Date(value).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
 
-// util piccola x data IT
-const fmt = (d?: string) => d ? new Date(d).toLocaleDateString('it-IT', { day:'2-digit', month:'2-digit', year:'numeric' }) : '—';
+const getSummary = (post: any) => post?.excerpt ?? post?.summary ?? '';
 ---
-<SiteLayout title="Writing — CopyCodeAI" description={description} url={url}>
-  <main class="mx-auto max-w-6xl px-4 py-12">
-    <header class="mb-8">
-      <h1 class="font-head text-4xl text-[var(--text)]">Writing</h1>
-      <p class="text-[var(--muted)] mt-1 max-w-2xl">{description}</p>
-    </header>
+<SiteLayout title="Freelance Writing Portfolio | SEO Content, Copywriting & Ghostwriting" description={description} url={url}>
+  <main class="mx-auto max-w-4xl px-4 py-16 space-y-12">
+    <section class="space-y-6">
+      <h1 class="font-head text-4xl font-semibold text-[var(--text)]" data-aos="fade-up">Writing – Portfolio & Services</h1>
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="120">
+        I provide <strong>content writing, copywriting, and ghostwriting services</strong> for startups, freelancers, and creators. From blog articles to landing pages, every text is crafted to be <strong>clear, persuasive, and SEO-optimized</strong>.
+      </p>
 
-    {posts?.length ? (
-<ul class="space-y-6">
-  {posts.map((post, i) => (
-    <li
-      data-aos="fade-up"
-      data-aos-delay={i * 100}  // effetto stagger
-    >
-      <a href={`/writing/${post.slug}`} class="block p-4 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
-        <h2 class="text-2xl font-semibold">{post.title}</h2>
-        <p class="text-gray-600 dark:text-gray-400 mt-2">
-          Pubblicato il: {post.publishedAt
-            ? new Date(post.publishedAt).toLocaleDateString('it-IT')
-            : '—'}
-        </p>
+    </section>
+
+    <section class="space-y-6" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">How I Write</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">My approach combines <strong>research, strategy, and creativity</strong>. Every piece of content is built on:</p>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• Target audience and keyword research</li>
+        <li>• Consistent brand voice and tone</li>
+        <li>• SEO-friendly structure for visibility</li>
+        <li>• Style, clarity, and narrative impact</li>
+      </ul>
+    </section>
+
+    <section class="space-y-6" data-aos="fade-up" data-aos-delay="240">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Writing Portfolio</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">This section works as a <strong>living portfolio</strong>: every week I publish new writing samples. Here you’ll find examples of:</p>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• SEO-optimized blog articles</li>
+        <li>• High-conversion landing pages</li>
+        <li>• Website copywriting & marketing campaigns</li>
+        <li>• Ghostwriting for professionals and authors</li>
+      </ul>
+
+      {posts?.length ? (
+        <div class="space-y-6">
+          {posts.map((post, index) => (
+            <article
+              class="flex flex-col gap-3 rounded-2xl border border-black/5 bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-white/10"
+              data-aos="fade-up"
+              data-aos-delay={280 + index * 60}
+            >
+              <div class="flex items-center justify-between gap-4">
+                <h3 class="font-head text-xl text-[var(--text)]">{post.title}</h3>
+                <span class="text-xs uppercase tracking-widest text-[var(--muted)]">{formatDate(post.publishedAt)}</span>
+              </div>
+              {getSummary(post) && (
+                <p class="text-sm text-[var(--muted)]">{getSummary(post)}</p>
+              )}
+              <a href={`/writing/${post.slug}`} class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] hover:underline">
+                Read article
+                <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="space-y-4 text-sm text-[var(--muted)]" data-aos="fade-up" data-aos-delay="280">
+          <p>The gallery is being curated. Upcoming samples include SEO blog posts, landing page copy, and long-form ghostwriting projects.</p>
+        </div>
+      )}
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="320">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Why Choose My Writing</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Great content is not just about words — it’s about <strong>results</strong>. Whether the goal is to attract organic traffic, convert leads into clients, or tell a powerful story, my writing is designed to make an impact.
+      </p>
+      <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="160">
+        <a href="/" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Back to Home →</a>
+        <a href="/work" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Visit Web Design →</a>
+        <a href="/contact" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Contact Me →</a>
+      </div>      
+    </section>
+
+    <section class="rounded-3xl border border-black/5 bg-[var(--surface)] p-10 text-center shadow-lg dark:border-white/10" data-aos="fade-up" data-aos-delay="360">
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        ✨ Need SEO-optimized content that grows your project? Let’s get started today.
+      </p>
+      <a
+        href="/contact"
+        class="mt-4 inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
+      >
+        Start Your Writing Project
+        <span aria-hidden="true">↗</span>
       </a>
-    </li>
-  ))}
-</ul>
-    ) : (
-      <p class="text-[var(--muted)]">Nessun articolo trovato. Pubblicane uno dal CMS.</p>
-    )}
+    </section>
   </main>
 </SiteLayout>

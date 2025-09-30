@@ -1,63 +1,148 @@
 ---
-// In: src/pages/ai/prompt-engineering.astro
-import { sanityClient } from "../../lib/sanity";
 import SiteLayout from "@core/layouts/SiteLayout.astro";
+import { sanityClient } from "../../lib/sanity";
 import { Image } from "astro:assets";
 
-function getSanityImageUrl(sanityImage: any) {
-  if (!sanityImage || !sanityImage.asset) return null;
-  const ref = sanityImage.asset._ref;
-  const [_type, assetId, dimensions, format] = ref.split('-');
-  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
-}
-
-const query = `*[_type == "aiSolution" && solutionType == "case-study" && defined(slug.current )] | order(_createdAt desc)`;
-const solutions = await sanityClient.fetch(query);
-
-const description = "Prompt engineering applicato a processi reali: benchmark, blueprint e metriche di impatto.";
 const SITE = "https://copycodeai-bki.pages.dev";
 const url = `${SITE}/ai/prompt-engineering`;
+const description = "Professional prompt engineering services: custom AI prompts for business, content, and creative workflows.";
+
+const solutions = await sanityClient.fetch(`
+  *[_type == "aiSolution" && solutionType == "case-study" && defined(slug.current)] | order(_createdAt desc) {
+    title,
+    "slug": slug.current,
+    summary,
+    mainImage
+  }
+`);
+
+const getSanityImageUrl = (image: any) => {
+  const ref = image?.asset?._ref;
+  if (!ref) return '';
+  const [/*type*/, assetId, dimensions, format] = ref.split('-');
+  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
+};
 ---
 
-<SiteLayout title="Prompt Engineering" description={description} url={url}>
-  <div class="container mx-auto px-4 py-12">
-    <header class="mb-10">
-      <h1 class="text-4xl font-bold">Prompt Engineering</h1>
-      <p class="mt-2 max-w-2xl text-lg text-[var(--muted)]">
-        {description}
+<SiteLayout
+  title="Prompt Engineering Services | Optimized AI Prompts for Business & Creators"
+  description={description}
+  url={url}
+>
+  <main class="mx-auto max-w-4xl px-4 py-16 space-y-12">
+    <section class="space-y-6">
+      <h1 class="font-head text-4xl font-semibold text-[var(--text)]" data-aos="fade-up">Prompt Engineering Services</h1>
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="120">
+        AI is only as powerful as the prompts behind it. I provide <strong>prompt engineering services</strong> that turn inconsistent AI outputs into <strong>precise, creative, and business-ready solutions</strong>. Whether you’re a <strong>startup, freelancer, or content creator</strong>, optimized prompts can save time, increase productivity, and unlock new creative possibilities.
       </p>
-    </header>
+    </section>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {
-        solutions.map((solution, index) => {
-          const imageUrl = getSanityImageUrl(solution.mainImage);
-          return (
-            <a
-              href={`/ai/solutions/${solution.slug.current}`}
-              class="group block overflow-hidden rounded-lg border border-black/5 bg-[var(--surface)] shadow-sm transition hover:shadow-lg dark:border-white/10"
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
-            >
-              {imageUrl && (
-                <div class="relative h-48 overflow-hidden">
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">What Is Prompt Engineering?</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Prompt engineering is the art of <strong>designing the right instructions</strong> for AI models. A well-crafted prompt can:
+      </p>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• Improve <strong>accuracy</strong> and reduce errors</li>
+        <li>• Create <strong>consistent, high-quality outputs</strong></li>
+        <li>• Save time by automating workflows</li>
+        <li>• Expand creative and business opportunities</li>
+      </ul>
+      <p class="text-sm text-[var(--muted)]">Keywords: prompt engineering, AI prompt design, optimized prompts for business.</p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="240">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">How I Can Help</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        I design <strong>custom prompts</strong> tailored to your real needs:
+      </p>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• <strong>Content creation:</strong> SEO articles, blog posts, copywriting</li>
+        <li>• <strong>Business workflows:</strong> automation, structured data, client communication</li>
+        <li>• <strong>Creative projects:</strong> storytelling, branding, digital art concepts</li>
+        <li>• <strong>Technical writing:</strong> documentation, reports, structured analysis</li>
+      </ul>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Each solution is tested, refined, and delivered with clear instructions.
+      </p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="280">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Who Benefits</h2>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• <strong>Startups:</strong> scale faster with automated AI workflows</li>
+        <li>• <strong>Freelancers:</strong> work smarter and expand service offerings</li>
+        <li>• <strong>Creators:</strong> boost creativity with structured AI support</li>
+      </ul>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Prompt engineering bridges the gap between <strong>raw AI potential</strong> and <strong>real-world results</strong>.
+      </p>
+    </section>
+
+    <section class="space-y-6" data-aos="fade-up" data-aos-delay="320">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Portfolio & Case Studies</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Explore a selection of prompt engineering projects and case studies. New experiments and client work are added regularly.
+      </p>
+
+      {solutions?.length ? (
+        <div class="grid gap-6 md:grid-cols-2">
+          {solutions.map((solution, index) => {
+            const imageUrl = getSanityImageUrl(solution.mainImage);
+            return (
+              <article
+                class="flex h-full flex-col overflow-hidden rounded-2xl border border-black/5 bg-[var(--surface)] shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10"
+                data-aos="fade-up"
+                data-aos-delay={360 + index * 60}
+              >
+                {imageUrl && (
                   <Image
                     src={imageUrl}
-                    alt={`Image for ${solution.title}`}
-                    width={600}
-                    height={400}
-                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    alt={solution.title ?? 'Prompt engineering case study'}
+                    width={800}
+                    height={600}
+                    class="h-auto w-full object-cover"
                   />
+                )}
+                <div class="space-y-3 p-6">
+                  <h3 class="font-head text-lg text-[var(--text)]">{solution.title}</h3>
+                  {solution.summary && <p class="text-sm text-[var(--muted)]">{solution.summary}</p>}
+                  <a href={`/ai/solutions/${solution.slug}`} class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] hover:underline">
+                    View case study
+                    <span aria-hidden="true">→</span>
+                  </a>
                 </div>
-              )}
-              <div class="p-6">
-                <h2 class="text-xl font-semibold text-[var(--text)]">{solution.title}</h2>
-                <p class="mt-2 text-sm text-[var(--muted)]">{solution.summary}</p>
-              </div>
-            </a>
-          );
-        })
-      }
-    </div>
-  </div>
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="space-y-4 text-sm text-[var(--muted)]" data-aos="fade-up" data-aos-delay="360">
+          <p>Portfolio samples are being curated. Upcoming case studies cover marketing workflows, data automation, and creative writing pipelines.</p>
+        </div>
+      )}
+    </section>
+
+    <section class="space-y-6">
+      <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="160">
+        <a href="/ai" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Back to AI Solutions →</a>
+        <a href="/ai/gpt-custom" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Custom GPT Models →</a>
+        <a href="/writing" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Writing Portfolio →</a>
+        <a href="/contact" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Contact Me →</a>
+      </div>
+    </section>
+
+    <section class="rounded-3xl border border-black/5 bg-[var(--surface)] p-10 text-center shadow-lg dark:border-white/10" data-aos="fade-up" data-aos-delay="400">
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        ✨ Need prompts that actually work? Contact me today to get your custom AI solutions.
+      </p>
+      <a
+        href="/contact"
+        class="mt-4 inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
+      >
+        Book a Prompt Strategy Call
+        <span aria-hidden="true">↗</span>
+      </a>
+    </section>
+  </main>
 </SiteLayout>

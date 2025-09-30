@@ -1,63 +1,145 @@
 ---
-// In: src/pages/ai/gpt-custom.astro
-import { sanityClient } from "../../lib/sanity";
 import SiteLayout from "@core/layouts/SiteLayout.astro";
+import { sanityClient } from "../../lib/sanity";
 import { Image } from "astro:assets";
 
-function getSanityImageUrl(sanityImage: any) {
-  if (!sanityImage || !sanityImage.asset) return null;
-  const ref = sanityImage.asset._ref;
-  const [_type, assetId, dimensions, format] = ref.split('-');
-  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
-}
-
-const query = '*[_type == "aiSolution" && solutionType == "gpt" && defined(slug.current)] | order(_createdAt desc)';
-const solutions = await sanityClient.fetch(query);
-
-const description = "Custom GPT addestrati su workflow e dati proprietari per automatizzare il lavoro dei team.";
 const SITE = "https://copycodeai-bki.pages.dev";
 const url = `${SITE}/ai/gpt-custom`;
+const description = "Custom GPT models with API integration for startups, freelancers, and creators.";
+
+const solutions = await sanityClient.fetch(`
+  *[_type == "aiSolution" && solutionType == "gpt" && defined(slug.current)] | order(_createdAt desc) {
+    title,
+    "slug": slug.current,
+    summary,
+    mainImage
+  }
+`);
+
+const getSanityImageUrl = (image: any) => {
+  const ref = image?.asset?._ref;
+  if (!ref) return '';
+  const [/*type*/, assetId, dimensions, format] = ref.split('-');
+  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
+};
 ---
 
-<SiteLayout title="Custom GPT" description={description} url={url}>
-  <div class="container mx-auto px-4 py-12">
-    <header class="mb-10">
-      <h1 class="text-4xl font-bold">Custom GPT models</h1>
-      <p class="mt-2 max-w-2xl text-lg text-[var(--muted)]">
-        {description}
+<SiteLayout
+  title="Custom GPT Models | GPT API Integration & AI Tools for Business"
+  description={description}
+  url={url}
+>
+  <main class="mx-auto max-w-4xl px-4 py-16 space-y-12">
+    <section class="space-y-6">
+      <h1 class="font-head text-4xl font-semibold text-[var(--text)]" data-aos="fade-up">Custom GPT Models</h1>
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="120">
+        When standard AI tools are not enough, I build <strong>custom GPT models</strong> through API integration. These solutions are tailored to your <strong>business needs, workflows, and brand identity</strong>, giving you a powerful tool that feels like it was designed specifically for you.
       </p>
-    </header>
+    </section>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {
-        solutions.map((solution, index) => {
-          const imageUrl = getSanityImageUrl(solution.mainImage);
-          return (
-            <a
-              href={`/ai/solutions/${solution.slug.current}`}
-              class="group block overflow-hidden rounded-lg border border-black/5 bg-[var(--surface)] shadow-sm transition hover:shadow-lg dark:border-white/10"
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
-            >
-              {imageUrl && (
-                <div class="relative h-48 overflow-hidden">
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">What Are Custom GPT Models?</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Custom GPT models are AI systems <strong>configured and fine-tuned</strong> to perform specific tasks. Unlike general-purpose tools, they are optimized to:
+      </p>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• Automate repetitive processes</li>
+        <li>• Provide accurate and context-aware outputs</li>
+        <li>• Support your brand’s unique communication style</li>
+        <li>• Scale with your growing needs</li>
+      </ul>
+      <p class="text-sm text-[var(--muted)]">Keywords: custom GPT models, GPT API integration, AI tools for startups.</p>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="240">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Use Cases</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        I develop <strong>GPT-based solutions</strong> that integrate directly into your workflows:
+      </p>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• <strong>Customer support:</strong> automated chat systems with brand-specific tone</li>
+        <li>• <strong>Content generation:</strong> SEO-optimized blogs, product descriptions, campaigns</li>
+        <li>• <strong>Business workflows:</strong> data handling, reporting, task automation</li>
+        <li>• <strong>Team productivity:</strong> custom assistants that streamline daily operations</li>
+      </ul>
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="280">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Why Choose a Custom Model?</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        With a personalized GPT model, you don’t just get generic AI — you get a <strong>reliable, specialized system</strong> that works for your exact needs. This means:
+      </p>
+      <ul class="space-y-2 text-[var(--muted)]">
+        <li>• Faster results</li>
+        <li>• Higher accuracy</li>
+        <li>• A tool that grows with your business</li>
+      </ul>
+    </section>
+
+    <section class="space-y-6" data-aos="fade-up" data-aos-delay="320">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Portfolio & Case Studies</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Explore GPT integrations and automation projects delivered for clients. New case studies are added regularly.
+      </p>
+
+      {solutions?.length ? (
+        <div class="grid gap-6 md:grid-cols-2">
+          {solutions.map((solution, index) => {
+            const imageUrl = getSanityImageUrl(solution.mainImage);
+            return (
+              <article
+                class="flex h-full flex-col overflow-hidden rounded-2xl border border-black/5 bg-[var(--surface)] shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10"
+                data-aos="fade-up"
+                data-aos-delay={360 + index * 60}
+              >
+                {imageUrl && (
                   <Image
                     src={imageUrl}
-                    alt={`Image for ${solution.title}`}
-                    width={600}
-                    height={400}
-                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    alt={solution.title ?? 'Custom GPT project'}
+                    width={800}
+                    height={600}
+                    class="h-auto w-full object-cover"
                   />
+                )}
+                <div class="space-y-3 p-6">
+                  <h3 class="font-head text-lg text-[var(--text)]">{solution.title}</h3>
+                  {solution.summary && <p class="text-sm text-[var(--muted)]">{solution.summary}</p>}
+                  <a href={`/ai/solutions/${solution.slug}`} class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] hover:underline">
+                    View case study
+                    <span aria-hidden="true">→</span>
+                  </a>
                 </div>
-              )}
-              <div class="p-6">
-                <h2 class="text-xl font-semibold text-[var(--text)]">{solution.title}</h2>
-                <p class="mt-2 text-sm text-[var(--muted)]">{solution.summary}</p>
-              </div>
-            </a>
-          );
-        })
-      }
-    </div>
-  </div>
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="space-y-4 text-sm text-[var(--muted)]" data-aos="fade-up" data-aos-delay="360">
+          <p>Portfolio samples are being curated. Upcoming integrations include customer support assistants, marketing co-pilots, and workflow automation bots.</p>
+        </div>
+      )}
+    </section>
+
+    <section class="space-y-6">
+      <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="160">
+        <a href="/ai" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Back to AI Solutions →</a>
+        <a href="/ai/prompt-engineering" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Prompt Engineering →</a>
+        <a href="/ai/brand-visuals" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Brand Visuals →</a>
+        <a href="/contact" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Contact Me →</a>
+      </div>
+    </section>
+
+    <section class="rounded-3xl border border-black/5 bg-[var(--surface)] p-10 text-center shadow-lg dark:border-white/10" data-aos="fade-up" data-aos-delay="400">
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        ✨ Looking for AI that truly adapts to you? Let’s build your custom GPT model today.
+      </p>
+      <a
+        href="/contact"
+        class="mt-4 inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
+      >
+        Start Your Custom GPT Project
+        <span aria-hidden="true">↗</span>
+      </a>
+    </section>
+  </main>
 </SiteLayout>

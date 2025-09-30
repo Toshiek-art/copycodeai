@@ -1,61 +1,121 @@
 ---
-// In: src/pages/work.astro
-import { sanityClient } from "../lib/sanity";
 import SiteLayout from "@core/layouts/SiteLayout.astro";
-import { Image } from "astro:assets"; // Usiamo il componente Image di Astro per ottimizzare le immagini
+import { sanityClient } from "../lib/sanity";
+import { Image } from "astro:assets";
 
-// 1. Query per prendere tutti i progetti da Sanity
-const query = `*[_type == "project" && defined(slug.current)] | order(_createdAt desc)`;
-const projects = await sanityClient.fetch(query);
-
-// Funzione helper per ottenere l'URL dell'immagine da Sanity
-function getSanityImageUrl(sanityImage: any) {
-  if (!sanityImage || !sanityImage.asset) return "";
-  const ref = sanityImage.asset._ref;
-  // Formato ref: image-projectId-dataset-widthxheight-format
-  const [_type, assetId, dimensions, format] = ref.split('-');
-  const [width, height] = dimensions.split('x').map(Number);
-  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${width}x${height}.${format}`;
-}
-
-const description = "Selezione di progetti web e UI curati per brand tech e digitali.";
 const SITE = "https://copycodeai-bki.pages.dev";
 const url = `${SITE}/work`;
+const description = "Freelance web designer portfolio featuring fast, SEO-ready websites built with Astro and Tailwind.";
+
+const projectsQuery = `
+  *[_type == "project" && defined(slug.current)] | order(_createdAt desc) {
+    title,
+    "slug": slug.current,
+    summary,
+    mainImage
+  }
+`;
+
+const projects = await sanityClient.fetch(projectsQuery);
+
+function getSanityImageUrl(image: any) {
+  const ref = image?.asset?._ref;
+  if (!ref) return "";
+  const [/*type*/, assetId, dimensions, format] = ref.split('-');
+  return `https://cdn.sanity.io/images/1avzsmsi/production/${assetId}-${dimensions}.${format}`;
+}
 ---
 
-<SiteLayout title="Web Design" description={description} url={url}>
-  <div class="container mx-auto px-4 py-12">
-    <header class="mb-10">
-      <h1 class="text-4xl font-bold">I Miei Progetti di Web Design</h1>
-      <p class="mt-2 max-w-2xl text-[var(--muted)]">
-        {description}
+<SiteLayout title="Freelance Web Designer Portfolio | SEO-Optimized Websites" description={description} url={url}>
+  <main class="mx-auto max-w-4xl px-4 py-16 space-y-12">
+    <section class="space-y-6">
+      <h1 class="font-head text-4xl font-semibold text-[var(--text)]" data-aos="fade-up">Web Design – Portfolio & Services</h1>
+      <p class="text-lg leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="120">
+        Since 2001, I have been creating websites that combine <strong>design, performance, and SEO</strong>. I use modern technologies such as <strong>Astro, Tailwind, and headless CMS</strong> to build fast, responsive, and easy-to-manage websites. Every project is tailored for <strong>startups, freelancers, and creators</strong> who want to grow their presence online.
       </p>
-    </header>
+    </section>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {
-        projects.map((project, index) => (
-          <a
-            href={`/work/${project.slug.current}`}
-            class="group block overflow-hidden rounded-lg border border-black/5 bg-[var(--surface)] transition hover:shadow-lg dark:border-white/10"
-            data-aos="fade-up"
-            data-aos-delay={index * 100}
-          >
-            <div class="relative">
-              <Image
-                src={getSanityImageUrl(project.mainImage)}
-                alt={`Anteprima del progetto ${project.title}`}
-                width={600}
-                height={400}
-                class="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-            </div>
-            <div class="p-5">
-              <h2 class="text-xl font-semibold text-[var(--text)]">{project.title}</h2>
-            </div>
-          </a>
-        ))
-      }
-    </div>
-  </div>
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">How I Work</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        A professional website must be <strong>easy to navigate, fast to load, and fully SEO-optimized</strong>. From clean code structure to user experience, I take care of every detail to deliver measurable results: <strong>more visibility, more credibility, more clients.</strong>
+      </p>
+    </section>
+
+    <section class="space-y-6" data-aos="fade-up" data-aos-delay="280">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Portfolio & Templates</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Here you can find a selection of <strong>web templates and client projects</strong> I'm developing. The gallery is constantly growing: every month I add new solutions, from <strong>SEO-optimized landing pages</strong> to full <strong>e-commerce websites</strong>.
+      </p>
+
+      {projects?.length ? (
+        <div class="grid gap-6 md:grid-cols-2">
+          {projects.map((project, index) => {
+            const imageUrl = getSanityImageUrl(project.mainImage);
+            return (
+              <article
+                class="flex h-full flex-col overflow-hidden rounded-2xl border border-black/5 bg-[var(--surface)] shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10"
+                data-aos="fade-up"
+                data-aos-delay={320 + index * 80}
+              >
+                {imageUrl && (
+                  <Image
+                    src={imageUrl}
+                    alt={project.title ?? 'Web project preview'}
+                    width={800}
+                    height={600}
+                    class="h-auto w-full object-cover"
+                  />
+                )}
+                <div class="space-y-3 p-6">
+                  <h3 class="font-head text-lg text-[var(--text)]">{project.title}</h3>
+                  {project.summary && <p class="text-sm text-[var(--muted)]">{project.summary}</p>}
+                  <a href={`/work/${project.slug}`} class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent)] hover:underline">
+                    View project
+                    <span aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="space-y-4" data-aos="fade-up" data-aos-delay="320">
+          <p class="text-sm text-[var(--muted)]">
+            The gallery is being curated. Upcoming templates include:
+          </p>
+          <ul class="space-y-2 text-sm text-[var(--muted)]">
+            <li>• SaaS startup landing page (Astro + Tailwind, SEO-optimized)</li>
+            <li>• Freelancer portfolio (minimal, responsive)</li>
+            <li>• E-commerce template (UX optimized for conversions)</li>
+          </ul>
+        </div>
+      )}
+    </section>
+
+    <section class="space-y-4" data-aos="fade-up" data-aos-delay="240">
+      <h2 class="text-2xl font-semibold text-[var(--text)]">Why Choose a Freelancer</h2>
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        Working with a <strong>freelance web designer</strong> means having a direct partner — without hidden costs or the bureaucracy of large agencies. It means faster delivery, clear communication, and tailor-made solutions. My priorities are <strong>transparency, efficiency, and creativity</strong>, ensuring your website truly reflects your identity and goals.
+      </p>
+      <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="160">
+        <a href="/" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Back to Home →</a>
+        <a href="/ai" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Explore Services →</a>
+        <a href="/contact" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">Contact Me →</a>
+      </div>      
+    </section>
+    
+    <section class="rounded-3xl border border-black/5 bg-[var(--surface)] p-10 text-center shadow-lg dark:border-white/10" data-aos="fade-up" data-aos-delay="400">
+      <p class="text-lg leading-relaxed text-[var(--muted)]">
+        ✨ Need a fast, modern, and SEO-optimized website for your project? Contact me today.
+      </p>
+      <a
+        href="/contact"
+        class="mt-4 inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
+      >
+        Book a Call
+        <span aria-hidden="true">↗</span>
+      </a>
+    </section>
+  </main>
 </SiteLayout>

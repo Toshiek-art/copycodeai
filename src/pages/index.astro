@@ -6,21 +6,33 @@ import { sanityClient } from "../lib/sanity";
 
 const SITE = "https://copycodeai-bki.pages.dev";
 const url = SITE;
-const description = "Strategic copywriting, fast web builds, and bespoke AI systems for digital-first teams.";
+const description = "Copywriting, web development, and AI solutions for startups and freelancers who want to move fast.";
 
 const services = [
   {
-    title: "Copywriting",
-    body: "Naming, storytelling, long-form articles, and UX writing that give products and brands a clear voice.",
+    title: "Copywriting & Content Writing",
+    bullets: [
+      'Naming, storytelling, and SEO-ready texts',
+      'Articles and portfolio pieces to strengthen your brand',
+      'Weekly updates with fresh content',
+    ],
   },
   {
     title: "Web Development",
-    body: "Design-to-code delivery with Astro and Tailwind, headless CMS integrations, and performance-first shipping.",
+    bullets: [
+      'Fast websites built with Astro + Tailwind',
+      'Custom, responsive layouts',
+      'Technical SEO optimization',
+    ],
   },
   {
     title: "AI Solutions",
-    body: "Advanced prompting, custom GPTs, brand assistants, and AI-generated visuals to extend your workflows.",
-  }
+    bullets: [
+      'Custom-built assistants and tools',
+      'Generative visuals for marketing',
+      'Automations that save time',
+    ],
+  },
 ];
 
 const postsQuery = `
@@ -52,12 +64,12 @@ const formatDate = (value?: string) => value ? new Date(value).toLocaleDateStrin
     <section class="flex flex-col gap-6 text-center md:gap-8">
       <div class="space-y-4">
         <p class="font-sans text-sm uppercase tracking-[0.3em] text-[var(--muted)]">Copywriting · Web · AI</p>
-        <h1 class="font-head text-4xl font-semibold text-[var(--text)] md:text-6xl">Ideas that ship, copy that converts, AI that scales.</h1>
+        <h1 class="font-head text-4xl font-semibold text-[var(--text)] md:text-6xl">Copywriting, Web & AI Solutions for Startups and Freelancers</h1>
         <p
           class="mx-auto max-w-2xl text-lg text-[var(--muted)]"
           data-aos="fade-up"
         >
-          Editorial strategy, high-performance sites, and bespoke AI systems to help digital brands and creators scale with clarity.
+          Powerful copy, fast websites, and smart tools to grow your project online — without agency costs.
         </p>
       </div>
       <div
@@ -66,47 +78,61 @@ const formatDate = (value?: string) => value ? new Date(value).toLocaleDateStrin
         data-aos-delay="120"
       >
         <a
-          href="/writing"
+          href="/contact"
           class="inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
         >
-          Explore writing
-          <span aria-hidden="true">→</span>
+          Start Your Project
+          <span aria-hidden="true">↗</span>
         </a>
         <a
-          href="/contact"
+          href="#services"
           class="inline-flex items-center gap-2 rounded-lg border border-black/5 bg-[var(--surface)] px-6 py-3 font-semibold text-[var(--text)] shadow-sm transition hover:shadow-lg dark:border-white/10"
         >
-          Contact me
-          <span aria-hidden="true">↗</span>
+          Explore Services
+          <span aria-hidden="true">→</span>
         </a>
       </div>
     </section>
 
     <section class="mx-auto max-w-3xl space-y-4 text-center">
-      <p class="text-lg text-[var(--muted)]">
-        From copy to low-code prototyping, I connect words, code, and AI so teams can launch faster without sacrificing quality.
-      </p>
-      <p class="text-lg text-[var(--muted)]">
-        I work with freelancers, startups, and marketing teams to build measurable digital experiences.
+      <h2 class="font-head text-3xl text-[var(--text)]" data-aos="fade-up">A freelancer with the vision of a team.</h2>
+      <p class="text-lg text-[var(--muted)]" data-aos="fade-up" data-aos-delay="100">
+        I'm an independent professional: no bureaucracy, no inflated costs. Just tailored solutions for those who want to move fast with clear content, responsive websites, and intelligent strategies.
       </p>
     </section>
 
-    <section class="space-y-8">
+    <section class="space-y-8" id="services">
       <header>
-        <h2 class="font-head text-3xl text-[var(--text)]">Core services</h2>
-        <p class="mt-2 max-w-2xl text-[var(--muted)]">Message architecture, web systems, and AI automations — aligned around your editorial and product goals.</p>
+        <h2 class="font-head text-3xl text-[var(--text)]" data-aos="fade-up">What I can do for you</h2>
+        <p class="mt-2 max-w-2xl text-[var(--muted)]" data-aos="fade-up" data-aos-delay="100">Copywriting, development, and AI support aligned with what matters most: measurable growth without agency overhead.</p>
       </header>
       <div class="grid gap-6 md:grid-cols-3">
         {services.map((service, index) => (
           <article
-            class="rounded-2xl border border-black/5 bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10"
+            class="flex h-full flex-col gap-4 rounded-2xl border border-black/5 bg-[var(--surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10"
             data-aos="fade-up"
             data-aos-delay={index * 120}
           >
             <h3 class="font-head text-xl text-[var(--text)]">{service.title}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-[var(--muted)]">{service.body}</p>
+            <ul class="space-y-2 text-sm text-[var(--muted)]">
+              {service.bullets.map((item) => (
+                <li class="flex items-start gap-2">
+                  <span aria-hidden="true" class="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-[var(--accent)]"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </article>
         ))}
+      </div>
+      <div class="flex justify-center" data-aos="fade-up" data-aos-delay={(services.length * 120) + 120}>
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-2 rounded-lg border border-[var(--accent)] px-6 py-3 font-semibold text-[var(--accent)] transition hover:bg-[var(--accent)] hover:text-white"
+        >
+          Explore Services
+          <span aria-hidden="true">→</span>
+        </a>
       </div>
     </section>
 
@@ -147,13 +173,12 @@ const formatDate = (value?: string) => value ? new Date(value).toLocaleDateStrin
 
     <section class="grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-center">
       <div class="space-y-4">
-        <h2 class="font-head text-3xl text-[var(--text)]">Hello</h2>
-        <p class="text-lg text-[var(--muted)]">
-          I’m Aldo — a copywriter, developer, and AI specialist. With CopyCodeAI, I bring together words, code, and generative systems to turn ideas into scalable products and content.
+        <h2 class="font-head text-3xl text-[var(--text)]" data-aos="fade-up">Startups, Freelancers & Creators</h2>
+        <p class="text-lg text-[var(--muted)]" data-aos="fade-up" data-aos-delay="100">
+          Whether you're launching a startup, building your personal brand, or working as a freelancer, you need a website and content that speak for you. I help you develop them clearly, quickly, and without agency costs.
         </p>
-        <p class="text-[var(--muted)]">I collaborate with freelancers, startups, and corporate teams on strategic copy, web prototypes, and AI assistants.</p>
-        <a href="/hello" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">
-          Learn more
+        <a href="/hello" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline" data-aos="fade-up" data-aos-delay="200">
+          Discover how I work
           <span aria-hidden="true">→</span>
         </a>
       </div>
@@ -161,25 +186,22 @@ const formatDate = (value?: string) => value ? new Date(value).toLocaleDateStrin
         class="rounded-2xl border border-black/5 bg-[var(--surface)] p-6 shadow-sm dark:border-white/10"
         data-aos="fade-up"
       >
-        <p class="text-sm leading-relaxed text-[var(--muted)]">
-          "My mission is to make AI tools practical, creative, and accessible — so projects grow with innovation and clarity."
+        <p class="text-sm leading-relaxed text-[var(--muted)]" data-aos="fade-up" data-aos-delay="120">
+          "From first draft to final deployment, I stay close to your project so messaging, design, and automation move in sync."
         </p>
       </div>
     </section>
 
     <section class="rounded-3xl border border-black/5 bg-[var(--surface)] p-10 text-center shadow-lg dark:border-white/10" data-aos="fade-up">
-      <h2 class="font-head text-3xl text-[var(--text)]">Ready to build something together?</h2>
-      <p class="mt-3 text-[var(--muted)]">Let’s move your idea to the next phase with strategic copy, Astro development, and tailored AI systems.</p>
-      <div class="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <h2 class="font-head text-3xl text-[var(--text)]" data-aos="fade-up">Ready to grow your project?</h2>
+      <p class="mt-3 text-[var(--muted)]" data-aos="fade-up" data-aos-delay="100">Let's build copy, websites, and AI systems that keep your momentum going.</p>
+      <div class="mt-6 flex flex-col items-center justify-center" data-aos="fade-up" data-aos-delay="200">
         <a
           href="/contact"
           class="inline-flex items-center gap-2 rounded-lg bg-[var(--text)] px-6 py-3 font-semibold text-[var(--bg)] transition hover:opacity-90"
         >
-          Contact me
+          Contact Me Today
           <span aria-hidden="true">↗</span>
-        </a>
-        <a href="/work" class="inline-flex items-center gap-2 font-semibold text-[var(--accent)] hover:underline">
-          View recent work →
         </a>
       </div>
     </section>
