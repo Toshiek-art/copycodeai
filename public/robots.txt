@@ -1,9 +1,6 @@
 # Basic crawl directives
 User-agent: *
-Allow: /
-
-# Crawl metadata for external tools
-# Content-Signal: search=yes, ai-train=no
+Disallow:
 
 # Discovery
-Sitemap: https://copycodeai-bki.pages.dev/sitemap.xml
+Sitemap: https://copycodeai.online/sitemap.xml
