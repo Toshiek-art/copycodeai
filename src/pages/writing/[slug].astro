@@ -1,21 +1,14 @@
 ---
 // In: src/pages/writing/[slug].astro
-export const prerender = true;
+export const prerender = false;
 
 import { sanityClient } from "../../lib/sanity";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { PortableText } from "astro-portabletext";
 
-// 1) Generiamo gli slug a build-time
-export async function getStaticPaths() {
-  const query = `*[_type == "post" && defined(slug.current)]{"slug": slug.current}`;
-  const posts = await sanityClient.fetch(query);
-  return posts.map((post) => ({ params: { slug: post.slug } }));
-}
-
 const { slug } = Astro.params;
 
-// 2) Dati del singolo post (+ excerpt e mainImage opzionale)
+// Dati del singolo post (+ excerpt e mainImage opzionale)
 const singlePostQuery = `*[_type == "post" && slug.current == $slug][0]{
   title,
   body,
