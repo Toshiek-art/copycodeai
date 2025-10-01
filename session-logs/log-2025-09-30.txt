@@ -1,0 +1,10 @@
+Session: 2025-09-30 17:08:02 EEST
+
+Updates completed:
+- Contact page: added responsive layout pairing the contact form with CopyCodeAI illustration, ensured dark-theme friendly styling.
+- Corrected SVG path casing to display image.
+- Created robots.txt with crawl directives and sitemap reference.
+- Adjusted robots.txt to keep Content-Signal metadata as a comment so crawlers ignore it.
+
+Pending follow-up:
+- Redeploy site so Lighthouse sees the updated robots.txt (current audit still reports the old directive).

@@ -112,10 +112,12 @@ const navLinks = [...baseLinks, adminLinks];
   <div class="w-full py-3 text-center font-sans">
     {navLinks.map(link => (
       !link.isDropdown ? (
-        <a href={link.href} class="block py-3 hover:text-[var(--accent)]">{link.text}</a>
+        <a href={link.href}
+           class="block py-3 text-lg font-medium hover:text-[var(--accent)]">{link.text}</a>
       ) : (
-        <div class="py-3">
-          <a href={link.href} class="font-bold hover:text-[var(--accent)]">{link.text}</a>
+        <div>
+          <a href={link.href}
+             class="block py-3 text-lg font-medium hover:text-[var(--accent)]">{link.text}</a>
           <div class="flex flex-col items-center mt-2">
             {link.subLinks?.map(subLink => (
               <a href={subLink.href}
