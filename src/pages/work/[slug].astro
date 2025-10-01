@@ -30,16 +30,38 @@ const SITE = "https://copycodeai-bki.pages.dev";
 const fallbackDescription = "Case studies built with a mix of systemic design and persuasive copywriting.";
 
 // Query per i dati del singolo progetto
-const singleProjectQuery = `*[_type == "project" && slug.current == $slug][0]`;
+const singleProjectQuery = `*[_type == "project" && slug.current == $slug][0]{
+  title,
+  subtitle,
+  seoTitle,
+  seoDescription,
+  overview,
+  summary,
+  description,
+  mainImage,
+  mobileImage,
+  ogImage,
+  projectUrl,
+  "excerpt": pt::text(description)[0..160],
+}`;
 const project = await sanityClient.fetch(singleProjectQuery, { slug });
 
 if (!project) return Astro.redirect("/404");
 
 const url = `${SITE}/work/${slug}`;
-const description = project?.excerpt ?? project?.overview ?? fallbackDescription;
+const metaTitle = project?.seoTitle?.trim() || project.title;
+const metaDescription =
+  project?.seoDescription?.trim() ||
+  project?.excerpt?.trim() ||
+  project?.summary?.trim() ||
+  project?.overview?.trim() ||
+  project?.subtitle?.trim() ||
+  fallbackDescription;
+const ogImageSource = project?.ogImage ?? project?.mainImage;
+const ogImage = ogImageSource ? getSanityImageUrl(ogImageSource) || undefined : undefined;
 ---
 
-<SiteLayout title={project.title} description={description} url={url}>
+<SiteLayout title={metaTitle} description={metaDescription} url={url} ogImage={ogImage}>
   <div class="container mx-auto px-4 py-12">
     <nav class="mb-6" data-aos="fade-right">
       <a href="/work" class="text-blue-600 hover:underline">← Back to Projects</a>

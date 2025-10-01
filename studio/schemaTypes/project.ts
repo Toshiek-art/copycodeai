@@ -21,6 +21,20 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      name: 'seoTitle',
+      title: 'SEO Title',
+      type: 'string',
+      description: 'Titolo alternativo per i meta tag (max ~60 caratteri).',
+    },
+    {
+      name: 'seoDescription',
+      title: 'SEO Description',
+      type: 'text',
+      rows: 3,
+      description: 'Riassunto per meta description e social preview (max ~160 caratteri).',
+      validation: (Rule: any) => Rule.max(200),
+    },
+    {
       name: 'description',
       title: 'Descrizione del Progetto',
       type: 'blockContent', // Riutilizziamo lo stesso tipo del blog!
@@ -42,6 +56,15 @@ export default {
       },
     },
     {
+      name: 'ogImage',
+      title: 'Open Graph Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      description: 'Immagine per anteprima social (altrimenti usa quella principale).',
+    },
+    {
       name: 'projectUrl',
       title: 'URL del Sito Demo',
       type: 'url',
@@ -54,4 +77,3 @@ export default {
     },
   },
 }
-
