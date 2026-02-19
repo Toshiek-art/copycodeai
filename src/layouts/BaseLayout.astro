@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  metaRefresh?: string;
+}
+
+const {
+  title = 'CopyCodeAI | GDPR & EAA-aligned AI Systems for Tallinn Startups',
+  description = 'CopyCodeAI builds scalable AI systems for Tallinn startups with privacy-aware data flows and accessibility-ready UX.',
+  canonical,
+  ogTitle = title,
+  ogDescription = description,
+  metaRefresh
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {metaRefresh && <meta http-equiv="refresh" content={metaRefresh} />}
+    <title>{title}</title>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <slot />
+  </body>
+</html>
