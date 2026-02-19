@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
+const briefHref =
+  'mailto:hello@copycodeai.online?subject=' + encodeURIComponent('Compliance-Ready Landing Request');
+---
+
+<BaseLayout
+  title="Compliance-Ready Landing Page | CopyCodeAI"
+  description="Launch-ready landing page for European startups: GDPR-aware data flow and EAA/WCAG-aware UX. Fixed scope. Typical delivery 3–5 days."
+  canonical="https://copycodeai.online/compliance-ready-landing"
+  ogTitle="Compliance-Ready Landing Page | CopyCodeAI"
+  ogDescription="Launch-ready landing page for European startups: GDPR-aware data flow and EAA/WCAG-aware UX. Fixed scope. Typical delivery 3–5 days."
+>
+  <Navbar active="services" />
+
+  <main id="main-content">
+    <section class="mx-auto max-w-6xl px-6 py-14 sm:px-8 lg:px-12" aria-labelledby="landing-hero-title">
+      <h1 id="landing-hero-title" class="text-4xl font-bold text-ink-900 sm:text-5xl">Compliance-Ready Landing Page</h1>
+      <p class="mt-4 max-w-3xl text-lg text-slate-700">
+        Launch-ready website structure for European startups — GDPR-aware data flow + EAA/WCAG-aware UX. Not legal advice.
+      </p>
+      <p class="mt-4 text-lg font-semibold text-slate-900">From €750</p>
+      <p class="mt-1 text-sm text-slate-600">Typical delivery: 3-5 days</p>
+
+      <div class="mt-7 flex flex-col gap-4 sm:flex-row">
+        <a
+          href={schedulingLink}
+          class="inline-flex items-center justify-center rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+        >
+          Start with a 15-min Technical Assessment
+        </a>
+        <a
+          href={briefHref}
+          class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+        >
+          Send a Brief
+        </a>
+      </div>
+    </section>
+
+    <section class="bg-white py-14" aria-label="Scope">
+      <div class="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
+        <div class="mb-8 mt-10 rounded-xl border border-emerald-200 bg-emerald-50 p-4 sm:p-5" data-offer-key="tallinn_landing_2026">
+          <p class="text-sm font-semibold text-emerald-900" data-offer="price">Tallinn Launch Offer: EUR 650 (limited slots)</p>
+          <p class="mt-1 text-xs text-emerald-800" data-offer="deadline">First 5 Tallinn startups · Ends 31 Mar 2026 (EET)</p>
+          <p class="mt-1 text-xs font-medium text-emerald-900" data-offer="slots" aria-live="polite">Slots left: 5</p>
+          <p class="mt-1 text-xs text-slate-600" data-offer="active">For Tallinn-based startups only.</p>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+          <article class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" aria-labelledby="what-you-get-title">
+            <h2 id="what-you-get-title" class="mb-4 text-3xl font-semibold text-ink-900">What you get</h2>
+            <ul class="max-w-3xl list-disc space-y-2 pl-5 text-slate-700">
+              <li>Landing page build (Astro + Tailwind) or implementation on your existing stack</li>
+              <li>Forms + structured data routing (minimization and traceable touchpoints)</li>
+              <li>Consent/cookie wiring (technical integration)</li>
+              <li>Accessibility readiness pass (keyboard, focus, headings, labels)</li>
+              <li>Performance baseline pass (images, fonts, caching basics)</li>
+              <li>Privacy-aware analytics setup (only if requested)</li>
+              <li>Deployment + handoff notes</li>
+              <li>Small post-delivery fixes window (7 days)</li>
+            </ul>
+          </article>
+
+          <article class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" aria-labelledby="not-included-title">
+            <h2 id="not-included-title" class="mb-4 text-3xl font-semibold text-ink-900">What this is not</h2>
+            <ul class="max-w-3xl list-disc space-y-2 pl-5 text-slate-700">
+              <li>Not legal compliance advice</li>
+              <li>Not a WCAG/EAA certification</li>
+              <li>Not full brand design</li>
+              <li>Not growth marketing</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-slate-50 py-14" aria-label="How and FAQ">
+      <div class="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
+        <section class="pb-6 md:pb-8" aria-labelledby="process-title">
+          <h2 id="process-title" class="mb-6 text-3xl font-semibold text-ink-900">Process</h2>
+          <ol class="grid gap-5 md:grid-cols-3">
+            <li class="rounded-xl border border-slate-200 bg-white p-6 shadow-soft">
+              <p class="text-sm font-semibold uppercase tracking-wide text-slate-700">1. Quick Technical Review (15 min)</p>
+            </li>
+            <li class="rounded-xl border border-slate-200 bg-white p-6 shadow-soft">
+              <p class="text-sm font-semibold uppercase tracking-wide text-slate-700">2. Fixed Scope & Delivery Window (3-5 days)</p>
+            </li>
+            <li class="rounded-xl border border-slate-200 bg-white p-6 shadow-soft">
+              <p class="text-sm font-semibold uppercase tracking-wide text-slate-700">3. Implementation & Handoff</p>
+            </li>
+          </ol>
+        </section>
+
+        <div class="mt-14 border-t border-slate-200/60 pt-10 md:mt-16"></div>
+
+        <section aria-labelledby="faq-title" class="scroll-mt-24">
+          <h2 id="faq-title" class="mb-2 text-3xl font-semibold text-ink-900">FAQ</h2>
+          <p class="mb-6 text-sm text-slate-600">Quick answers on scope, compliance boundaries, and delivery.</p>
+
+          <div class="space-y-3">
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Is this GDPR compliance?</summary>
+              <p class="pt-3 text-sm text-slate-600">This is structural engineering aligned with GDPR principles. It is not legal advice.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Do you provide an Accessibility Statement?</summary>
+              <p class="pt-3 text-sm text-slate-600">I provide a technical summary and implementation notes. Official responsibility remains with your company.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">What’s included in “EAA/WCAG-aware UX”?</summary>
+              <p class="pt-3 text-sm text-slate-600">Keyboard, focus, semantics, forms, and contrast readiness checks are included. This is not a certification.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Can you work with my existing site?</summary>
+              <p class="pt-3 text-sm text-slate-600">Yes. Scope and timeline depend on your current stack and implementation quality.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Do you implement cookies and analytics?</summary>
+              <p class="pt-3 text-sm text-slate-600">Yes, when needed. Otherwise the setup stays minimal.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Do you build the design too?</summary>
+              <p class="pt-3 text-sm text-slate-600">I can deliver a clean startup layout or implement your provided Figma design.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">What do you need from us to start?</summary>
+              <p class="pt-3 text-sm text-slate-600">A one-liner about your product, target audience, CTA goal, brand assets, and policy links.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Can you add AI to the landing?</summary>
+              <p class="pt-3 text-sm text-slate-600">Yes, only when it improves conversion or reduces manual work.</p>
+            </details>
+          </div>
+        </section>
+
+        <section class="mt-12 md:mt-16" aria-labelledby="final-cta-title">
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm md:p-10">
+            <h2 id="final-cta-title" class="text-2xl font-semibold text-ink-900">Ready to launch with a compliant structure?</h2>
+            <div class="mt-5 flex flex-col gap-4 sm:flex-row">
+              <a
+                href={schedulingLink}
+                class="inline-flex items-center justify-center rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+              >
+                Start with a 15-min Technical Assessment
+              </a>
+              <a
+                href={briefHref}
+                class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+              >
+                Send a Brief
+              </a>
+            </div>
+            <p class="mt-3 text-sm text-slate-600">Written summary after the call.</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
