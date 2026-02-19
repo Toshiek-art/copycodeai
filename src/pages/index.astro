@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import EntryOffer from '../components/EntryOffer.astro';
+import FastLaunchEngineering from '../components/FastLaunchEngineering.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import MiniScenarios from '../components/MiniScenarios.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="CopyCodeAI | AI Systems for Tallinn Startups"
+  description="AI systems built to scale for Tallinn startups, aligned with GDPR and EAA through implementation-first engineering."
+  canonical="https://copycodeai.online/"
+>
+  <Navbar active="home" />
+
+  <main id="main-content">
+    <Hero />
+    <EntryOffer />
+    <FastLaunchEngineering />
+    <HowItWorks />
+    <MiniScenarios />
+  </main>
+
+  <Footer />
+</BaseLayout>

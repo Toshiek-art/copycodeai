@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import ServiceCards from '../components/ServiceCards.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Services | CopyCodeAI"
+  description="Explore CopyCodeAI launch-first services: compliance-ready landing pages, AI feature integration, and EAA structural hardening."
+  canonical="https://copycodeai.online/services"
+>
+  <Navbar active="services" />
+
+  <main id="main-content">
+    <section class="mx-auto max-w-6xl px-6 py-14 sm:px-8 lg:px-12" aria-labelledby="services-page-title">
+      <h1 id="services-page-title" class="text-4xl font-bold text-ink-900">Services</h1>
+      <p class="mt-4 max-w-3xl text-lg text-slate-700">
+        Launch-first engineering tracks for early-stage European startups that need fixed scope, clear delivery windows, and compliance-aware implementation.
+      </p>
+      <p class="mt-2 text-sm text-slate-600">Scope note: technical implementation guidance only. No legal advice is provided.</p>
+    </section>
+
+    <ServiceCards
+      heading="Fast Launch Offers"
+      intro="Choose the intervention that fits your current stage: launch, automation, or accessibility hardening."
+    />
+
+    <section class="mx-auto max-w-6xl px-6 pb-16 sm:px-8 lg:px-12" aria-labelledby="detailed-offers-title">
+      <h2 id="detailed-offers-title" class="text-3xl font-semibold text-ink-900">Detailed Scope and Boundaries</h2>
+
+      <div class="mt-8 grid gap-6">
+        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+          <h3 class="text-2xl font-semibold text-slate-900">A) Compliance-Ready Landing Page</h3>
+          <p class="mt-2 text-slate-700">Launch-ready landing or MVP implementation with GDPR-aware structure and EAA/WCAG-aware UX foundations.</p>
+          <h4 class="mt-4 text-sm font-semibold uppercase tracking-wide text-slate-700">What you get</h4>
+          <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+            <li>Form and data-routing structure with traceable touchpoints.</li>
+            <li>Accessibility readiness pass for core user flows.</li>
+            <li>Deployment and handoff notes for immediate use.</li>
+          </ul>
+          <h4 class="mt-4 text-sm font-semibold uppercase tracking-wide text-slate-700">Boundaries</h4>
+          <p class="mt-2 text-sm text-slate-600">Technical implementation and structural readiness only; not legal advice or certification.</p>
+        </article>
+
+        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+          <h3 class="text-2xl font-semibold text-slate-900">B) AI Feature Integration</h3>
+          <p class="mt-2 text-slate-700">Structured automation workflows for onboarding, support, and internal operations when manual handling becomes a bottleneck.</p>
+          <h4 class="mt-4 text-sm font-semibold uppercase tracking-wide text-slate-700">What you get</h4>
+          <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+            <li>Workflow definition from input to output, with clear boundaries.</li>
+            <li>Implementation notes for integration, guardrails, and validation.</li>
+            <li>Operational handoff notes for startup teams.</li>
+          </ul>
+          <h4 class="mt-4 text-sm font-semibold uppercase tracking-wide text-slate-700">Boundaries</h4>
+          <p class="mt-2 text-sm text-slate-600">Fixed-scope feature integration only; not model training or full-platform rebuilds.</p>
+        </article>
+
+        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+          <h3 class="text-2xl font-semibold text-slate-900">C) EAA Structural Hardening</h3>
+          <p class="mt-2 text-slate-700">Structural accessibility corrections aligned with EAA / WCAG for critical user journeys before growth phases.</p>
+          <h4 class="mt-4 text-sm font-semibold uppercase tracking-wide text-slate-700">What you get</h4>
+          <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+            <li>Prioritized fix list for structural accessibility issues.</li>
+            <li>Code-level adjustments for semantics, focus, and interaction patterns.</li>
+            <li>Retest notes and handoff documentation.</li>
+          </ul>
+          <h4 class="mt-4 text-sm font-semibold uppercase tracking-wide text-slate-700">Boundaries</h4>
+          <p class="mt-2 text-sm text-slate-600">Technical accessibility hardening only; not legal consulting and not certification.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
+const briefHref =
+  'mailto:hello@copycodeai.online?subject=' + encodeURIComponent('AI Feature Integration Request');
+---
+
+<BaseLayout
+  title="AI Feature Integration | CopyCodeAI"
+  description="Structured automation workflows with safe data handling: support, onboarding, routing, and internal ops. Typical delivery 5–7 days."
+  canonical="https://copycodeai.online/ai-feature-integration"
+  ogTitle="AI Feature Integration | CopyCodeAI"
+  ogDescription="Structured automation workflows with safe data handling: support, onboarding, routing, and internal ops. Typical delivery 5–7 days."
+>
+  <Navbar active="services" />
+
+  <main id="main-content">
+    <section class="mx-auto max-w-6xl px-6 py-14 sm:px-8 lg:px-12" aria-labelledby="ai-hero-title">
+      <h1 id="ai-hero-title" class="text-4xl font-bold text-ink-900 sm:text-5xl">AI Feature Integration</h1>
+      <p class="mt-4 max-w-3xl text-lg text-slate-700">
+        Structured automation workflows with safe data handling — built for real operations, not demos.
+      </p>
+      <p class="mt-4 text-lg font-semibold text-slate-900">From €900</p>
+      <p class="mt-1 text-sm text-slate-600">Typical delivery: 5-7 days</p>
+
+      <div class="mt-7 flex flex-col gap-4 sm:flex-row">
+        <a
+          href={schedulingLink}
+          class="inline-flex items-center justify-center rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+        >
+          Start with a 15-min Technical Assessment
+        </a>
+        <a
+          href={briefHref}
+          class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+        >
+          Send a Brief
+        </a>
+      </div>
+    </section>
+
+    <section class="bg-white py-14" aria-label="Scope">
+      <div class="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12 space-y-12">
+        <section aria-labelledby="what-you-get-title">
+          <h2 id="what-you-get-title" class="mb-4 text-3xl font-semibold text-ink-900">What you get</h2>
+          <ul class="max-w-3xl list-disc space-y-2 pl-5 text-slate-700">
+            <li>Automation workflow design (inputs → logic → outputs)</li>
+            <li>LLM integration where it reduces manual work (not for hype)</li>
+            <li>Prompt structure + guardrails aligned with your use-case</li>
+            <li>Backend wiring (API routes, webhooks, queues if needed)</li>
+            <li>Data handling boundaries (minimization + traceable touchpoints)</li>
+            <li>Basic monitoring hooks (errors + usage signals)</li>
+            <li>Handoff notes + runbook for your team</li>
+            <li>Optional: small UI integration (e.g., support widget / internal tool panel) if in scope</li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="not-included-title">
+          <h2 id="not-included-title" class="mb-4 text-3xl font-semibold text-ink-900">What this is not</h2>
+          <ul class="max-w-3xl list-disc space-y-2 pl-5 text-slate-700">
+            <li>Not an AI research project</li>
+            <li>Not a full platform rebuild</li>
+            <li>Not model training</li>
+            <li>Not uncontrolled personal-data processing</li>
+          </ul>
+        </section>
+      </div>
+    </section>
+
+    <section class="bg-slate-50 py-14" aria-label="How and FAQ">
+      <div class="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
+        <section class="pb-6 md:pb-8" aria-labelledby="process-title">
+          <h2 id="process-title" class="mb-6 text-3xl font-semibold text-ink-900">Process</h2>
+          <ol class="grid gap-5 md:grid-cols-3">
+            <li class="rounded-xl border border-slate-200 bg-white p-6 shadow-soft">
+              <p class="text-sm font-semibold uppercase tracking-wide text-slate-700">1. Quick Technical Review (15 min)</p>
+            </li>
+            <li class="rounded-xl border border-slate-200 bg-white p-6 shadow-soft">
+              <p class="text-sm font-semibold uppercase tracking-wide text-slate-700">2. Fixed Scope & Delivery Window (5-7 days)</p>
+            </li>
+            <li class="rounded-xl border border-slate-200 bg-white p-6 shadow-soft">
+              <p class="text-sm font-semibold uppercase tracking-wide text-slate-700">3. Integration, Validation & Handoff</p>
+            </li>
+          </ol>
+        </section>
+
+        <div class="mt-14 border-t border-slate-200/60 pt-10 md:mt-16"></div>
+
+        <section aria-labelledby="faq-title" class="scroll-mt-24">
+          <h2 id="faq-title" class="mb-2 text-3xl font-semibold text-ink-900">FAQ</h2>
+          <p class="mb-6 text-sm text-slate-600">Quick answers on scope, compliance boundaries, and delivery.</p>
+
+          <div class="space-y-3">
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Do you build chatbots?</summary>
+              <p class="pt-3 text-sm text-slate-600">Only when it solves a real workflow. The focus is automation, not demos.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">What platforms do you integrate with?</summary>
+              <p class="pt-3 text-sm text-slate-600">Scope-dependent. Typical integrations include email, helpdesk, CRM, internal tools, and APIs.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">How do you handle personal data?</summary>
+              <p class="pt-3 text-sm text-slate-600">By minimizing data and defining clear boundaries aligned with GDPR principles. Not legal advice.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Do you host the AI?</summary>
+              <p class="pt-3 text-sm text-slate-600">It depends on your stack. I can integrate with provider-hosted services or your infrastructure.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">What do you need from us?</summary>
+              <p class="pt-3 text-sm text-slate-600">Workflow description, inputs/outputs, tools, access, and technical constraints.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Can this start without high volume?</summary>
+              <p class="pt-3 text-sm text-slate-600">Yes. We prioritize highest-leverage automation first and keep scope lean.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">What about reliability?</summary>
+              <p class="pt-3 text-sm text-slate-600">Guardrails, validation, and fallback behavior are implemented where needed.</p>
+            </details>
+
+            <details class="border-b border-slate-200/70 py-3">
+              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">How is scope fixed?</summary>
+              <p class="pt-3 text-sm text-slate-600">By agreeing specific workflow(s) and deliverables within the delivery window.</p>
+            </details>
+          </div>
+        </section>
+
+        <section class="mt-12 md:mt-16" aria-labelledby="final-cta-title">
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm md:p-10">
+            <h2 id="final-cta-title" class="text-2xl font-semibold text-ink-900">Ready to automate the work that slows you down?</h2>
+            <div class="mt-5 flex flex-col gap-4 sm:flex-row">
+              <a
+                href={schedulingLink}
+                class="inline-flex items-center justify-center rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+              >
+                Start with a 15-min Technical Assessment
+              </a>
+              <a
+                href={briefHref}
+                class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+              >
+                Send a Brief
+              </a>
+            </div>
+            <p class="mt-3 text-sm text-slate-600">Written summary after the call.</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

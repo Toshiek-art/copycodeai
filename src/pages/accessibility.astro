@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Accessibility Statement | CopyCodeAI"
+  description="Accessibility Statement for copycodeai.online."
+  canonical="https://copycodeai.online/accessibility"
+  ogTitle="Accessibility Statement | CopyCodeAI"
+  ogDescription="Accessibility Statement for copycodeai.online."
+>
+  <Navbar />
+
+  <main id="main-content">
+    <section class="mx-auto max-w-4xl px-6 py-14 sm:px-8 lg:px-12" aria-labelledby="accessibility-title">
+      <h1 id="accessibility-title" class="text-4xl font-bold text-ink-900">Accessibility Statement</h1>
+      <p class="mt-3 text-sm text-slate-600">Last updated: February 19, 2026</p>
+      <p class="mt-6 text-slate-700">
+        CopyCodeAI is committed to providing a website that is accessible and usable for as many people as possible, including users relying on assistive technologies.
+      </p>
+    </section>
+
+    <section class="mx-auto max-w-4xl px-6 pb-16 sm:px-8 lg:px-12">
+      <div class="space-y-10 text-slate-700">
+        <section aria-labelledby="approach">
+          <h2 id="approach" class="text-2xl font-semibold text-ink-900">1. Accessibility Approach</h2>
+          <p class="mt-3">
+            This website is built with semantic HTML, minimal JavaScript, and structured navigation to reduce accessibility barriers.
+            We aim to align with the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA principles.
+          </p>
+        </section>
+
+        <section aria-labelledby="status">
+          <h2 id="status" class="text-2xl font-semibold text-ink-900">2. Current Status</h2>
+          <p class="mt-3">
+            As of the last update, this website has been reviewed using a self-assessment for:
+          </p>
+          <ul class="mt-3 list-disc space-y-2 pl-5">
+            <li>semantic structure (headings, landmarks)</li>
+            <li>keyboard navigability</li>
+            <li>focus visibility</li>
+            <li>readable typography and contrast</li>
+          </ul>
+          <p class="mt-3">No formal third-party certification has been performed.</p>
+        </section>
+
+        <section aria-labelledby="limitations">
+          <h2 id="limitations" class="text-2xl font-semibold text-ink-900">3. Known Limitations</h2>
+          <p class="mt-3">
+            Despite efforts to ensure accessibility, some limitations may exist. We continuously review and improve the site structure.
+          </p>
+        </section>
+
+        <section aria-labelledby="feedback">
+          <h2 id="feedback" class="text-2xl font-semibold text-ink-900">4. Feedback</h2>
+          <p class="mt-3">
+            If you experience difficulty accessing any part of this website, contact:<br />
+            <a href="mailto:hello@copycodeai.online" class="underline decoration-slate-300 underline-offset-4 hover:text-brand-700">hello@copycodeai.online</a>
+          </p>
+          <p class="mt-3">Please include:</p>
+          <ul class="mt-3 list-disc space-y-2 pl-5">
+            <li>the page URL</li>
+            <li>what you were trying to do</li>
+            <li>the issue encountered</li>
+            <li>your browser and any assistive technology used (if applicable)</li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="response-time">
+          <h2 id="response-time" class="text-2xl font-semibold text-ink-900">5. Response Time</h2>
+          <p class="mt-3">We aim to reply within 2 business days.</p>
+        </section>
+
+        <section aria-labelledby="enforcement">
+          <h2 id="enforcement" class="text-2xl font-semibold text-ink-900">6. Enforcement / Supervisory Authority (Estonia)</h2>
+          <p class="mt-3">
+            If you are not satisfied with our response, you may contact the Estonian Consumer Protection and Technical Regulatory Authority (TTJA):<br />
+            Website: ttja.ee<br />
+            Email: info@ttja.ee<br />
+            Phone: +372 667 2000
+          </p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

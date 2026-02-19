@@ -1,0 +1,57 @@
+---
+const mailtoHref =
+  'mailto:hello@copycodeai.online?subject=' +
+  encodeURIComponent('AI System Assessment – CopyCodeAI') +
+  '&body=' +
+  encodeURIComponent(
+    'Hi,\\n\\nHere is a short overview:\\n\\n1. What we are building:\\n2. Main goal for the next 30 days:\\n3. Do we process personal data? (yes/no):\\n4. Target customers (EU / global):\\n5. Website or demo link:\\n\\nThank you.'
+  );
+
+const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
+---
+
+<section class="relative overflow-hidden bg-gradient-to-br from-emerald-100 via-cyan-50 to-slate-100 py-20 sm:py-24">
+  <div class="absolute -left-20 top-0 h-72 w-72 rounded-full bg-emerald-200/70 blur-3xl" aria-hidden="true"></div>
+  <div class="absolute right-0 top-20 h-72 w-72 rounded-full bg-cyan-200/70 blur-3xl" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
+    <p class="inline-flex rounded-full border border-emerald-300/80 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-800">
+      European Launch & Compliance — Based in Tallinn
+    </p>
+    <h1 class="mt-5 max-w-4xl text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
+      Launch Right.<br />
+      Scale When Ready.
+    </h1>
+    <p class="mt-3 text-2xl font-semibold leading-tight text-slate-800 sm:text-3xl">
+      GDPR & EAA Compliant by Design
+    </p>
+    <p class="mt-5 max-w-2xl text-lg leading-relaxed text-slate-700">
+      I help early-stage European startups ship fast — without creating future compliance or structural debt.
+    </p>
+
+    <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+      <a
+        href={schedulingLink}
+        class="inline-flex items-center justify-center rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+      >
+        Start with a 15-min Technical Assessment
+      </a>
+      <a
+        href={mailtoHref}
+        class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+      >
+        Send a Brief
+      </a>
+    </div>
+    <p class="mt-2 text-xs font-normal text-slate-500">
+      You’ll be redirected to Calendly to choose your time.
+    </p>
+    <p class="mt-1 text-xs font-normal text-slate-500">
+      No sales pressure. Written follow-up guaranteed.
+    </p>
+
+    <p class="mt-4 text-sm text-slate-600">
+      15-minute structured technical assessment. Follow-up always provided in writing.
+    </p>
+  </div>
+</section>
