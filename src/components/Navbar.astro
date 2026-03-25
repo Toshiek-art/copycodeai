@@ -17,7 +17,9 @@ const links = [
 
 <header class="border-b border-slate-200 bg-white/95 backdrop-blur">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-8 lg:px-12" data-mobile-nav>
-    <a href="/" class="text-lg font-semibold tracking-tight text-ink-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2" aria-label="Go to CopyCodeAI home page">CopyCodeAI</a>
+    <a href="/" class="logo-link shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2" aria-label="Go to CopyCodeAI home page">
+      <img src="/logos/logo_ret_no_tag_trans.png" alt="CopyCodeAI logo" class="logo" />
+    </a>
 
     <button
       type="button"
@@ -71,6 +73,26 @@ const links = [
     </div>
   </nav>
 </header>
+
+<style>
+  .logo-link {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+  }
+
+  .logo {
+    height: 32px;
+    width: auto;
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .logo {
+      height: 36px;
+    }
+  }
+</style>
 
 <script is:inline>
   (() => {
