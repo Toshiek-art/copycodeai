@@ -18,7 +18,15 @@ const links = [
 <header class="border-b border-slate-200 bg-white/95 backdrop-blur">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-8 lg:px-12" data-mobile-nav>
     <a href="/" class="logo-link shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2" aria-label="Go to CopyCodeAI home page">
-      <img src="/logos/logo_ret_no_tag_trans.png" alt="CopyCodeAI logo" class="logo" />
+      <img
+        src="/logos/logo_ret_no_tag_trans_400w.png"
+        alt="CopyCodeAI logo"
+        class="logo"
+        width="400"
+        height="80"
+        decoding="async"
+        fetchpriority="high"
+      />
     </a>
 
     <button
@@ -137,8 +145,12 @@ const links = [
       if (event.key === 'Escape') closeMenu();
     });
 
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768) closeMenu();
-    });
+    const desktopMediaQuery = window.matchMedia('(min-width: 768px)');
+    const handleDesktopChange = (event) => {
+      if (event.matches) closeMenu();
+    };
+
+    if (desktopMediaQuery.matches) closeMenu();
+    desktopMediaQuery.addEventListener('change', handleDesktopChange);
   })();
 </script>

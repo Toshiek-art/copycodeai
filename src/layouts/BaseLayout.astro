@@ -9,6 +9,7 @@ interface Props {
   ogTitle?: string;
   ogDescription?: string;
   metaRefresh?: string;
+  includeOfferSync?: boolean;
 }
 
 const {
@@ -17,7 +18,8 @@ const {
   canonical,
   ogTitle = title,
   ogDescription = description,
-  metaRefresh
+  metaRefresh,
+  includeOfferSync = false
 } = Astro.props;
 ---
 
@@ -44,6 +46,6 @@ const {
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <slot />
-    <script type="module" src={offerSyncScriptUrl}></script>
+    {includeOfferSync && <script type="module" src={offerSyncScriptUrl}></script>}
   </body>
 </html>
