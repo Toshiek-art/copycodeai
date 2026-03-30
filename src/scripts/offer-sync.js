@@ -93,8 +93,23 @@ async function syncOffers() {
   containers.forEach((container) => updateOfferContainer(container, offer));
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', syncOffers, { once: true });
+function runWhenIdle(callback) {
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(callback, { timeout: 2000 });
+    return;
+  }
+
+  window.setTimeout(callback, 300);
+}
+
+function scheduleOfferSync() {
+  runWhenIdle(() => {
+    void syncOffers();
+  });
+}
+
+if (document.readyState === 'complete') {
+  scheduleOfferSync();
 } else {
-  syncOffers();
+  window.addEventListener('load', scheduleOfferSync, { once: true });
 }

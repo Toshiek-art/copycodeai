@@ -12,6 +12,7 @@ const {
 const services = [
   {
     title: 'Compliance-Ready Landing Page',
+    linkLabel: 'Explore landing page offer',
     description: 'A startup landing page or MVP site built to help you launch fast without creating avoidable GDPR or accessibility issues.',
     href: '/compliance-ready-landing',
     price: 'From €750',
@@ -27,6 +28,7 @@ const services = [
   },
   {
     title: 'AI Feature Integration',
+    linkLabel: 'Explore AI integration offer',
     description: 'Add useful automation when manual workflows start slowing your team down — without overengineering the product.',
     href: '/ai-feature-integration',
     price: 'From €900',
@@ -40,6 +42,7 @@ const services = [
   },
   {
     title: 'EAA Structural Hardening',
+    linkLabel: 'Explore accessibility hardening offer',
     description: 'Fix structural accessibility issues at code level so your product is easier to use, safer to scale, and closer to EAA/WCAG expectations.',
     href: '/eaa-structural-hardening',
     price: 'From €850',
@@ -98,9 +101,9 @@ const services = [
         <a
           href={service.href}
           class="mt-2 inline-flex text-sm font-medium text-slate-800 underline decoration-slate-300 underline-offset-4 hover:text-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-          aria-label={`Learn more about ${service.title}`}
+          aria-label={service.linkLabel}
         >
-          Learn more
+          {service.linkLabel}
         </a>
         <p class="mt-3 text-sm font-semibold text-slate-900">{service.price}</p>
         <p class="mt-1 text-sm text-slate-600">{service.delivery}</p>
