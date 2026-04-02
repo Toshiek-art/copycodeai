@@ -1,0 +1,15 @@
+---
+interface Props {
+  class?: string;
+  centered?: boolean;
+}
+
+const { class: className = '', centered = false, ...rest } = Astro.props;
+---
+
+<div
+  class={`mt-8 flex flex-col gap-4 sm:flex-row ${centered ? 'sm:justify-center' : ''} ${className} [&>a]:w-full [&>a]:text-center [&>a]:leading-tight [&>a]:whitespace-normal [&>a]:sm:w-auto [&>a]:sm:flex-none [&>button]:w-full [&>button]:sm:w-auto [&>button]:sm:flex-none [&>button]:leading-tight [&>button]:whitespace-normal`.trim()}
+  {...rest}
+>
+  <slot />
+</div>

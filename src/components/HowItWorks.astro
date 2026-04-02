@@ -1,8 +1,12 @@
-<section class="bg-slate-900 py-16 text-slate-100" aria-labelledby="how-it-works-title">
-  <div class="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
+---
+import Container from './layout/Container.astro';
+---
+
+<section class="bg-slate-900 py-16 text-slate-100 sm:py-20 lg:py-24" aria-labelledby="how-it-works-title">
+  <Container size="wide">
     <h2 id="how-it-works-title" class="text-3xl font-semibold">How It Works</h2>
     <p class="mt-2 max-w-2xl text-sm text-slate-300">No generic consulting. Clear scope, implementation, and delivery.</p>
-    <ol class="mt-8 grid gap-5 md:grid-cols-3">
+    <ol class="mt-8 grid gap-5 lg:grid-cols-3">
       <li class="rounded-2xl border border-slate-700 bg-slate-800/60 p-6">
         <p class="text-sm font-semibold uppercase tracking-wide text-emerald-300">1. Quick Technical Review</p>
         <p class="mt-2 text-slate-200">Short assessment call plus a structured review of your setup, data flow, and accessibility risks.</p>
@@ -17,5 +21,5 @@
         <p class="mt-2 text-slate-200">Implementation, validation, and delivery notes you can use right away.</p>
       </li>
     </ol>
-  </div>
+  </Container>
 </section>

@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
 import WhyCopyCodeAI from '../components/WhyCopyCodeAI.astro';
 import EntryOffer from '../components/EntryOffer.astro';
+import SelectedWork from '../components/SelectedWork.astro';
 import FastLaunchEngineering from '../components/FastLaunchEngineering.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import MiniScenarios from '../components/MiniScenarios.astro';
@@ -18,10 +19,11 @@ import Footer from '../components/Footer.astro';
 >
   <Navbar active="home" />
 
-  <main id="main-content">
+  <main id="main-content" tabindex="-1">
     <Hero />
     <WhyCopyCodeAI />
     <EntryOffer />
+    <SelectedWork />
     <FastLaunchEngineering />
     <HowItWorks />
     <MiniScenarios />

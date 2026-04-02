@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import Section from '../components/layout/Section.astro';
+import Container from '../components/layout/Container.astro';
+import CTAGroup from '../components/layout/CTAGroup.astro';
 
 const mailtoHref =
   'mailto:hello@copycodeai.online?subject=' +
@@ -21,20 +24,23 @@ const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
 >
   <Navbar active="contact" />
 
-  <main id="main-content">
-    <section class="mx-auto max-w-6xl px-6 py-14 sm:px-8 lg:px-12" aria-labelledby="contact-page-title">
-      <h1 id="contact-page-title" class="text-4xl font-bold text-ink-900">Let’s assess your system.</h1>
-      <p class="mt-4 max-w-3xl text-lg text-slate-700">
-        Book a short structured call or send a brief.
-      </p>
-      <p class="mt-2 text-slate-700">First contact can be fully async by email if preferred.</p>
-      <p class="mt-2 text-sm text-slate-600">No contact form in v1. No data storage. No admin login page.</p>
-    </section>
+  <main id="main-content" tabindex="-1">
+    <Section aria-labelledby="contact-page-title">
+      <Container size="content">
+        <h1 id="contact-page-title" class="text-4xl font-bold text-ink-900 sm:text-5xl">Let’s assess your system.</h1>
+        <p class="mt-4 max-w-3xl text-lg text-slate-700">
+          Book a short structured call or send a brief.
+        </p>
+        <p class="mt-2 text-slate-700">First contact can be fully async by email if preferred.</p>
+        <p class="mt-2 text-sm text-slate-600">No contact form in v1. No data storage. No admin login page.</p>
+      </Container>
+    </Section>
 
-    <section class="mx-auto max-w-6xl px-6 pb-16 sm:px-8 lg:px-12" aria-label="Contact options">
-      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-        <p class="text-sm text-slate-700">Choose the path that works best for your team.</p>
-        <div class="mt-5 flex flex-col gap-4 sm:flex-row">
+    <Section class="pb-16 sm:pb-20 lg:pb-24" aria-label="Contact options">
+      <Container size="wide">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8 lg:p-10">
+          <p class="text-sm text-slate-700">Choose the path that works best for your team.</p>
+          <CTAGroup class="mt-5">
           <a
             href={schedulingLink}
             class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
@@ -44,13 +50,14 @@ const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
           <a
             href={mailtoHref}
             class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-          >
-            Send a Brief
-          </a>
+            >
+              Send a Brief
+            </a>
+          </CTAGroup>
+          <p class="mt-2 text-xs font-normal text-slate-600">You’ll be redirected to Calendly to choose your time.</p>
         </div>
-        <p class="mt-2 text-xs font-normal text-slate-600">You’ll be redirected to Calendly to choose your time.</p>
-      </div>
-    </section>
+      </Container>
+    </Section>
   </main>
 
   <Footer />

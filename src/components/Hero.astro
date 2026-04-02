@@ -1,4 +1,7 @@
 ---
+import Container from './layout/Container.astro';
+import CTAGroup from './layout/CTAGroup.astro';
+
 const mailtoHref =
   'mailto:hello@copycodeai.online?subject=' +
   encodeURIComponent('AI System Assessment – CopyCodeAI') +
@@ -10,25 +13,25 @@ const mailtoHref =
 const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
 ---
 
-<section class="relative overflow-hidden bg-gradient-to-br from-emerald-100 via-cyan-50 to-slate-100 py-20 sm:py-24">
+<section class="relative overflow-hidden bg-gradient-to-br from-emerald-100 via-cyan-50 to-slate-100 py-20 sm:py-24 lg:py-28">
   <div class="absolute -left-20 top-0 h-72 w-72 rounded-full bg-emerald-200/70 blur-3xl" aria-hidden="true"></div>
   <div class="absolute right-0 top-20 h-72 w-72 rounded-full bg-cyan-200/70 blur-3xl" aria-hidden="true"></div>
 
-  <div class="relative mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
+  <Container size="wide" class="relative">
     <p class="inline-flex rounded-full border border-emerald-300/80 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-800">
       For European startups that need to launch fast — without compliance mistakes
     </p>
     <h1 class="mt-5 max-w-4xl text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
       Launch your startup fast without creating GDPR problems you’ll pay later.
     </h1>
-    <p class="mt-3 text-2xl font-semibold leading-tight text-slate-800 sm:text-3xl">
+    <p class="mt-3 max-w-4xl text-2xl font-semibold leading-tight text-slate-800 sm:text-3xl">
       I help early-stage European founders build MVPs, landing pages, and AI features that are ready to scale — technically and compliantly.
     </p>
-    <p class="mt-5 max-w-2xl text-lg leading-relaxed text-slate-700">
+    <p class="mt-5 max-w-3xl text-lg leading-relaxed text-slate-700">
       Move fast now, without creating GDPR issues, accessibility gaps, or technical debt that slows you down later.
     </p>
 
-    <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+    <CTAGroup>
       <a
         href={schedulingLink}
         class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
@@ -41,7 +44,7 @@ const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
       >
         Send a Brief
       </a>
-    </div>
+    </CTAGroup>
     <p class="mt-2 text-xs font-normal text-slate-600">
       No pressure. You’ll get a written follow-up.
     </p>
@@ -55,5 +58,5 @@ const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
     <p class="mt-1 text-sm text-slate-600">
       Based in Tallinn, working with European startups
     </p>
-  </div>
+  </Container>
 </section>

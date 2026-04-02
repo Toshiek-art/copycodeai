@@ -1,0 +1,98 @@
+---
+import Section from './layout/Section.astro';
+import Container from './layout/Container.astro';
+import CTAGroup from './layout/CTAGroup.astro';
+import ProjectCard from './work/ProjectCard.astro';
+import { selectedWorkIntro, workProjects } from '../data/work';
+
+interface Props {
+  heading?: string;
+  intro?: string;
+  ctaHref?: string;
+  ctaLabel?: string;
+  showCta?: boolean;
+  showAudit?: boolean;
+  showAuditSignal?: boolean;
+}
+
+const {
+  heading = 'Selected Work',
+  intro = selectedWorkIntro,
+  ctaHref = '/work',
+  ctaLabel = 'View all selected work',
+  showCta = true,
+  showAudit = false,
+  showAuditSignal = true
+} = Astro.props;
+---
+
+<Section variant="compact" aria-labelledby="selected-work-title">
+  <Container size="wide">
+    <div class="max-w-2xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-700">Proof of work</p>
+      <h2 id="selected-work-title" class="mt-2 text-3xl font-semibold text-ink-900">{heading}</h2>
+      <p class="mt-2 text-slate-700">{intro}</p>
+      <div class="mt-4 flex flex-wrap gap-2 text-xs font-medium text-slate-700">
+        <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">2 live sites</span>
+        <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">1 concept demo</span>
+        <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">Static screenshots</span>
+        <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">Direct links</span>
+      </div>
+      {showAuditSignal && (
+        <div class="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-700">
+          <span class="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-800">Recent audited builds</span>
+          <span class="font-medium text-slate-900">100 / 100 / 100 / 100</span>
+          <span class="text-slate-600">in Lighthouse checks.</span>
+          <span class="hidden sm:inline text-slate-500">Performance, accessibility, best practices, SEO.</span>
+        </div>
+      )}
+    </div>
+
+    <div class="mt-6 grid gap-5 lg:grid-cols-3">
+      {workProjects.map((project) => (
+        <ProjectCard project={project} showAudit={showAudit} />
+      ))}
+    </div>
+
+    {showCta && (
+      <CTAGroup centered class="mt-8">
+        <a
+          href={ctaHref}
+          class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+        >
+          {ctaLabel}
+        </a>
+      </CTAGroup>
+    )}
+  </Container>
+</Section>
+
+<script is:inline>
+  (() => {
+    const cards = document.querySelectorAll('[data-reveal="selected-work-card"]');
+    if (!cards.length) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      cards.forEach((card) => card.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '0px 0px -24px 0px'
+      }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+  })();
+</script>

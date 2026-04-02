@@ -1,6 +1,6 @@
 const OFFER_KEY = 'tallinn_landing_2026';
 const OFFER_ENDPOINT = '/api/offer/tallinn-landing';
-const FALLBACK_END_DATE = '31 Mar 2026';
+const FALLBACK_END_DATE = '31 May 2026';
 
 function formatTallinnDate(isoString) {
   const date = new Date(isoString);
@@ -49,11 +49,11 @@ function updateOfferContainer(container, offer) {
   }
 
   if (priceEl && Number.isFinite(price)) {
-    priceEl.textContent = `Tallinn Launch Offer: EUR ${price}`;
+    priceEl.textContent = `Local Launch Offer (Tallinn-based teams): EUR ${price}`;
   }
 
   if (deadlineEl) {
-    deadlineEl.textContent = `First 5 Tallinn startups · Ends ${formatTallinnDate(offer?.endsAt)} (EET)`;
+    deadlineEl.textContent = `Tallinn-based teams · Ends ${formatTallinnDate(offer?.endsAt)} (EEST)`;
     deadlineEl.classList.remove('hidden');
   }
 

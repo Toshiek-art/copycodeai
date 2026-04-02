@@ -1,0 +1,19 @@
+---
+interface Props {
+  variant?: 'plain' | 'muted' | 'dark' | 'compact';
+  class?: string;
+}
+
+const { variant = 'plain', class: className = '', ...rest } = Astro.props;
+
+const variantClasses = {
+  plain: 'py-16 sm:py-20 lg:py-24',
+  compact: 'py-12 sm:py-14 lg:py-16',
+  muted: 'bg-slate-50 py-16 sm:py-20 lg:py-24',
+  dark: 'bg-slate-900 py-16 sm:py-20 lg:py-24 text-slate-100'
+} as const;
+---
+
+<section class={`${variantClasses[variant]} ${className}`.trim()} {...rest}>
+  <slot />
+</section>

@@ -1,6 +1,6 @@
 ---
 interface Props {
-  active?: 'home' | 'services' | 'contact';
+  active?: 'home' | 'services' | 'work' | 'contact';
 }
 
 const { active } = Astro.props;
@@ -11,12 +11,13 @@ const links = [
   { key: 'home', href: '/', label: 'Home' },
   { key: 'blueprint', href: blueprintHref, label: 'Blueprint' },
   { key: 'services', href: '/services', label: 'Services' },
+  { key: 'work', href: '/work', label: 'Work' },
   { key: 'contact', href: '/contact', label: 'Contact' }
 ] as const;
 ---
 
-<header class="border-b border-slate-200 bg-white/95 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 sm:px-8 lg:px-12" data-mobile-nav>
+<header class="border-b border-slate-200/80 bg-white/95 backdrop-blur">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 sm:px-8 lg:px-10 xl:px-12" data-mobile-nav>
     <a href="/" class="logo-link shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2" aria-label="Go to CopyCodeAI home page">
       <img
         src="/logos/logo_ret_no_tag_trans_400w.png"
@@ -45,7 +46,7 @@ const links = [
       </svg>
     </button>
 
-    <nav aria-label="Main navigation" class="hidden items-center gap-5 md:flex">
+    <nav aria-label="Main navigation" class="hidden items-center gap-6 md:flex">
       {
         links.map((link) => (
           <a
@@ -66,7 +67,7 @@ const links = [
     class="hidden border-t border-slate-200 bg-white md:hidden"
     data-mobile-nav-menu
   >
-    <div class="mx-auto flex max-w-6xl flex-col px-6 py-3 sm:px-8 lg:px-12">
+    <div class="mx-auto flex max-w-7xl flex-col px-6 py-3 sm:px-8 lg:px-10 xl:px-12">
       {
         links.map((link) => (
           <a

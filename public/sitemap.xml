@@ -14,6 +14,12 @@
 </url>
 
 <url>
+<loc>https://copycodeai.online/work</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
 <loc>https://copycodeai.online/blueprint</loc>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
@@ -53,6 +59,12 @@
 <loc>https://copycodeai.online/ai-feature-integration</loc>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
+</url>
+
+<url>
+<loc>https://copycodeai.online/work/pasta-lab</loc>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
 </url>
 
 </urlset>
