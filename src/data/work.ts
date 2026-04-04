@@ -186,6 +186,18 @@ export const workProjects: WorkProject[] = [
     previewNote: 'Audit-style presentation with transparent scope',
     previewTone: 'slate',
     linkLabel: 'Open portfolio build',
+    lighthouse: {
+      label: 'Latest audited run',
+      scoreText: '100 / 100 / 100 / 100',
+      href: '/screenshots/audiolab/Screen Shot 2026-04-04 at 10.25.05.png',
+      alt: 'AuditLab Lighthouse report screenshot showing 100 scores for performance, accessibility, best practices, and SEO',
+      thumbnail: {
+        src: '/screenshots/audiolab/Screen Shot 2026-04-04 at 10.25.05.png',
+        width: 582,
+        height: 1073,
+        alt: 'AuditLab Lighthouse report thumbnail'
+      }
+    },
     screenshots: {
       desktop: {
         src: '/screenshots/audiolab/auditlab-home-desktop.webp',
