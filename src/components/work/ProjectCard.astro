@@ -12,7 +12,7 @@ const { project, showAudit = false } = Astro.props;
 const statusClasses: Record<WorkProject['status'], string> = {
   Live: 'border-emerald-200 bg-emerald-50 text-emerald-800',
   'Concept Demo': 'border-slate-200 bg-slate-100 text-slate-700',
-  Portfolio: 'border-brand-100 bg-brand-50 text-brand-800'
+  'Portfolio Build': 'border-brand-100 bg-brand-50 text-brand-800'
 };
 
 const toneClasses = {
@@ -53,7 +53,7 @@ const mobileScreenshot = project.screenshots?.mobile;
           class="h-full w-full object-cover object-top"
           loading="lazy"
           decoding="async"
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          sizes="(min-width: 768px) 50vw, 100vw"
         />
       </picture>
     ) : (
@@ -112,7 +112,7 @@ const mobileScreenshot = project.screenshots?.mobile;
       ))}
     </ul>
 
-    {showAudit && (
+    {showAudit && project.lighthouse && (
       <div class="mt-5">
         <TechnicalAudit project={project} />
       </div>

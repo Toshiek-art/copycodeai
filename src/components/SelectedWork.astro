@@ -24,6 +24,23 @@ const {
   showAudit = false,
   showAuditSignal = true
 } = Astro.props;
+
+const statusCounts = workProjects.reduce<Record<string, number>>((counts, project) => {
+  counts[project.status] = (counts[project.status] ?? 0) + 1;
+  return counts;
+}, {});
+
+const formatCount = (count: number, singular: string) => {
+  const label = count === 1 ? singular : `${singular}s`;
+  return `${count} ${label}`;
+};
+
+const proofChips = [
+  formatCount(statusCounts.Live ?? 0, 'live site'),
+  formatCount(statusCounts['Concept Demo'] ?? 0, 'concept demo'),
+  formatCount(statusCounts['Portfolio Build'] ?? 0, 'portfolio build'),
+  'Static screenshots'
+];
 ---
 
 <Section variant="compact" aria-labelledby="selected-work-title">
@@ -33,10 +50,9 @@ const {
       <h2 id="selected-work-title" class="mt-2 text-3xl font-semibold text-ink-900">{heading}</h2>
       <p class="mt-2 text-slate-700">{intro}</p>
       <div class="mt-4 flex flex-wrap gap-2 text-xs font-medium text-slate-700">
-        <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">2 live sites</span>
-        <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">1 concept demo</span>
-        <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">Static screenshots</span>
-        <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">Direct links</span>
+        {proofChips.map((chip) => (
+          <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">{chip}</span>
+        ))}
       </div>
       {showAuditSignal && (
         <div class="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-700">
@@ -48,7 +64,7 @@ const {
       )}
     </div>
 
-    <div class="mt-6 grid gap-5 lg:grid-cols-3">
+    <div class="mt-6 grid gap-5 md:grid-cols-2 md:auto-rows-fr lg:gap-6">
       {workProjects.map((project) => (
         <ProjectCard project={project} showAudit={showAudit} />
       ))}

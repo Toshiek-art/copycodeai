@@ -1,4 +1,4 @@
-export type WorkStatus = 'Live' | 'Concept Demo' | 'Portfolio';
+export type WorkStatus = 'Live' | 'Concept Demo' | 'Portfolio Build';
 
 export interface WorkProject {
   slug: string;
@@ -12,7 +12,7 @@ export interface WorkProject {
   previewNote: string;
   previewTone: 'emerald' | 'slate' | 'amber';
   linkLabel: string;
-  lighthouse: {
+  lighthouse?: {
     label: string;
     scoreText: string;
     href: string;
@@ -28,10 +28,14 @@ export interface WorkProject {
     desktop?: {
       src: string;
       alt: string;
+      width: number;
+      height: number;
     };
     mobile?: {
       src: string;
       alt: string;
+      width: number;
+      height: number;
     };
   };
 }
@@ -165,11 +169,42 @@ export const workProjects: WorkProject[] = [
         height: 844
       }
     }
+  },
+  {
+    slug: 'auditlab',
+    title: 'AuditLab',
+    typeLabel: 'Portfolio build',
+    status: 'Portfolio Build',
+    href: 'https://auditlab.vercel.app/',
+    summary: 'A public portfolio build that shows audit-style presentation, transparent labels, and a mobile-first proof-of-work layout.',
+    bullets: [
+      'Portfolio build, not a client engagement.',
+      'Static desktop and mobile screenshots keep the proof easy to scan.',
+      'The labels stay explicit so the scope reads credibly.'
+    ],
+    previewLabel: 'Portfolio build',
+    previewNote: 'Audit-style presentation with transparent scope',
+    previewTone: 'slate',
+    linkLabel: 'Open portfolio build',
+    screenshots: {
+      desktop: {
+        src: '/screenshots/audiolab/auditlab-home-desktop.webp',
+        alt: 'AuditLab desktop home screenshot showing the portfolio build and audit-focused presentation',
+        width: 1440,
+        height: 5200
+      },
+      mobile: {
+        src: '/screenshots/audiolab/auditlab-home-mobile.webp',
+        alt: 'AuditLab mobile home screenshot showing the portfolio build and audit-focused presentation',
+        width: 390,
+        height: 6200
+      }
+    }
   }
 ];
 
 export const selectedWorkIntro =
-  'Two live sites and one transparent concept demo. Static screenshots, clear labels, and direct links keep the proof readable.';
+  'Two live sites, one transparent concept demo, and one public portfolio build. Static screenshots, clear labels, and direct links keep the proof readable.';
 
 export function getWorkProject(slug: string) {
   return workProjects.find((project) => project.slug === slug);
