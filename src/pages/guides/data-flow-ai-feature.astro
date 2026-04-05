@@ -1,0 +1,247 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import Section from '../../components/layout/Section.astro';
+import Container from '../../components/layout/Container.astro';
+import CTAGroup from '../../components/layout/CTAGroup.astro';
+
+const shippingChecks = [
+  {
+    title: 'Where data enters the system',
+    body: 'Be able to point to the input points, not just the final output.'
+  },
+  {
+    title: 'What path it follows',
+    body: 'Trace the route through backend, providers, and any side systems that touch it.'
+  },
+  {
+    title: 'Which outside providers are involved',
+    body: 'Know which services are part of the flow and what role each one plays.'
+  },
+  {
+    title: 'What gets logged, and why',
+    body: 'Keep logging tied to a clear purpose instead of letting it expand by habit.'
+  },
+  {
+    title: 'How long the data stays there',
+    body: 'Retention should be explicit, not something the team only vaguely remembers.'
+  },
+  {
+    title: 'Whether any of it gets reused',
+    body: 'Reuse beyond the original purpose should be visible and deliberate.'
+  }
+];
+---
+
+<BaseLayout
+  title="AI data flow: where features quietly get complicated | CopyCodeAI"
+  description="A practical guide to understanding data flow in AI features, including logging, retention, reuse, and what to check before shipping."
+  canonical="https://copycodeai.online/guides/data-flow-ai-feature/"
+  ogTitle="AI data flow: where features quietly get complicated | CopyCodeAI"
+  ogDescription="A practical guide to understanding data flow in AI features, including logging, retention, reuse, and what to check before shipping."
+>
+  <Navbar active="guides" />
+
+  <main id="main-content" tabindex="-1">
+    <Section variant="compact" aria-labelledby="guide-title">
+      <Container size="content">
+        <div class="mb-5 text-sm font-medium text-slate-600">
+          <a href="/guides/" class="inline-flex items-center gap-2 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
+            <span aria-hidden="true">←</span>
+            Back to guides
+          </a>
+        </div>
+
+        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-700">Guides</p>
+        <h1 id="guide-title" class="mt-2 text-4xl font-bold text-ink-900 sm:text-5xl">
+          AI data flow: where features quietly get complicated
+        </h1>
+        <p class="mt-4 max-w-3xl text-lg text-slate-700">
+          Most AI features don’t become complex all at once.
+          They get there step by step.
+        </p>
+        <div class="mt-4 max-w-3xl space-y-4 text-base leading-7 text-slate-700">
+          <p>A prompt here, a log there. A quick integration with an external API. Some data saved “just for debugging.”</p>
+          <p>
+            On their own, these decisions don’t look like a problem.
+          </p>
+          <p>
+            Then, after a while, the feature becomes harder to describe than it used to be.
+            Not necessarily because it is broken — just because the data is no longer moving in one obvious path.
+          </p>
+        </div>
+      </Container>
+    </Section>
+
+    <Section aria-labelledby="article-content-title">
+      <Container size="content">
+        <article class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:text-ink-900 prose-p:leading-7 prose-li:leading-7 prose-a:font-medium prose-a:text-brand-700 prose-a:no-underline hover:prose-a:text-brand-800">
+          <h2 id="article-content-title" class="sr-only">Article content</h2>
+
+          <section aria-labelledby="why-data-flow-title" class="not-prose">
+            <h2 id="why-data-flow-title" class="text-3xl font-semibold text-ink-900">Why data flow is where AI features quietly get complicated</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>At the start, things feel simple.</p>
+              <p>A user sends input. The system processes it. A result comes back.</p>
+              <p>That picture doesn’t last very long.</p>
+              <p>
+                As soon as the feature starts evolving, extra layers show up:
+              </p>
+              <ul class="space-y-2 pl-5">
+                <li>logging for debugging</li>
+                <li>analytics for product decisions</li>
+                <li>retries, caching, fallbacks</li>
+                <li>external providers handling parts of the flow</li>
+              </ul>
+              <p>Each one makes sense when it is added. That is exactly why the bigger picture gets messy so easily.</p>
+              <p>The complexity usually isn’t in the model alone. It builds around the model — in the handoffs, the copied data, the extra systems, the things added to make everything work a little better.</p>
+              <p>And at some point the question is no longer just: “Does this feature work?”</p>
+              <p>It becomes: “Can we still explain what happens to the data without stopping every two sentences?”</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="places-title" class="not-prose mt-12">
+            <h2 id="places-title" class="text-3xl font-semibold text-ink-900">The places where data actually moves</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>It is tempting to picture the flow as something neat.</p>
+              <p>Input comes in. Output comes out. Done.</p>
+              <p>Real features usually stop looking like that pretty quickly.</p>
+              <p>
+                Data might start with a prompt, a file upload, or a structured field in a form.
+                From there it moves through your backend, then maybe into one provider, maybe two, maybe a service that was added later because it solved one narrow problem.
+              </p>
+              <p>And then there are the side routes.</p>
+              <p>Data gets logged. Stored for a while. Sent to analytics. Used in tests. Compared across versions.</p>
+              <p>
+                Even when nobody is actively touching it, it can still be sitting somewhere:
+              </p>
+              <ul class="space-y-2 pl-5">
+                <li>in logs</li>
+                <li>in monitoring dashboards</li>
+                <li>in staging</li>
+                <li>in error tracking tools</li>
+              </ul>
+              <p>This is where teams often lose the clean mental map they had at the beginning.</p>
+              <p>From the outside, the feature still looks simple. Inside, the path is a lot less tidy.</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="boundaries-title" class="not-prose mt-12">
+            <h2 id="boundaries-title" class="text-3xl font-semibold text-ink-900">The boundaries teams forget to map</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>Most teams are fairly clear on where data comes in. And where the output shows up.</p>
+              <p>What gets blurry is everything in between.</p>
+              <p>Where does your system actually stop? Where does a provider take over? What happens after data leaves your environment? Which tools can still touch it, even indirectly?</p>
+              <p>These questions are easy to postpone.</p>
+              <p>An integration gets added because it solves something urgent. A tool gets connected because it saves time. The flow gets longer, but no one really redraws the map.</p>
+              <p>After a while, those boundaries stop feeling like choices. They start feeling normal.</p>
+              <p>
+                That is where risk builds.
+                Not because something looks obviously wrong, but because the full picture is no longer visible to anyone in one go.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="logging-title" class="not-prose mt-12">
+            <h2 id="logging-title" class="text-3xl font-semibold text-ink-900">Logging, retention, and reuse: where hidden risk builds up</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>If complexity grows quietly anywhere, it is here.</p>
+              <p>Logging starts as a debugging tool. Then it becomes useful for understanding usage. Then it turns into “let’s keep it, just in case.”</p>
+              <p>Retention tends to drift the same way. Data stays around a little longer than planned. Then no one comes back to question it.</p>
+              <p>Reuse is even harder to notice.</p>
+              <p>Data collected for one reason slowly starts showing up elsewhere:</p>
+              <ul class="space-y-2 pl-5">
+                <li>internal testing</li>
+                <li>performance checks</li>
+                <li>prompt improvements</li>
+                <li>model tuning</li>
+              </ul>
+              <p>None of those steps looks dramatic on its own.</p>
+              <p>But over time, the original boundaries fade. And it gets harder to answer a basic question: why is this data still here, and what are we still doing with it?</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="check-title" class="not-prose mt-12">
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+              <h2 id="check-title" class="text-3xl font-semibold text-ink-900">What to check before shipping</h2>
+              <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">Before shipping an AI feature, perfection is not the goal. But you should be able to explain the flow without guessing.</p>
+
+              <div class="mt-6 grid gap-4">
+                {shippingChecks.map((check) => (
+                  <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+                    <h3 class="text-lg font-semibold text-ink-900">{check.title}</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-700">{check.body}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p class="mt-5 text-base leading-7 text-slate-700">
+                If those answers come out slowly, or differently depending on who you ask, that already tells you something.
+              </p>
+              <p class="mt-3 text-base leading-7 text-slate-700">
+                This kind of check is not about producing a giant document. It is about making sure the important parts are no longer living only in people’s heads.
+              </p>
+              <p class="mt-3 text-base leading-7 text-slate-700">
+                Because when the flow is fuzzy, control usually is too.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="simple-title" class="not-prose mt-12">
+            <h2 id="simple-title" class="text-3xl font-semibold text-ink-900">When a simple feature is no longer simple</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>There is a moment where the feeling changes.</p>
+              <p>From the outside, the feature still looks straightforward. Inside, though, it takes more effort to explain.</p>
+              <p>Different people describe it in different ways. Nobody is completely sure where every piece of data ends up. Small changes start producing side effects no one expected.</p>
+              <p>That is usually the signal.</p>
+              <p>Not that the feature is failing. But that the system has grown faster than the team’s shared understanding of it.</p>
+              <p>At that point, adding more on top rarely helps. It usually just adds another layer.</p>
+              <p>What helps is stepping back and mapping the flow properly.</p>
+              <p>Not to slow the product down, but to make sure the next iteration is still built on something the team can reason about.</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="closing-title" class="not-prose mt-12">
+            <h2 id="closing-title" class="text-3xl font-semibold text-ink-900">What it comes down to</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>AI features rarely become complicated because of one dramatic choice.</p>
+              <p>It usually happens through a stack of small decisions that were useful in the moment and never fully mapped afterward.</p>
+              <p>Once that happens, the hard part is not building more.</p>
+              <p>It is being able to say, clearly, what you already built.</p>
+            </div>
+          </section>
+        </article>
+      </Container>
+    </Section>
+
+    <Section variant="compact" aria-labelledby="guide-cta-title">
+      <Container size="content">
+        <div class="rounded-2xl border border-slate-200 bg-slate-900 p-6 text-slate-100 shadow-soft sm:p-8 lg:p-10">
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-300">Next step</p>
+          <h2 id="guide-cta-title" class="mt-2 text-3xl font-semibold text-white">Map the flow before the next layer is added.</h2>
+          <p class="mt-3 max-w-3xl text-slate-300">
+            A structured pre-launch blueprint or audit helps turn unclear data handling into a system the team can still reason about as the feature grows.
+          </p>
+
+          <CTAGroup>
+            <a
+              href="/blueprint"
+              class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+            >
+              View Blueprint
+            </a>
+            <a
+              href="/services"
+              class="inline-flex items-center justify-center rounded-xl border border-slate-600 bg-transparent px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+            >
+              See Services
+            </a>
+          </CTAGroup>
+        </div>
+      </Container>
+    </Section>
+  </main>
+
+  <Footer />
+</BaseLayout>

@@ -1,6 +1,6 @@
 ---
 interface Props {
-  active?: 'home' | 'services' | 'work' | 'contact';
+  active?: 'home' | 'services' | 'work' | 'contact' | 'guides';
 }
 
 const { active } = Astro.props;
@@ -11,6 +11,7 @@ const links = [
   { key: 'home', href: '/', label: 'Home' },
   { key: 'blueprint', href: blueprintHref, label: 'Blueprint' },
   { key: 'services', href: '/services', label: 'Services' },
+  { key: 'guides', href: '/guides/', label: 'Guides' },
   { key: 'work', href: '/work', label: 'Work' },
   { key: 'contact', href: '/contact', label: 'Contact' }
 ] as const;

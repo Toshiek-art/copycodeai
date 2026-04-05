@@ -1,0 +1,224 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import Section from '../../components/layout/Section.astro';
+import Container from '../../components/layout/Container.astro';
+import CTAGroup from '../../components/layout/CTAGroup.astro';
+
+const areasToCheck = [
+  {
+    title: 'Navigation',
+    body: 'Navigation is about not losing people along the way. If moving through the product requires effort, something is off.'
+  },
+  {
+    title: 'Content',
+    body: 'Content is about making things easy to read and follow. Structure matters more than wording here.'
+  },
+  {
+    title: 'Forms',
+    body: 'Forms are where friction becomes visible very quickly. If users hesitate or don’t know how to recover from an error, the flow is already fragile.'
+  },
+  {
+    title: 'Feedback',
+    body: 'Feedback is what keeps the experience understandable. When something happens, the product should make it obvious.'
+  },
+  {
+    title: 'Hierarchy',
+    body: 'Hierarchy is what ties all of this together. It’s what makes the interface feel coherent instead of just visually arranged.'
+  }
+];
+
+const fixFirstItems = [
+  {
+    title: 'Start with structure',
+    body: 'Navigation patterns, content hierarchy, and form behavior tend to spread across the whole product. If they’re inconsistent, you’ll keep compensating for them later.'
+  },
+  {
+    title: 'Then look at interactions',
+    body: 'Error handling, feedback, consistency between flows—these shape everyday usage.'
+  },
+  {
+    title: 'Visual adjustments can often wait',
+    body: 'Visual adjustments can often wait, as long as they’re not blocking basic interaction.'
+  },
+  {
+    title: 'Separate deep issues from surface issues',
+    body: 'What matters is recognizing what sits deep in the system and what stays on the surface.'
+  },
+  {
+    title: 'Fix early when changes spread',
+    body: 'If fixing something means touching multiple flows or components, it’s usually better to deal with it early. If it’s isolated, you can schedule it without rushing.'
+  }
+];
+---
+
+<BaseLayout
+  title="EAA for startups: what actually matters before launch | CopyCodeAI"
+  description="A practical guide to the European Accessibility Act for startups, covering navigation, forms, content structure, and what to fix before launch."
+  canonical="https://copycodeai.online/guides/eaa-startup-websites/"
+  ogTitle="EAA for startups: what actually matters before launch | CopyCodeAI"
+  ogDescription="A practical guide to the European Accessibility Act for startups, covering navigation, forms, content structure, and what to fix before launch."
+>
+  <Navbar active="guides" />
+
+  <main id="main-content" tabindex="-1">
+    <Section variant="compact" aria-labelledby="guide-title">
+      <Container size="content">
+        <div class="mb-5 text-sm font-medium text-slate-600">
+          <a href="/guides/" class="inline-flex items-center gap-2 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
+            <span aria-hidden="true">←</span>
+            Back to guides
+          </a>
+        </div>
+
+        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-700">Guides</p>
+        <h1 id="guide-title" class="mt-2 text-4xl font-bold text-ink-900 sm:text-5xl">
+          EAA for startups: what actually matters before launch
+        </h1>
+        <p class="mt-4 max-w-3xl text-lg text-slate-700">
+          Accessibility is one of those things teams often push a bit later.
+          Not because it’s ignored, but because it feels like something you can refine once the product is live.
+        </p>
+        <div class="mt-4 max-w-3xl space-y-4 text-base leading-7 text-slate-700">
+          <p>With the European Accessibility Act, that mindset starts to break.</p>
+          <p>
+            If navigation, content, forms, and feedback are not built with a minimum level of clarity from the start, you usually end up revisiting them under pressure later when the product is already moving.
+          </p>
+        </div>
+      </Container>
+    </Section>
+
+    <Section aria-labelledby="article-content-title">
+      <Container size="content">
+        <article class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:text-ink-900 prose-p:leading-7 prose-li:leading-7 prose-a:font-medium prose-a:text-brand-700 prose-a:no-underline hover:prose-a:text-brand-800">
+          <h2 id="article-content-title" class="sr-only">Article content</h2>
+
+          <section aria-labelledby="why-eaa-title" class="not-prose">
+            <h2 id="why-eaa-title" class="text-3xl font-semibold text-ink-900">Why the EAA is not just an accessibility checkbox</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>In many teams, accessibility still lives in a slightly vague space. It’s mentioned in discussions, it’s associated with usability or inclusion, but it rarely turns into concrete product decisions early on.</p>
+              <p>The EAA changes that dynamic.</p>
+              <p>It brings accessibility much closer to how the product actually behaves. Not as a general principle, but as something that shows up in flows, components, and edge cases.</p>
+              <p>
+                At some point, it stops being about whether a page “works” and starts being about whether people can actually move through it without slowing down, second-guessing, or getting stuck.
+              </p>
+              <p>That includes users with assistive tools, of course—but not only them. Any unclear structure ends up affecting everyone.</p>
+              <p>
+                And this is where timing becomes important.
+              </p>
+              <p>If you leave accessibility for later, you’re not polishing the product. You’re reopening decisions that are already embedded in how things function.</p>
+              <p>And once those decisions are in place, even small changes tend to spread further than expected.</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="product-changes-title" class="not-prose mt-12">
+            <h2 id="product-changes-title" class="text-3xl font-semibold text-ink-900">What actually changes for startup websites and digital products</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>For most startups, the EAA doesn’t mean adding a whole new layer of features. It’s more subtle than that.</p>
+              <p>It changes how the things you already built are expected to behave.</p>
+              <p>Navigation needs to be stable enough that people don’t have to relearn it from one page to another.</p>
+              <p>Content needs to follow a structure that helps people scan and understand quickly.</p>
+              <p>Forms need to guide users while they’re filling them, not only validate them at the end.</p>
+              <p>And when something goes wrong, the product needs to explain it in a way that actually helps.</p>
+              <p>None of this is “extra.” It’s the difference between something that works in theory and something that works in practice.</p>
+              <p>This is also where a lot of teams hit the same realization: many accessibility issues don’t come from visuals—they come from how things are organized underneath.</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="mistakes-title" class="not-prose mt-12">
+            <h2 id="mistakes-title" class="text-3xl font-semibold text-ink-900">The structural mistakes teams make before launch</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>Accessibility problems rarely come from one big mistake. They usually build up through small decisions that no one revisits.</p>
+              <p>A navigation that slightly changes across pages. A component reused in different ways depending on context. A layout that looks fine but doesn’t translate well outside the visual layer. Forms that technically work, but leave users guessing when something fails.</p>
+              <p>Another common pattern is treating accessibility as a final step.</p>
+              <p>You adjust contrast, spacing, labels… but leave structure as it is.</p>
+              <p>So the product looks fine at a glance. But the same friction points keep showing up underneath.</p>
+              <p>Over time, this turns into something very similar to technical debt. Not immediately visible, but increasingly hard to ignore.</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="areas-title" class="not-prose mt-12">
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+              <h2 id="areas-title" class="text-3xl font-semibold text-ink-900">The areas to check: navigation, content, forms, feedback, hierarchy</h2>
+              <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">Before launch, you don’t need to overanalyze everything. But there are a few areas where it’s worth slowing down and checking properly.</p>
+
+              <div class="mt-6 grid gap-4">
+                {areasToCheck.map((item) => (
+                  <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+                    <h3 class="text-lg font-semibold text-ink-900">{item.title}</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-700">{item.body}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p class="mt-5 text-base leading-7 text-slate-700">
+                These are usually the areas where problems concentrate—and where fixes actually make a difference.
+              </p>
+            </div>
+          </section>
+
+          <section aria-labelledby="fix-first-title" class="not-prose mt-12">
+            <h2 id="fix-first-title" class="text-3xl font-semibold text-ink-900">What to fix first, and what can wait</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>Not everything needs to be perfect before launch. But some things become much harder to change once the product grows.</p>
+            </div>
+
+            <div class="mt-6 grid gap-4">
+              {fixFirstItems.map((item) => (
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+                  <h3 class="text-lg font-semibold text-ink-900">{item.title}</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-700">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section aria-labelledby="intervention-title" class="not-prose mt-12">
+            <h2 id="intervention-title" class="text-3xl font-semibold text-ink-900">When you need a structural intervention, not cosmetic fixes</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>There’s a point where small adjustments stop being effective.</p>
+              <p>You start seeing the same inconsistencies repeated in different parts of the product. Similar components behave differently depending on who built them. Forms don’t follow the same logic across flows. Content is structured differently from one section to another.</p>
+              <p>At that stage, patching things one by one doesn’t really help. It just adds more variation.</p>
+              <p>What helps instead is stepping back and looking at the system as a whole.</p>
+              <p>Not a full redesign—just a clear pass on patterns, components, and rules. What should behave consistently? What needs to be simplified? What should be aligned?</p>
+              <p>Because in practice, accessibility is less about fixing individual elements and more about reducing inconsistency across the product.</p>
+            </div>
+          </section>
+        </article>
+      </Container>
+    </Section>
+
+    <Section variant="compact" aria-labelledby="guide-cta-title">
+      <Container size="content">
+        <div class="rounded-2xl border border-slate-200 bg-slate-900 p-6 text-slate-100 shadow-soft sm:p-8 lg:p-10">
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-300">Next step</p>
+          <h2 id="guide-cta-title" class="mt-2 text-3xl font-semibold text-white">Launching fast is not the problem.</h2>
+          <p class="mt-3 max-w-3xl text-slate-300">
+            Launching something you can’t stabilize later is.
+          </p>
+          <p class="mt-3 max-w-3xl text-slate-300">
+            With the EAA, the real question is not: “Is this accessible enough to launch?” It is: “Are we building something we’ll still be able to keep consistent as we scale?”
+          </p>
+
+          <CTAGroup>
+            <a
+              href="/blueprint"
+              class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+            >
+              View Blueprint
+            </a>
+            <a
+              href="/services"
+              class="inline-flex items-center justify-center rounded-xl border border-slate-600 bg-transparent px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+            >
+              See Services
+            </a>
+          </CTAGroup>
+        </div>
+      </Container>
+    </Section>
+  </main>
+
+  <Footer />
+</BaseLayout>
