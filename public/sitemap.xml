@@ -8,61 +8,67 @@
 </url>
 
 <url>
-<loc>https://copycodeai.online/services</loc>
+<loc>https://copycodeai.online/services/</loc>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
-<loc>https://copycodeai.online/work</loc>
+<loc>https://copycodeai.online/work/</loc>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>https://copycodeai.online/blueprint</loc>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-
-<url>
-<loc>https://copycodeai.online/contact</loc>
+<loc>https://copycodeai.online/contact/</loc>
 <changefreq>monthly</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://copycodeai.online/privacy</loc>
+<loc>https://copycodeai.online/guides/</loc>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>https://copycodeai.online/guides/gdpr-ai-startup/</loc>
+<changefreq>monthly</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://copycodeai.online/privacy/</loc>
 <changefreq>monthly</changefreq>
 <priority>0.4</priority>
 </url>
 
 <url>
-<loc>https://copycodeai.online/accessibility</loc>
+<loc>https://copycodeai.online/accessibility/</loc>
 <changefreq>monthly</changefreq>
 <priority>0.4</priority>
 </url>
 
 <url>
-<loc>https://copycodeai.online/compliance-ready-landing</loc>
+<loc>https://copycodeai.online/compliance-ready-landing/</loc>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>https://copycodeai.online/eaa-structural-hardening</loc>
+<loc>https://copycodeai.online/eaa-structural-hardening/</loc>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>https://copycodeai.online/ai-feature-integration</loc>
+<loc>https://copycodeai.online/ai-feature-integration/</loc>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>https://copycodeai.online/work/pasta-lab</loc>
+<loc>https://copycodeai.online/work/pasta-lab/</loc>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
