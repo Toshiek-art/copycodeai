@@ -42,6 +42,49 @@ export interface WorkProject {
 
 export const workProjects: WorkProject[] = [
   {
+    slug: 'aqualume',
+    title: 'Aqualume',
+    typeLabel: 'Live site',
+    status: 'Live',
+    href: 'https://aqualume-seven.vercel.app/',
+    summary: 'A premium medical aesthetics and wellness site with strong mobile hierarchy, calm aqua visuals, and clean consultation flow.',
+    bullets: [
+      'Homepage, treatments, and booking flow are presented as a polished clinic proposal.',
+      'Responsive screenshots keep the live delivery easy to review at a glance.',
+      'Lighthouse audit is linked directly from the project card for quick verification.'
+    ],
+    previewLabel: 'Live site',
+    previewNote: 'Medical aesthetics and wellness proposal',
+    previewTone: 'emerald',
+    linkLabel: 'Open live site',
+    lighthouse: {
+      label: 'Latest audited run',
+      scoreText: '100 / 100 / 100 / 100',
+      href: '/screenshots/aqualume-clinic/aqualume-seven.png',
+      alt: 'Aqualume Lighthouse report screenshot showing 100 scores for performance, accessibility, best practices, and SEO',
+      thumbnail: {
+        src: '/screenshots/aqualume-clinic/aqualume-seven.png',
+        width: 582,
+        height: 1073,
+        alt: 'Aqualume Lighthouse report thumbnail'
+      }
+    },
+    screenshots: {
+      desktop: {
+        src: '/screenshots/aqualume-clinic/aqualume-home-desktop.png',
+        alt: 'Aqualume desktop homepage screenshot showing the clinic proposal and premium aqua wellness direction',
+        width: 1440,
+        height: 900
+      },
+      mobile: {
+        src: '/screenshots/aqualume-clinic/aqualume-home-mobile.png',
+        alt: 'Aqualume mobile homepage screenshot showing the clinic proposal and premium aqua wellness direction',
+        width: 390,
+        height: 844
+      }
+    }
+  },
+  {
     slug: 'toyb',
     title: 'Toyb',
     typeLabel: 'Live site',
