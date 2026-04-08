@@ -1,0 +1,121 @@
+---
+interface Props {
+  analyticsId: string;
+}
+
+const { analyticsId } = Astro.props;
+---
+
+<div
+  class="fixed inset-x-4 bottom-4 z-50 mx-auto hidden w-[calc(100%-2rem)] max-w-4xl rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur md:bottom-6 md:w-[calc(100%-3rem)] md:p-5"
+  data-cookie-banner
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="cookie-banner-title"
+  aria-describedby="cookie-banner-copy"
+>
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <div class="max-w-2xl">
+      <p id="cookie-banner-title" class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-700">
+        Cookie preferences
+      </p>
+      <p id="cookie-banner-copy" class="mt-2 text-sm leading-relaxed text-slate-700">
+        We use essential cookies for site operation. If you accept analytics, Google Analytics 4 may set cookies to help us understand traffic and improve the site.
+      </p>
+      <p class="mt-2 text-xs leading-relaxed text-slate-600">
+        You can change your choice later from the footer. Read more in the
+        <a href="/privacy" class="underline decoration-slate-300 underline-offset-4 hover:text-brand-700">Privacy Policy</a>.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-3 sm:flex-row">
+      <button
+        type="button"
+        class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+        data-cookie-accept
+      >
+        Accept analytics
+      </button>
+      <button
+        type="button"
+        class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+        data-cookie-reject
+      >
+        Essential only
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ analyticsId }}>
+  (() => {
+    const STORAGE_KEY = 'copycodeai_cookie_consent_v1';
+    const ACCEPTED = 'accepted';
+    const REJECTED = 'rejected';
+
+    const banner = document.querySelector('[data-cookie-banner]');
+    if (!banner) return;
+
+    const acceptButtons = document.querySelectorAll('[data-cookie-accept]');
+    const rejectButtons = document.querySelectorAll('[data-cookie-reject]');
+    const openButtons = document.querySelectorAll('[data-open-cookie-banner]');
+
+    const loadAnalytics = () => {
+      if (window.__copycodeaiAnalyticsLoaded) return;
+
+      window.dataLayer = window.dataLayer || [];
+      window.gtag =
+        window.gtag ||
+        function gtag() {
+          window.dataLayer.push(arguments);
+        };
+
+      window.gtag('js', new Date());
+      window.gtag('config', analyticsId);
+
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(analyticsId)}`;
+      document.head.appendChild(script);
+
+      window.__copycodeaiAnalyticsLoaded = true;
+    };
+
+    const hideBanner = () => {
+      banner.classList.add('hidden');
+    };
+
+    const showBanner = () => {
+      banner.classList.remove('hidden');
+    };
+
+    const setConsent = (value) => {
+      window.localStorage.setItem(STORAGE_KEY, value);
+      if (value === ACCEPTED) {
+        loadAnalytics();
+      }
+      hideBanner();
+    };
+
+    const storedConsent = window.localStorage.getItem(STORAGE_KEY);
+    if (storedConsent === ACCEPTED) {
+      loadAnalytics();
+      hideBanner();
+    } else if (storedConsent === REJECTED) {
+      hideBanner();
+    } else {
+      showBanner();
+    }
+
+    acceptButtons.forEach((button) => button.addEventListener('click', () => setConsent(ACCEPTED)));
+    rejectButtons.forEach((button) => button.addEventListener('click', () => setConsent(REJECTED)));
+    openButtons.forEach((button) =>
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        showBanner();
+      })
+    );
+
+    window.addEventListener('copycodeai:open-cookie-banner', showBanner);
+  })();
+</script>

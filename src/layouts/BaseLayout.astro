@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import offerSyncScriptUrl from '../scripts/offer-sync.js?url';
+import CookieConsent from '../components/CookieConsent.astro';
 
 interface Props {
   title?: string;
@@ -10,6 +11,7 @@ interface Props {
   ogDescription?: string;
   metaRefresh?: string;
   includeOfferSync?: boolean;
+  analyticsId?: string;
 }
 
 const {
@@ -19,7 +21,8 @@ const {
   ogTitle = title,
   ogDescription = description,
   metaRefresh,
-  includeOfferSync = false
+  includeOfferSync = false,
+  analyticsId = 'G-E5T5XZKM6E'
 } = Astro.props;
 ---
 
@@ -46,6 +49,7 @@ const {
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <slot />
+    <CookieConsent analyticsId={analyticsId} />
     {includeOfferSync && <script type="module" src={offerSyncScriptUrl}></script>}
   </body>
 </html>
