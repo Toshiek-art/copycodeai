@@ -1,0 +1,41 @@
+---
+import GuideCard from './GuideCard.astro';
+
+interface RelatedGuide {
+  category: string;
+  title: string;
+  description: string;
+  href: string;
+}
+
+interface Props {
+  guides: RelatedGuide[];
+  title?: string;
+  class?: string;
+}
+
+const {
+  guides,
+  title = 'Related guides',
+  class: className = '',
+  ...rest
+} = Astro.props;
+---
+
+<section class={`space-y-6 ${className}`.trim()} {...rest}>
+  <div class="max-w-2xl">
+    <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-700">More reading</p>
+    <h2 class="mt-2 text-3xl font-semibold text-ink-900">{title}</h2>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-2">
+    {guides.map((guide) => (
+      <GuideCard
+        category={guide.category}
+        title={guide.title}
+        description={guide.description}
+        href={guide.href}
+      />
+    ))}
+  </div>
+</section>

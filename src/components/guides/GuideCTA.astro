@@ -1,0 +1,49 @@
+---
+import CTAGroup from '../layout/CTAGroup.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  primaryLabel: string;
+  primaryHref: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  class?: string;
+}
+
+const {
+  eyebrow = 'Next step',
+  title,
+  description,
+  primaryLabel,
+  primaryHref,
+  secondaryLabel,
+  secondaryHref,
+  class: className = '',
+  ...rest
+} = Astro.props;
+---
+
+<section class={`rounded-2xl border border-slate-200 bg-slate-900 p-6 text-slate-100 shadow-soft sm:p-8 lg:p-10 ${className}`.trim()} {...rest}>
+  <p class="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-300">{eyebrow}</p>
+  <h2 class="mt-2 text-3xl font-semibold text-white">{title}</h2>
+  {description && <p class="mt-3 max-w-3xl text-slate-300">{description}</p>}
+
+  <CTAGroup>
+    <a
+      href={primaryHref}
+      class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+    >
+      {primaryLabel}
+    </a>
+    {secondaryHref && secondaryLabel && (
+      <a
+        href={secondaryHref}
+        class="inline-flex items-center justify-center rounded-xl border border-slate-600 bg-transparent px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+      >
+        {secondaryLabel}
+      </a>
+    )}
+  </CTAGroup>
+</section>

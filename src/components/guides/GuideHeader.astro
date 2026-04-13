@@ -1,0 +1,87 @@
+---
+interface Breadcrumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  category: string;
+  title: string;
+  description?: string;
+  publishAt?: string;
+  updatedAt?: string;
+  breadcrumbs?: Breadcrumb[];
+  class?: string;
+}
+
+const {
+  category,
+  title,
+  description,
+  publishAt,
+  updatedAt,
+  breadcrumbs,
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const breadcrumbItems = breadcrumbs ?? [
+  { label: 'Guides', href: '/guides/' },
+  { label: title }
+];
+
+const formatDate = (value: string) =>
+  new Intl.DateTimeFormat('en-GB', {
+    dateStyle: 'medium'
+  }).format(new Date(value));
+---
+
+<header class={`max-w-3xl ${className}`.trim()} {...rest}>
+  <nav aria-label="Breadcrumb" class="mb-5 text-sm font-medium text-slate-600">
+    <ol class="flex flex-wrap items-center gap-2">
+      {breadcrumbItems.map((crumb, index) => (
+        <li class="flex items-center gap-2">
+          {index > 0 && <span aria-hidden="true">/</span>}
+          {crumb.href ? (
+            <a
+              href={crumb.href}
+              class="hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+            >
+              {crumb.label}
+            </a>
+          ) : (
+            <span aria-current="page" class="text-slate-900">
+              {crumb.label}
+            </span>
+          )}
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-700">{category}</p>
+  <h1 class="mt-2 text-4xl font-bold text-ink-900 sm:text-5xl">{title}</h1>
+
+  {description && <p class="mt-4 text-lg leading-8 text-slate-700">{description}</p>}
+
+  {(publishAt || updatedAt) && (
+    <dl class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-600">
+      {publishAt && (
+        <div class="flex items-center gap-2">
+          <dt class="font-medium text-slate-700">Published</dt>
+          <dd>
+            <time dateTime={publishAt}>{formatDate(publishAt)}</time>
+          </dd>
+        </div>
+      )}
+      {updatedAt && (
+        <div class="flex items-center gap-2">
+          <dt class="font-medium text-slate-700">Updated</dt>
+          <dd>
+            <time dateTime={updatedAt}>{formatDate(updatedAt)}</time>
+          </dd>
+        </div>
+      )}
+    </dl>
+  )}
+</header>

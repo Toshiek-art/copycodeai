@@ -1,0 +1,16 @@
+---
+interface Props {
+  data: Record<string, unknown>;
+  class?: string;
+}
+
+const { data, class: className = '', ...rest } = Astro.props;
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+
+<script
+  type="application/ld+json"
+  class={className}
+  set:html={json}
+  {...rest}
+></script>
