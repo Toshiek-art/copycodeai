@@ -1,5 +1,5 @@
-import { createRedirectResponse, hasHoneypotValue, isValidEmail, normalizeLeadPayload, readFormValue } from '../../../_utils/form-intake.js';
-import { submitLead } from '../../../_utils/lead-provider.js';
+import { createRedirectResponse, hasHoneypotValue, isValidEmail, normalizeLeadPayload, readFormValue } from '../../_utils/form-intake.js';
+import { submitLead } from '../../_utils/lead-provider.js';
 import { getGuideDownloadBySlug } from '../../../src/data/guide-downloads.ts';
 
 const ERROR_BASE = '/guides/';
