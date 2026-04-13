@@ -4,7 +4,12 @@ import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import Section from '../../components/layout/Section.astro';
 import Container from '../../components/layout/Container.astro';
-import CTAGroup from '../../components/layout/CTAGroup.astro';
+import GuideHeader from '../../components/guides/GuideHeader.astro';
+import GuideCTA from '../../components/guides/GuideCTA.astro';
+import GuideRelatedService from '../../components/guides/GuideRelatedService.astro';
+import GuideRelatedGuides from '../../components/guides/GuideRelatedGuides.astro';
+import JsonLd from '../../components/seo/JsonLd.astro';
+import { getGuideBySlug, getRelatedGuides } from '../../data/guides';
 
 const checklistItems = [
   'there is an up-to-date data flow map',
@@ -15,35 +20,91 @@ const checklistItems = [
   'production, testing, and other data uses are clearly separated',
   'the team knows who is responsible for decisions across product, tech, and compliance'
 ];
+
+const guide = getGuideBySlug('gdpr-ai-startup');
+
+if (!guide) {
+  throw new Error('Guide metadata not found for gdpr-ai-startup');
+}
+
+const pageTitle = `${guide.title} | CopyCodeAI`;
+const breadcrumbs = [
+  { label: 'Guides', href: '/guides/' },
+  { label: guide.title }
+];
+const relatedGuides = getRelatedGuides('gdpr-ai-startup').map(({ category, title, description, href }) => ({
+  category,
+  title,
+  description,
+  href
+}));
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: guide.title,
+  description: guide.description,
+  datePublished: guide.publishAt,
+  dateModified: guide.updatedAt,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': guide.canonical
+  },
+  url: guide.canonical,
+  articleSection: guide.category,
+  author: {
+    '@type': 'Organization',
+    name: 'CopyCodeAI'
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'CopyCodeAI'
+  }
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Guides',
+      item: 'https://copycodeai.online/guides/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: guide.title,
+      item: guide.canonical
+    }
+  ]
+};
 ---
 
 <BaseLayout
-  title="GDPR for AI startups: the launch decisions that matter early | CopyCodeAI"
-  description="A practical guide to GDPR-related launch decisions for AI startups, including data flow, logging, retention, third-party providers, and pre-launch risk."
-  canonical="https://copycodeai.online/guides/gdpr-ai-startup/"
-  ogTitle="GDPR for AI startups: the launch decisions that matter early | CopyCodeAI"
-  ogDescription="A practical guide to GDPR-related launch decisions for AI startups, including data flow, logging, retention, third-party providers, and pre-launch risk."
+  title={pageTitle}
+  description={guide.description}
+  canonical={guide.canonical}
+  ogTitle={pageTitle}
+  ogDescription={guide.description}
 >
   <Navbar active="guides" />
 
-  <main id="main-content" tabindex="-1">
-    <Section variant="compact" aria-labelledby="guide-title">
-      <Container size="content">
-        <div class="mb-5 text-sm font-medium text-slate-600">
-          <a href="/guides/" class="inline-flex items-center gap-2 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
-            <span aria-hidden="true">←</span>
-            Back to guides
-          </a>
-        </div>
+  <JsonLd data={articleJsonLd} />
+  <JsonLd data={breadcrumbJsonLd} />
 
-        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-700">Guides</p>
-        <h1 id="guide-title" class="mt-2 text-4xl font-bold text-ink-900 sm:text-5xl">
-          GDPR for AI startups: the launch decisions that matter early
-        </h1>
-        <p class="mt-4 max-w-3xl text-lg text-slate-700">
-          Launching an AI feature early does not mean ignoring structure.
-          The earlier you make data flow, logging, retention, and provider decisions explicit, the less compliance debt you create later.
-        </p>
+  <main id="main-content" tabindex="-1">
+    <Section variant="compact">
+      <Container size="content">
+        <GuideHeader
+          category={guide.category}
+          title={guide.title}
+          description={guide.description}
+          publishAt={guide.publishAt}
+          updatedAt={guide.updatedAt}
+          breadcrumbs={breadcrumbs}
+        />
       </Container>
     </Section>
 
@@ -189,36 +250,33 @@ const checklistItems = [
       </Container>
     </Section>
 
-    <Section variant="compact" aria-labelledby="guide-cta-title">
+    <Section>
       <Container size="content">
-        <div class="rounded-2xl border border-slate-200 bg-slate-900 p-6 text-slate-100 shadow-soft sm:p-8 lg:p-10">
-          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-300">Next step</p>
-          <h2 id="guide-cta-title" class="mt-2 text-3xl font-semibold text-white">If the feature is already moving, map it before the next release.</h2>
-          <p class="mt-3 max-w-3xl text-slate-300">
-            A structured pre-launch blueprint or audit helps turn unclear data handling into concrete implementation decisions, so the team can move without guessing.
-          </p>
+        <GuideRelatedService
+          title="Related service"
+          label={guide.relatedService.label}
+          href={guide.relatedService.href}
+        />
+      </Container>
+    </Section>
 
-          <CTAGroup>
-            <a
-              href="/blueprint"
-              class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
-            >
-              View Blueprint
-            </a>
-            <a
-              href="/services"
-              class="inline-flex items-center justify-center rounded-xl border border-slate-600 bg-transparent px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
-            >
-              See Services
-            </a>
-            <a
-              href="/guides/"
-              class="inline-flex items-center justify-center rounded-xl border border-slate-600 bg-transparent px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
-            >
-              Back to Guides
-            </a>
-          </CTAGroup>
-        </div>
+    <Section>
+      <Container size="content">
+        <GuideRelatedGuides guides={relatedGuides} title="Related guides" />
+      </Container>
+    </Section>
+
+    <Section variant="compact">
+      <Container size="content">
+        <GuideCTA
+          eyebrow="Next step"
+          title="If the feature is already moving, map it before the next release."
+          description="A structured pre-launch blueprint or audit helps turn unclear data handling into concrete implementation decisions, so the team can move without guessing."
+          primaryLabel="View Blueprint"
+          primaryHref="/#blueprint"
+          secondaryLabel="Back to Guides"
+          secondaryHref="/guides/"
+        />
       </Container>
     </Section>
   </main>

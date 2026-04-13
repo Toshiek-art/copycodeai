@@ -4,7 +4,12 @@ import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import Section from '../../components/layout/Section.astro';
 import Container from '../../components/layout/Container.astro';
-import CTAGroup from '../../components/layout/CTAGroup.astro';
+import GuideHeader from '../../components/guides/GuideHeader.astro';
+import GuideCTA from '../../components/guides/GuideCTA.astro';
+import GuideRelatedService from '../../components/guides/GuideRelatedService.astro';
+import GuideRelatedGuides from '../../components/guides/GuideRelatedGuides.astro';
+import JsonLd from '../../components/seo/JsonLd.astro';
+import { getGuideBySlug, getRelatedGuides } from '../../data/guides';
 
 const areasToCheck = [
   {
@@ -51,41 +56,91 @@ const fixFirstItems = [
     body: 'If fixing something means touching multiple flows or components, it’s usually better to deal with it early. If it’s isolated, you can schedule it without rushing.'
   }
 ];
+
+const guide = getGuideBySlug('eaa-startup-websites');
+
+if (!guide) {
+  throw new Error('Guide metadata not found for eaa-startup-websites');
+}
+
+const pageTitle = `${guide.title} | CopyCodeAI`;
+const breadcrumbs = [
+  { label: 'Guides', href: '/guides/' },
+  { label: guide.title }
+];
+const relatedGuides = getRelatedGuides('eaa-startup-websites').map(({ category, title, description, href }) => ({
+  category,
+  title,
+  description,
+  href
+}));
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: guide.title,
+  description: guide.description,
+  datePublished: guide.publishAt,
+  dateModified: guide.updatedAt,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': guide.canonical
+  },
+  url: guide.canonical,
+  articleSection: guide.category,
+  author: {
+    '@type': 'Organization',
+    name: 'CopyCodeAI'
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'CopyCodeAI'
+  }
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Guides',
+      item: 'https://copycodeai.online/guides/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: guide.title,
+      item: guide.canonical
+    }
+  ]
+};
 ---
 
 <BaseLayout
-  title="EAA for startups: what actually matters before launch | CopyCodeAI"
-  description="A practical guide to the European Accessibility Act for startups, covering navigation, forms, content structure, and what to fix before launch."
-  canonical="https://copycodeai.online/guides/eaa-startup-websites/"
-  ogTitle="EAA for startups: what actually matters before launch | CopyCodeAI"
-  ogDescription="A practical guide to the European Accessibility Act for startups, covering navigation, forms, content structure, and what to fix before launch."
+  title={pageTitle}
+  description={guide.description}
+  canonical={guide.canonical}
+  ogTitle={pageTitle}
+  ogDescription={guide.description}
 >
   <Navbar active="guides" />
 
-  <main id="main-content" tabindex="-1">
-    <Section variant="compact" aria-labelledby="guide-title">
-      <Container size="content">
-        <div class="mb-5 text-sm font-medium text-slate-600">
-          <a href="/guides/" class="inline-flex items-center gap-2 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
-            <span aria-hidden="true">←</span>
-            Back to guides
-          </a>
-        </div>
+  <JsonLd data={articleJsonLd} />
+  <JsonLd data={breadcrumbJsonLd} />
 
-        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-700">Guides</p>
-        <h1 id="guide-title" class="mt-2 text-4xl font-bold text-ink-900 sm:text-5xl">
-          EAA for startups: what actually matters before launch
-        </h1>
-        <p class="mt-4 max-w-3xl text-lg text-slate-700">
-          Accessibility is one of those things teams often push a bit later.
-          Not because it’s ignored, but because it feels like something you can refine once the product is live.
-        </p>
-        <div class="mt-4 max-w-3xl space-y-4 text-base leading-7 text-slate-700">
-          <p>With the European Accessibility Act, that mindset starts to break.</p>
-          <p>
-            If navigation, content, forms, and feedback are not built with a minimum level of clarity from the start, you usually end up revisiting them under pressure later when the product is already moving.
-          </p>
-        </div>
+  <main id="main-content" tabindex="-1">
+    <Section variant="compact">
+      <Container size="content">
+        <GuideHeader
+          category={guide.category}
+          title={guide.title}
+          description={guide.description}
+          publishAt={guide.publishAt}
+          updatedAt={guide.updatedAt}
+          breadcrumbs={breadcrumbs}
+        />
       </Container>
     </Section>
 
@@ -189,33 +244,33 @@ const fixFirstItems = [
       </Container>
     </Section>
 
-    <Section variant="compact" aria-labelledby="guide-cta-title">
+    <Section>
       <Container size="content">
-        <div class="rounded-2xl border border-slate-200 bg-slate-900 p-6 text-slate-100 shadow-soft sm:p-8 lg:p-10">
-          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-300">Next step</p>
-          <h2 id="guide-cta-title" class="mt-2 text-3xl font-semibold text-white">Launching fast is not the problem.</h2>
-          <p class="mt-3 max-w-3xl text-slate-300">
-            Launching something you can’t stabilize later is.
-          </p>
-          <p class="mt-3 max-w-3xl text-slate-300">
-            With the EAA, the real question is not: “Is this accessible enough to launch?” It is: “Are we building something we’ll still be able to keep consistent as we scale?”
-          </p>
+        <GuideRelatedService
+          title="Related service"
+          label={guide.relatedService.label}
+          href={guide.relatedService.href}
+        />
+      </Container>
+    </Section>
 
-          <CTAGroup>
-            <a
-              href="/blueprint"
-              class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
-            >
-              View Blueprint
-            </a>
-            <a
-              href="/services"
-              class="inline-flex items-center justify-center rounded-xl border border-slate-600 bg-transparent px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
-            >
-              See Services
-            </a>
-          </CTAGroup>
-        </div>
+    <Section>
+      <Container size="content">
+        <GuideRelatedGuides guides={relatedGuides} title="Related guides" />
+      </Container>
+    </Section>
+
+    <Section variant="compact">
+      <Container size="content">
+        <GuideCTA
+          eyebrow="Next step"
+          title="Launching fast is not the problem."
+          description="Launching something you can’t stabilize later is. With the EAA, the real question is not: “Is this accessible enough to launch?” It is: “Are we building something we’ll still be able to keep consistent as we scale?”"
+          primaryLabel="View Blueprint"
+          primaryHref="/#blueprint"
+          secondaryLabel="See Services"
+          secondaryHref="/services"
+        />
       </Container>
     </Section>
   </main>
