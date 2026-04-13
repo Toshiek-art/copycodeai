@@ -75,17 +75,37 @@ export const guides: GuideEntry[] = [
 
 const guidesBySlug = new Map<GuideSlug, GuideEntry>(guides.map((guide) => [guide.slug, guide] as const));
 
+export function isGuidePublished(guideOrSlug: GuideEntry | GuideSlug, referenceDate: Date = new Date()): boolean {
+  const guide = typeof guideOrSlug === 'string' ? getGuideBySlug(guideOrSlug) : guideOrSlug;
+
+  if (!guide) {
+    return false;
+  }
+
+  return new Date(guide.publishAt).getTime() <= referenceDate.getTime();
+}
+
 export function getGuideBySlug(slug: GuideSlug): GuideEntry | null {
   return guidesBySlug.get(slug) ?? null;
 }
 
 export function getPublishedGuides(referenceDate: Date = new Date()): GuideEntry[] {
   return guides
-    .filter((guide) => new Date(guide.publishAt).getTime() <= referenceDate.getTime())
+    .filter((guide) => isGuidePublished(guide, referenceDate))
     .sort((left, right) => new Date(left.publishAt).getTime() - new Date(right.publishAt).getTime());
 }
 
-export function getRelatedGuides(slug: GuideSlug, limit = 2): GuideEntry[] {
+export function getPublishedGuideBySlug(slug: GuideSlug, referenceDate: Date = new Date()): GuideEntry | null {
+  const guide = getGuideBySlug(slug);
+
+  if (!guide || !isGuidePublished(guide, referenceDate)) {
+    return null;
+  }
+
+  return guide;
+}
+
+export function getRelatedGuides(slug: GuideSlug, limit = 2, referenceDate: Date = new Date()): GuideEntry[] {
   const guide = getGuideBySlug(slug);
 
   if (!guide) {
@@ -94,6 +114,6 @@ export function getRelatedGuides(slug: GuideSlug, limit = 2): GuideEntry[] {
 
   return guide.relatedGuides
     .map((relatedSlug) => getGuideBySlug(relatedSlug))
-    .filter((relatedGuide): relatedGuide is GuideEntry => relatedGuide !== null)
+    .filter((relatedGuide): relatedGuide is GuideEntry => relatedGuide !== null && isGuidePublished(relatedGuide, referenceDate))
     .slice(0, limit);
 }

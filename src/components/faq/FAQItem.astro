@@ -1,0 +1,17 @@
+---
+interface Props {
+  question: string;
+  answer: string;
+  class?: string;
+}
+
+const { question, answer, class: className = '', ...rest } = Astro.props;
+---
+
+<details class={`border-b border-slate-200/70 py-3 ${className}`.trim()} {...rest}>
+  <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">
+    {question}
+  </summary>
+  <p class="pt-3 text-sm text-slate-600">{answer}</p>
+</details>
+

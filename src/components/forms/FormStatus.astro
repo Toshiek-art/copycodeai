@@ -1,0 +1,25 @@
+---
+interface Props {
+  type: 'success' | 'error';
+  title: string;
+  message?: string;
+  class?: string;
+}
+
+const { type, title, message, class: className = '', ...rest } = Astro.props;
+
+const isSuccess = type === 'success';
+---
+
+<div
+  role={isSuccess ? 'status' : 'alert'}
+  aria-live={isSuccess ? 'polite' : 'assertive'}
+  class={`rounded-2xl border p-4 sm:p-5 ${isSuccess ? 'border-emerald-200 bg-emerald-50 text-emerald-950' : 'border-red-200 bg-red-50 text-red-950'} ${className}`.trim()}
+  {...rest}
+>
+  <p class="text-sm font-semibold uppercase tracking-[0.18em]">
+    {title}
+  </p>
+  {message && <p class="mt-2 text-sm leading-6">{message}</p>}
+</div>
+

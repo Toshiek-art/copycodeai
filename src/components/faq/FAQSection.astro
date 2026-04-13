@@ -1,0 +1,30 @@
+---
+import FAQItem from './FAQItem.astro';
+import type { FaqItem } from '../../data/faq';
+
+interface Props {
+  title: string;
+  intro: string;
+  items: FaqItem[];
+  id?: string;
+  class?: string;
+}
+
+const { title, intro, items, id, class: className = '', ...rest } = Astro.props;
+---
+
+<section class={`scroll-mt-24 ${className}`.trim()} aria-labelledby={id ? `${id}-title` : undefined} {...rest}>
+  <h2 id={id ? `${id}-title` : undefined} class="mb-2 text-3xl font-semibold text-ink-900">{title}</h2>
+  <p class="mb-6 text-sm text-slate-600">{intro}</p>
+
+  <div class="space-y-3">
+    {items.map((item) => (
+      <FAQItem question={item.question} answer={item.answer} />
+    ))}
+  </div>
+
+  <div class="mt-6">
+    <slot />
+  </div>
+</section>
+

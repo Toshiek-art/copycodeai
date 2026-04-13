@@ -5,10 +5,19 @@ import Footer from '../components/Footer.astro';
 import Section from '../components/layout/Section.astro';
 import Container from '../components/layout/Container.astro';
 import CTAGroup from '../components/layout/CTAGroup.astro';
+import FAQSection from '../components/faq/FAQSection.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import { getFaqGroupByKey } from '../data/faq';
+import { buildFaqPageJsonLd } from '../lib/faq-schema';
 
 const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
 const briefHref =
   'mailto:hello@copycodeai.online?subject=' + encodeURIComponent('AI Feature Integration Request');
+const faqGroup = getFaqGroupByKey('aiFeatureIntegration');
+const faqJsonLd = buildFaqPageJsonLd({
+  pageUrl: 'https://copycodeai.online/ai-feature-integration',
+  group: faqGroup
+});
 ---
 
 <BaseLayout
@@ -96,52 +105,9 @@ const briefHref =
 
         <div class="mt-14 border-t border-slate-200/60 pt-10 md:mt-16"></div>
 
-        <section aria-labelledby="faq-title" class="scroll-mt-24">
-          <h2 id="faq-title" class="mb-2 text-3xl font-semibold text-ink-900">FAQ</h2>
-          <p class="mb-6 text-sm text-slate-600">Quick answers on scope, compliance boundaries, and delivery.</p>
-
-          <div class="space-y-3">
-            <details class="border-b border-slate-200/70 py-3">
-              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Do you build chatbots?</summary>
-              <p class="pt-3 text-sm text-slate-600">Only when it solves a real workflow. The focus is automation, not demos.</p>
-            </details>
-
-            <details class="border-b border-slate-200/70 py-3">
-              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">What platforms do you integrate with?</summary>
-              <p class="pt-3 text-sm text-slate-600">Scope-dependent. Typical integrations include email, helpdesk, CRM, internal tools, and APIs.</p>
-            </details>
-
-            <details class="border-b border-slate-200/70 py-3">
-              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">How do you handle personal data?</summary>
-              <p class="pt-3 text-sm text-slate-600">By minimizing data and defining clear boundaries aligned with GDPR principles. Not legal advice.</p>
-            </details>
-
-            <details class="border-b border-slate-200/70 py-3">
-              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Do you host the AI?</summary>
-              <p class="pt-3 text-sm text-slate-600">It depends on your stack. I can integrate with provider-hosted services or your infrastructure.</p>
-            </details>
-
-            <details class="border-b border-slate-200/70 py-3">
-              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">What do you need from us?</summary>
-              <p class="pt-3 text-sm text-slate-600">Workflow description, inputs/outputs, tools, access, and technical constraints.</p>
-            </details>
-
-            <details class="border-b border-slate-200/70 py-3">
-              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">Can this start without high volume?</summary>
-              <p class="pt-3 text-sm text-slate-600">Yes. We prioritize highest-leverage automation first and keep scope lean.</p>
-            </details>
-
-            <details class="border-b border-slate-200/70 py-3">
-              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">What about reliability?</summary>
-              <p class="pt-3 text-sm text-slate-600">Guardrails, validation, and fallback behavior are implemented where needed.</p>
-            </details>
-
-            <details class="border-b border-slate-200/70 py-3">
-              <summary class="cursor-pointer py-1 font-medium leading-relaxed text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2">How is scope fixed?</summary>
-              <p class="pt-3 text-sm text-slate-600">By agreeing specific workflow(s) and deliverables within the delivery window.</p>
-            </details>
-          </div>
-        </section>
+        <FAQSection id="faq" title={faqGroup.title} intro={faqGroup.intro} items={faqGroup.items}>
+          <JsonLd data={faqJsonLd} />
+        </FAQSection>
 
         <section class="mt-12 md:mt-16" aria-labelledby="final-cta-title">
           <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm md:p-10">

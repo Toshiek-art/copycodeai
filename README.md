@@ -13,19 +13,58 @@ Important: this site describes technical implementation and compliance-aware eng
 src/
   components/
     Footer.astro
+    forms/
+      CheckboxField.astro
+      ConsultationForm.astro
+      FormField.astro
+      FormStatus.astro
+      GuideDownloadForm.astro
     Hero.astro
     HowItWorks.astro
     MiniScenarios.astro
     Navbar.astro
     ServiceCards.astro
+    guides/
+      GuideCTA.astro
+      GuideCard.astro
+      GuideHeader.astro
+      GuideRelatedGuides.astro
+      GuideRelatedService.astro
   layouts/
     BaseLayout.astro
+  data/
+    faq.ts
+    guide-downloads.ts
+    guides.ts
+  lib/
+    faq-schema.ts
   pages/
+    ai-feature-integration.astro
+    compliance-ready-landing.astro
     contact.astro
+    guides/
+      data-flow-ai-feature.astro
+      eaa-startup-websites.astro
+      gdpr-ai-startup.astro
     index.astro
+    privacy.astro
     services.astro
   styles/
     global.css
+functions/
+  _utils/
+    form-intake.js
+    lead-provider.js
+  api/
+    forms/
+      consultation.js
+      guide-download.js
+    admin/
+      offer/
+        tallinn-landing/
+          decrement.js
+    offer/
+      tallinn-landing.js
 ```
 
 ## Local Development
@@ -47,7 +86,7 @@ npm run build
 4. Deploy.
 
 Notes:
-- No server is required for v1.
+- Static pages are still the default delivery model, but the site now also uses Cloudflare Pages Functions for lead intake and guide downloads.
 - Site has no public admin page and no admin links in public navigation.
 - If an internal admin area is introduced, protect it behind Cloudflare Zero Trust Access.
 
@@ -70,45 +109,35 @@ curl -X POST https://<your-domain>/api/admin/offer/tallinn-landing/decrement \\
   -H "Authorization: Bearer <ADMIN_TOKEN>"
 ```
 
-## Contact Strategy (v1)
+## Lead Intake and Download Flows
 
-- Default contact: `mailto:` with prefilled subject/body template.
-- Optional scheduling: external booking URL.
-- No database storage for contact data in v1.
+- Primary contact intake: `src/components/forms/ConsultationForm.astro` posts to `POST /api/forms/consultation`.
+- Guide download bonus flow: `src/components/forms/GuideDownloadForm.astro` posts to `POST /api/forms/guide-download`.
+- Shared server helpers live in `functions/_utils/form-intake.js` and `functions/_utils/lead-provider.js`.
+- Provider selection is controlled with `LEAD_PROVIDER=mock|brevo`.
+- Local development uses the mock provider; Brevo requires `BREVO_API_KEY` and optional `BREVO_LIST_IDS`.
+- The site itself does not keep a dedicated submissions database.
+- Guide PDF assets are expected under `public/downloads/guides/` when they are available. At the moment, the repository snapshot does not include those PDFs yet.
 
-## Optional Form Strategy (v2)
+## Contact Strategy
 
-If you later add a contact form:
-- Add Cloudflare Turnstile widget on the client.
-- Verify Turnstile token in a Cloudflare Worker endpoint.
-- Include honeypot field and rate-limit assumptions.
-- Do not persist personal data beyond forwarding the message.
+- Primary contact: the consultation form on `/contact`.
+- Fallbacks: `mailto:` with prefilled subject/body template and external scheduling via Calendly.
+- No public admin page or internal dashboard is exposed in navigation.
 
-Minimal Worker verification placeholder:
+## Form Behavior
 
-```js
-export default {
-  async fetch(request, env) {
-    if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405 });
+- Forms are native HTML forms.
+- Server-side validation checks required fields and honeypots.
+- Successful submits redirect back with a query-string status.
+- Lead forwarding is handled by Cloudflare Pages Functions and the configured provider adapter.
 
-    const data = await request.json();
-    const { turnstileToken, honeypot } = data;
-    if (honeypot) return new Response('Spam blocked', { status: 400 });
+Minimal Pages Functions flow:
 
-    const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method: 'POST',
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        secret: env.TURNSTILE_SECRET,
-        response: turnstileToken,
-      }),
-    });
-
-    const verifyData = await verifyRes.json();
-    if (!verifyData.success) return new Response('Verification failed', { status: 400 });
-
-    // Forward message to email provider/webhook and return success.
-    return new Response('OK', { status: 200 });
-  },
-};
+```text
+1. Read form data server-side.
+2. Validate required fields and honeypot.
+3. Normalize the payload.
+4. Forward the lead to the configured provider.
+5. Redirect back with success or error state.
 ```

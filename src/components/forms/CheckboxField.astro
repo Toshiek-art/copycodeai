@@ -1,0 +1,46 @@
+---
+interface Props {
+  name: string;
+  label: string;
+  value?: string;
+  checked?: boolean;
+  hint?: string;
+  error?: string;
+  class?: string;
+}
+
+const { name, label, value = 'on', checked = false, hint, error, class: className = '', ...rest } = Astro.props;
+const inputId = `checkbox-${name}`;
+const describedByIds = [hint ? `${inputId}-hint` : null, error ? `${inputId}-error` : null].filter(Boolean).join(' ') || undefined;
+---
+
+<div class={`space-y-2 ${className}`.trim()} {...rest}>
+  <div class="flex items-start gap-3">
+    <input
+      id={inputId}
+      name={name}
+      type="checkbox"
+      value={value}
+      checked={checked}
+      aria-invalid={error ? 'true' : 'false'}
+      aria-describedby={describedByIds}
+      class="mt-1 h-4 w-4 rounded border-slate-300 text-brand-700 focus:ring-2 focus:ring-brand-100"
+    />
+    <label for={inputId} class="text-sm leading-6 text-slate-800">
+      {label}
+    </label>
+  </div>
+
+  {hint && (
+    <p id={`${inputId}-hint`} class="text-sm leading-6 text-slate-600">
+      {hint}
+    </p>
+  )}
+
+  {error && (
+    <p id={`${inputId}-error`} class="text-sm font-medium text-red-700">
+      {error}
+    </p>
+  )}
+</div>
+
