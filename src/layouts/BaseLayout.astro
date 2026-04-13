@@ -7,6 +7,7 @@ interface Props {
   title?: string;
   description?: string;
   canonical?: string;
+  robots?: string;
   ogTitle?: string;
   ogDescription?: string;
   metaRefresh?: string;
@@ -18,6 +19,7 @@ const {
   title = 'Launch engineering for European startups | CopyCodeAI',
   description = 'Launch engineering for early-stage European startups: MVPs, landing pages, AI features, and GDPR/EAA-aware implementation support.',
   canonical,
+  robots = 'index, follow',
   ogTitle = title,
   ogDescription = description,
   metaRefresh,
@@ -32,7 +34,7 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={robots} />
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png" />
     <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
