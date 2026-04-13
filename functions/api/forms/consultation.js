@@ -1,5 +1,5 @@
-import { createRedirectResponse, hasHoneypotValue, isValidEmail, isValidPhone, normalizeLeadPayload, readFormValue } from '../../_utils/form-intake.js';
-import { submitLead } from '../../_utils/lead-provider.js';
+import { createRedirectResponse, hasHoneypotValue, isValidEmail, isValidPhone, normalizeLeadPayload, readFormValue } from '../../../_utils/form-intake.js';
+import { submitLead } from '../../../_utils/lead-provider.js';
 
 function hasRequiredText(value) {
   return typeof value === 'string' && value.trim().length > 0;
