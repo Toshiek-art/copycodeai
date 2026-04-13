@@ -14,23 +14,23 @@ import { getGuideBySlug, getRelatedGuides } from '../../data/guides';
 const areasToCheck = [
   {
     title: 'Navigation',
-    body: 'Navigation is about not losing people along the way. If moving through the product requires effort, something is off.'
+    body: 'Check whether a keyboard user can move through the product without losing context or needing to guess the next step.'
   },
   {
     title: 'Content',
-    body: 'Content is about making things easy to read and follow. Structure matters more than wording here.'
+    body: 'Check whether headings, summaries, and copy make the page easy to scan and understand in a consistent order.'
   },
   {
     title: 'Forms',
-    body: 'Forms are where friction becomes visible very quickly. If users hesitate or don’t know how to recover from an error, the flow is already fragile.'
+    body: 'Check whether labels, hints, errors, and recovery states make the flow understandable before the user gets stuck.'
   },
   {
     title: 'Feedback',
-    body: 'Feedback is what keeps the experience understandable. When something happens, the product should make it obvious.'
+    body: 'Check whether loading, success, and error states are obvious enough to be understood without relying on color alone.'
   },
   {
     title: 'Hierarchy',
-    body: 'Hierarchy is what ties all of this together. It’s what makes the interface feel coherent instead of just visually arranged.'
+    body: 'Check whether the same structure is used across pages so the interface feels stable instead of improvised.'
   }
 ];
 
@@ -41,19 +41,19 @@ const fixFirstItems = [
   },
   {
     title: 'Then look at interactions',
-    body: 'Error handling, feedback, consistency between flows—these shape everyday usage.'
+    body: 'Error handling, feedback, and consistency between flows shape everyday usage. If they vary across pages, the structure is already doing extra work.'
   },
   {
     title: 'Visual adjustments can often wait',
-    body: 'Visual adjustments can often wait, as long as they’re not blocking basic interaction.'
+    body: 'Visual adjustments can often wait, as long as they are not blocking basic interaction or recovery.'
   },
   {
     title: 'Separate deep issues from surface issues',
-    body: 'What matters is recognizing what sits deep in the system and what stays on the surface.'
+    body: 'What matters is recognizing what sits deep in the system and what stays on the surface. Repeated patterns are rarely surface-only issues.'
   },
   {
     title: 'Fix early when changes spread',
-    body: 'If fixing something means touching multiple flows or components, it’s usually better to deal with it early. If it’s isolated, you can schedule it without rushing.'
+    body: 'If fixing something means touching multiple flows or components, it is usually better to deal with it early. If it is isolated, you can schedule it without rushing.'
   }
 ];
 
@@ -167,6 +167,40 @@ const breadcrumbJsonLd = {
             </div>
           </section>
 
+          <section aria-labelledby="eaa-scope-title" class="not-prose mt-12">
+            <div class="rounded-2xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Quick scope check</p>
+              <h2 id="eaa-scope-title" class="mt-2 text-3xl font-semibold text-ink-900">What this covers, what it doesn’t, and who it’s for</h2>
+              <div class="mt-6 grid gap-4 lg:grid-cols-3">
+                <div class="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
+                  <h3 class="text-base font-semibold text-ink-900">What this covers</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-700">
+                    Practical EAA readiness for startup websites and digital products: structure, forms, navigation, and launch decisions.
+                  </p>
+                </div>
+                <div class="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
+                  <h3 class="text-base font-semibold text-ink-900">What it doesn’t</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-700">
+                    Legal certification, a one-size-fits-all compliance claim, or the assumption that every startup is automatically in scope.
+                  </p>
+                </div>
+                <div class="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
+                  <h3 class="text-base font-semibold text-ink-900">Who it’s for</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-700">
+                    Founders, product teams, and small technical teams shipping in the EU who need a structural pass before launch.
+                  </p>
+                </div>
+              </div>
+              <p class="mt-5 text-sm leading-6 text-slate-700">
+                In Italy, keep 28 June 2025 in view as the practical application date. If your product or service may fall in scope, verify the exact case instead of assuming it is covered or excluded.
+              </p>
+              <ul class="mt-4 grid gap-2 text-sm leading-6 text-slate-700 sm:grid-cols-2">
+                <li class="rounded-xl border border-brand-100 bg-white px-4 py-3 shadow-soft">Examples in scope can include startup websites, customer portals, SaaS interfaces, and other digital flows the user actually needs to complete.</li>
+                <li class="rounded-xl border border-brand-100 bg-white px-4 py-3 shadow-soft">Edge cases, exemptions, and service-specific obligations should be checked case by case rather than assumed from the label alone.</li>
+              </ul>
+            </div>
+          </section>
+
           <section aria-labelledby="product-changes-title" class="not-prose mt-12">
             <h2 id="product-changes-title" class="text-3xl font-semibold text-ink-900">What actually changes for startup websites and digital products</h2>
             <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
@@ -181,11 +215,62 @@ const breadcrumbJsonLd = {
             </div>
           </section>
 
+          <section aria-labelledby="standards-title" class="not-prose mt-12">
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Practical anchors</p>
+              <h2 id="standards-title" class="mt-2 text-3xl font-semibold text-ink-900">Use WCAG 2.2 and EN 301 549 as the working reference points</h2>
+              <div class="mt-4 space-y-4 text-base leading-7 text-slate-700">
+                <p>The goal is not to turn the guide into a standards summary. The goal is to keep the product decisions grounded in a workable accessibility baseline.</p>
+                <p>WCAG 2.2 is the practical checklist for behavior, structure, and interaction. EN 301 549 is the broader European reference when you need a more formal anchor for digital products and services.</p>
+                <p>Use them to ask simple questions: can users move through the interface with a keyboard, understand the content order, recover from errors, and recognize what changed?</p>
+              </div>
+              <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  Keyboard access and focus order
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  Labels, forms, and error recovery
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  Semantics and heading hierarchy
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  Consistent feedback and state changes
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section aria-labelledby="product-checks-title" class="not-prose mt-12">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-soft">
+              <h2 id="product-checks-title" class="text-3xl font-semibold text-ink-900">What to check before launch</h2>
+              <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">Before launch, you do not need to overanalyze everything. But there are a few checks that should be clear enough to answer without guessing.</p>
+              <ul class="mt-6 grid gap-3">
+                <li class="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-700 text-[11px] font-semibold leading-none text-white">✓</span>
+                  <span>Can a keyboard user move through the main flow without getting stuck?</span>
+                </li>
+                <li class="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-700 text-[11px] font-semibold leading-none text-white">✓</span>
+                  <span>Do headings describe the content in a way that makes the page easy to scan?</span>
+                </li>
+                <li class="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-700 text-[11px] font-semibold leading-none text-white">✓</span>
+                  <span>Do forms explain errors clearly and let users recover without starting over?</span>
+                </li>
+                <li class="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-700 text-[11px] font-semibold leading-none text-white">✓</span>
+                  <span>Are focus states and feedback visible when something changes?</span>
+                </li>
+              </ul>
+            </div>
+          </section>
+
           <section aria-labelledby="mistakes-title" class="not-prose mt-12">
             <h2 id="mistakes-title" class="text-3xl font-semibold text-ink-900">The structural mistakes teams make before launch</h2>
             <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
               <p>Accessibility problems rarely come from one big mistake. They usually build up through small decisions that no one revisits.</p>
-              <p>A navigation that slightly changes across pages. A component reused in different ways depending on context. A layout that looks fine but doesn’t translate well outside the visual layer. Forms that technically work, but leave users guessing when something fails.</p>
+              <p>A navigation that slightly changes across pages. A component reused in different ways depending on context. A layout that looks fine but does not translate well outside the visual layer. Forms that technically work, but leave users guessing when something fails.</p>
               <p>Another common pattern is treating accessibility as a final step.</p>
               <p>You adjust contrast, spacing, labels… but leave structure as it is.</p>
               <p>So the product looks fine at a glance. But the same friction points keep showing up underneath.</p>
@@ -196,7 +281,7 @@ const breadcrumbJsonLd = {
           <section aria-labelledby="areas-title" class="not-prose mt-12">
             <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
               <h2 id="areas-title" class="text-3xl font-semibold text-ink-900">The areas to check: navigation, content, forms, feedback, hierarchy</h2>
-              <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">Before launch, you don’t need to overanalyze everything. But there are a few areas where it’s worth slowing down and checking properly.</p>
+              <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">Before launch, you do not need to overanalyze everything. But there are a few areas where it is worth slowing down and checking properly.</p>
 
               <div class="mt-6 grid gap-4">
                 {areasToCheck.map((item) => (
@@ -219,6 +304,26 @@ const breadcrumbJsonLd = {
               <p>Not everything needs to be perfect before launch. But some things become much harder to change once the product grows.</p>
             </div>
 
+            <div class="mt-6 grid gap-4 lg:grid-cols-2">
+              <div class="rounded-2xl border border-brand-200 bg-brand-50 p-5 shadow-soft">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">Fix now</p>
+                <ul class="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+                  <li>Navigation patterns and heading hierarchy</li>
+                  <li>Form structure, labels, and error recovery</li>
+                  <li>Focus order and visible state changes</li>
+                  <li>Repeated inconsistencies across shared components</li>
+                </ul>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">Can wait</p>
+                <ul class="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+                  <li>Purely visual refinements that do not change interaction</li>
+                  <li>Polish that does not affect understanding or recovery</li>
+                  <li>Non-blocking styling tweaks once the structure is stable</li>
+                </ul>
+              </div>
+            </div>
+
             <div class="mt-6 grid gap-4">
               {fixFirstItems.map((item) => (
                 <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
@@ -238,6 +343,7 @@ const breadcrumbJsonLd = {
               <p>What helps instead is stepping back and looking at the system as a whole.</p>
               <p>Not a full redesign—just a clear pass on patterns, components, and rules. What should behave consistently? What needs to be simplified? What should be aligned?</p>
               <p>Because in practice, accessibility is less about fixing individual elements and more about reducing inconsistency across the product.</p>
+              <p>If the team needs more than one pass to explain the flow, the structure is not ready yet. At that point, the answer is usually a structural intervention, not another visual tweak.</p>
             </div>
           </section>
         </article>
