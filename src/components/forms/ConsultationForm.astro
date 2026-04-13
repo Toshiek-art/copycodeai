@@ -1,0 +1,83 @@
+---
+import FormField from './FormField.astro';
+import CheckboxField from './CheckboxField.astro';
+
+interface Props {
+  action?: string;
+  method?: string;
+  class?: string;
+}
+
+const { action = '/api/forms/consultation', method = 'post', class: className = '', ...rest } = Astro.props;
+---
+
+<form action={action} method={method} class={`space-y-6 ${className}`.trim()} {...rest}>
+  <div class="grid gap-5 sm:grid-cols-2">
+    <FormField
+      name="firstName"
+      label="First name"
+      autocomplete="given-name"
+      required
+    />
+    <FormField
+      name="lastName"
+      label="Last name"
+      autocomplete="family-name"
+      required
+    />
+  </div>
+
+  <FormField
+    name="email"
+    label="Email"
+    type="email"
+    autocomplete="email"
+    required
+  />
+
+  <FormField
+    name="phone"
+    label="Phone"
+    type="tel"
+    autocomplete="tel"
+    required
+  />
+
+  <FormField
+    name="company"
+    label="Company"
+    autocomplete="organization"
+    hint="Optional, but useful for scope and context."
+  />
+
+  <FormField
+    name="website"
+    label="Website"
+    autocomplete="url"
+    hint="Optional website or project URL."
+  />
+
+  <FormField
+    name="message"
+    label="Project brief"
+    as="textarea"
+    rows={5}
+    hint="Tell me what you want to build or improve."
+  />
+
+  <CheckboxField
+    name="marketingOptIn"
+    label="I’d like to receive occasional updates about relevant services and guides."
+    hint="Optional. You can leave this unchecked."
+  />
+
+  <input type="hidden" name="websiteHp" value="" aria-hidden="true" tabindex="-1" />
+  <input type="hidden" name="privacyAccepted" value="true" />
+
+  <button
+    type="submit"
+    class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+  >
+    Send request
+  </button>
+</form>
