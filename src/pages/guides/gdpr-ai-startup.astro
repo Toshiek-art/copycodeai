@@ -12,13 +12,14 @@ import JsonLd from '../../components/seo/JsonLd.astro';
 import { getGuideBySlug, getRelatedGuides } from '../../data/guides';
 
 const checklistItems = [
-  'there is an up-to-date data flow map',
-  'processing purposes are clearly defined',
-  'the legal basis aligns with how the feature actually works',
-  'you know which third parties receive data and at what point',
+  'the team has a current data flow map they can actually use',
+  'one person owns the flow, and the review roles are written down',
+  'the purposes and legal basis match how the feature works in practice',
+  'you know which vendors touch the data and what they are allowed to do',
+  'you know whether a DPIA review is needed before launch',
   'logging, retention, and debugging follow explicit rules',
-  'production, testing, and other data uses are clearly separated',
-  'the team knows who is responsible for decisions across product, tech, and compliance'
+  'user-facing transparency matches the real processing',
+  'production, testing, and other data uses are clearly separated'
 ];
 
 const guide = getGuideBySlug('gdpr-ai-startup');
@@ -152,6 +153,24 @@ const breadcrumbJsonLd = {
                 The feature looks small, but the actual data flow is far more extensive.
               </p>
               <p>And if you don’t clearly know where data travels, for what purpose, and under whose control, you’re already accumulating risk.</p>
+              <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
+                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-700">Input</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-700">A prompt, file, form field, or request enters the product and starts the flow.</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
+                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-700">Handoff</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-700">The data moves through backend code, providers, or tools that may see more than one team expects.</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
+                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-700">Storage</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-700">Logs, staging, analytics, and debugging copies should have a clear reason to exist.</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
+                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-700">Reuse</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-700">Any secondary use should be deliberate, visible, and documented before it becomes normal.</p>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -184,6 +203,23 @@ const breadcrumbJsonLd = {
               </div>
 
               <p>Making these decisions before launch doesn’t necessarily slow you down. In many cases, it prevents having to fix the product once it’s already in motion.</p>
+              <div class="mt-6 grid gap-4 lg:grid-cols-2">
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+                  <h3 class="text-lg font-semibold text-ink-900">Who owns what</h3>
+                  <ul class="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+                    <li><strong class="font-semibold text-ink-900">Product:</strong> the purpose and the user-facing flow</li>
+                    <li><strong class="font-semibold text-ink-900">Tech:</strong> the actual data path, logging, and retention</li>
+                    <li><strong class="font-semibold text-ink-900">Ops / compliance:</strong> vendors, contracts, and transfers</li>
+                    <li><strong class="font-semibold text-ink-900">Launch owner:</strong> can stop the rollout if the flow is not clear</li>
+                  </ul>
+                </div>
+                <div class="rounded-2xl border border-brand-200 bg-brand-50 p-5 shadow-soft">
+                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">DPIA trigger</p>
+                  <p class="mt-3 text-sm leading-6 text-slate-700">
+                    If the feature starts profiling people, handling sensitive data, combining sources, or changing how data is reused, pause and check whether a DPIA review is needed before launch.
+                  </p>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -196,6 +232,16 @@ const breadcrumbJsonLd = {
                 Then there’s uncontrolled data reuse: data collected for one purpose ends up being used for internal testing, secondary analysis, or system improvement without a clearly defined transition.
               </p>
               <p>The same applies to quickly integrated external providers, without a full understanding of the data flow.</p>
+              <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
+                  <h3 class="text-base font-semibold text-ink-900">Vendors and contracts</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-700">Know who is a processor, who is a subprocessor, and what the agreement allows them to do with the data.</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
+                  <h3 class="text-base font-semibold text-ink-900">Transfers and transparency</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-700">Check where the data goes, how users are told about it, and whether the real flow matches the wording.</p>
+                </div>
+              </div>
               <p>Another classic issue is environment confusion. Production data used in staging, debug logs kept too long, outputs stored “just in case.” Each compromise seems harmless. Together, they create opacity.</p>
               <p>
                 And then there’s the most underestimated issue: lack of meaningful documentation.
@@ -204,11 +250,43 @@ const breadcrumbJsonLd = {
             </div>
           </section>
 
+          <section aria-labelledby="llm-title" class="not-prose mt-12">
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">AI models / LLM</p>
+              <h2 id="llm-title" class="mt-2 text-3xl font-semibold text-ink-900">What changed when the model entered the flow</h2>
+              <div class="mt-4 space-y-4 text-base leading-7 text-slate-700">
+                <p>With LLMs, the flow is easier to extend and easier to misunderstand at the same time. Prompts, outputs, logs, and provider terms can all matter at once.</p>
+                <p>The practical question is not just whether the model works. It is whether you know what it sees, what it keeps, and what happens when the output is reused elsewhere.</p>
+              </div>
+              <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  Prompts can contain personal data, so treat them like part of the flow.
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  Logs and retries may preserve more than the visible response.
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  Reuse, fine-tuning, or provider defaults should be checked explicitly.
+                </div>
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
+                  External model terms can change the real boundary of the processing.
+                </div>
+              </div>
+            </div>
+          </section>
+
           <section aria-labelledby="checklist-title" class="not-prose mt-12">
             <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
               <h2 id="checklist-title" class="text-3xl font-semibold text-ink-900">The minimum checklist before go-live</h2>
               <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">Before going live, you don’t need paranoia. You need clarity.</p>
               <p class="mt-3 text-base leading-7 text-slate-700">At a minimum, check this:</p>
+
+              <div class="mt-5 rounded-2xl border border-brand-200 bg-white p-5 shadow-soft">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">Simple example</p>
+                <p class="mt-3 text-sm leading-6 text-slate-700">
+                  A support assistant receives a user message, sends it to an external model, keeps a debug log for a short time, and returns an answer to the user. Before launch, you should know who owns that flow, which vendor sees the data, how long the log stays, and whether the wording shown to users matches the real processing.
+                </p>
+              </div>
 
               <ul class="mt-6 grid gap-3">
                 {checklistItems.map((item) => (
