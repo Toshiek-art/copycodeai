@@ -2,7 +2,8 @@ import { DEFAULT_OFFER, getOrSeedOffer, toPublicOffer } from '../../_utils/offer
 
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
-  'Cache-Control': 'no-store'
+  'Cache-Control': 'no-store',
+  'X-Robots-Tag': 'noindex, nofollow'
 };
 
 function jsonOfferResponse(offer) {
