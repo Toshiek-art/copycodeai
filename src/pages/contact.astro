@@ -17,36 +17,6 @@ const mailtoHref =
   );
 
 const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
-
-const contactState = Astro.url.searchParams.get('contact');
-const contactError = Astro.url.searchParams.get('error');
-const bookingState = Astro.url.searchParams.get('booking');
-const successStatus =
-  contactState === 'success'
-    ? {
-        type: 'success' as const,
-        title: 'Thanks, we got it',
-        message:
-          'Your consultation request has been received. We’ll review it and reply as soon as possible, usually by email first.'
-      }
-    : bookingState === 'success'
-      ? {
-          type: 'success' as const,
-          title: 'Call booked',
-          message: 'Your call is booked. You should already have the confirmation in your inbox, or it will arrive there shortly with the calendar details.'
-        }
-      : null;
-
-const errorStatus =
-  contactState === 'error'
-    ? {
-        type: 'error' as const,
-        title: 'Request not sent',
-        message: contactError
-          ? 'Something in the form was missing or invalid. Please check the fields below and send it again.'
-          : 'Something went wrong on our side. You can try again or use email and Calendly below.'
-      }
-    : null;
 ---
 
 <BaseLayout
@@ -70,16 +40,49 @@ const errorStatus =
 
     <Section class="pb-8 sm:pb-10" aria-labelledby="contact-intake-title">
       <Container size="wide">
-        {successStatus && (
+        <div class="mb-8 space-y-4">
           <div
-            class="mb-8 rounded-3xl border-4 border-red-600 bg-red-50 p-6 text-red-950 shadow-2xl"
+            id="contact-status-success"
+            hidden
+            tabindex="-1"
+            class="rounded-3xl border-4 border-emerald-300 bg-emerald-50 p-6 text-emerald-950 shadow-2xl"
             role="status"
             aria-live="polite"
           >
-            <p class="text-sm font-black uppercase tracking-[0.28em] text-red-700">{successStatus.title}</p>
-            {successStatus.message && <p class="mt-3 text-2xl font-semibold leading-tight sm:text-3xl">{successStatus.message}</p>}
+            <p class="text-sm font-black uppercase tracking-[0.28em] text-emerald-700">Thanks, we got it</p>
+            <p class="mt-3 text-2xl font-semibold leading-tight sm:text-3xl">
+              Your consultation request has been received. We’ll review it and reply as soon as possible, usually by email first.
+            </p>
           </div>
-        )}
+
+          <div
+            id="contact-status-error"
+            hidden
+            tabindex="-1"
+            class="rounded-2xl border border-red-200 bg-red-50 p-4 text-red-950 shadow-soft sm:p-5"
+            role="alert"
+            aria-live="assertive"
+          >
+            <p class="text-sm font-semibold uppercase tracking-[0.18em]">Request not sent</p>
+            <p class="mt-2 text-sm leading-6">
+              Something in the form was missing or invalid. Please check the fields below and send it again. If that is easier, you can also use email or Calendly.
+            </p>
+          </div>
+
+          <div
+            id="contact-status-booking"
+            hidden
+            tabindex="-1"
+            class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-950 shadow-soft sm:p-5"
+            role="status"
+            aria-live="polite"
+          >
+            <p class="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-700">Call booked</p>
+            <p class="mt-2 text-sm leading-6">
+              Your call is booked. You should already have the confirmation in your inbox, or it will arrive there shortly with the calendar details.
+            </p>
+          </div>
+        </div>
 
         <div class="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(320px,1fr)]">
           <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8 lg:p-10">
@@ -89,14 +92,34 @@ const errorStatus =
               Share the basics and we’ll use it to decide whether email, a short call, or a more structured review is the right next step.
             </p>
 
-            {errorStatus && (
-              <div class="mt-6">
-                <FormStatus {...errorStatus} class="shadow-soft ring-1 ring-inset ring-black/5" />
-              </div>
-            )}
-
             <div class="mt-6">
-              <ConsultationForm />
+              <FormStatus
+                type="error"
+                title="Request not sent"
+                message="Something in the form was missing or invalid. Please check the fields below and send it again. If that is easier, you can also use email or Calendly."
+                class="shadow-soft ring-1 ring-inset ring-black/5"
+                hidden
+                data-contact-status="error"
+              />
+              <FormStatus
+                type="success"
+                title="Thanks, we got it"
+                message="Your consultation request has been received. We’ll review it and reply as soon as possible, usually by email first."
+                class="shadow-soft ring-1 ring-inset ring-black/5"
+                hidden
+                data-contact-status="success"
+              />
+              <FormStatus
+                type="success"
+                title="Call booked"
+                message="Your call is booked. You should already have the confirmation in your inbox, or it will arrive there shortly with the calendar details."
+                class="shadow-soft ring-1 ring-inset ring-black/5"
+                hidden
+                data-contact-status="booking"
+              />
+              <div class="mt-6">
+                <ConsultationForm />
+              </div>
             </div>
           </div>
 
@@ -127,4 +150,35 @@ const errorStatus =
   </main>
 
   <Footer />
+  <script is:inline>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const contact = params.get('contact');
+      const booking = params.get('booking');
+
+      let target = null;
+      if (contact === 'success') {
+        target = 'success';
+      } else if (contact === 'error') {
+        target = 'error';
+      } else if (booking === 'success') {
+        target = 'booking';
+      }
+
+      if (!target) {
+        return;
+      }
+
+      const banner = document.querySelector(`[data-contact-status="${target}"]`);
+      if (!banner) {
+        return;
+      }
+
+      banner.hidden = false;
+      banner.scrollIntoView({ block: 'start', behavior: 'auto' });
+      if (typeof banner.focus === 'function') {
+        banner.focus({ preventScroll: true });
+      }
+    })();
+  </script>
 </BaseLayout>
