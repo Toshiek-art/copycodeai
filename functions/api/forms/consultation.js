@@ -36,6 +36,23 @@ function buildConsultationNotificationText(payload) {
   return lines.join('\n');
 }
 
+function buildConsultationConfirmationText(payload) {
+  const lines = [
+    'Thanks for reaching out to CopyCode AI.',
+    '',
+    'We received your consultation request and will review it as soon as possible.',
+    'If we need anything else, we will reply by email.',
+    '',
+    `Email: ${payload.contact.email}`
+  ];
+
+  if (payload.content.company) {
+    lines.push(`Company: ${payload.content.company}`);
+  }
+
+  return lines.join('\n');
+}
+
 export async function onRequestPost(context) {
   const formData = await context.request.formData();
 
@@ -133,6 +150,22 @@ export async function onRequestPost(context) {
       );
     } catch {
       // Keep the user-facing success flow intact if notification delivery fails.
+    }
+  }
+
+  if (leadResult.provider === 'brevo' && context.env?.BREVO_SENDER_EMAIL && context.env?.BREVO_API_KEY) {
+    try {
+      await sendBrevoTransactionalEmail(
+        {
+          to: payload.contact.email,
+          bcc: [],
+          subject: 'We received your consultation request',
+          textContent: buildConsultationConfirmationText(payload)
+        },
+        context.env || {}
+      );
+    } catch {
+      // Keep the user-facing success flow intact if the confirmation email fails.
     }
   }
 

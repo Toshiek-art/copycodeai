@@ -95,7 +95,8 @@ export async function sendBrevoTransactionalEmail(message, env = {}) {
   const senderEmail = toTrimmedString(env?.BREVO_SENDER_EMAIL);
   const senderName = parseBrevoSenderName(env);
   const recipients = toEmailRecipientList(message?.to);
-  const bccRecipients = toEmailRecipientList(env?.NOTIFICATION_EMAIL_BCC);
+  const bccRecipients =
+    message?.bcc !== undefined ? toEmailRecipientList(message.bcc) : toEmailRecipientList(env?.NOTIFICATION_EMAIL_BCC);
   const subject = toTrimmedString(message?.subject);
   const textContent = toTrimmedString(message?.textContent);
 
