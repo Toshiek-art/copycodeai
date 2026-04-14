@@ -63,6 +63,7 @@ async function brevoProvider(payload, env) {
     },
     body: JSON.stringify({
       email: payload.contact.email,
+      updateEnabled: true,
       attributes: {
         FIRSTNAME: payload.contact.firstName,
         LASTNAME: payload.contact.lastName,
