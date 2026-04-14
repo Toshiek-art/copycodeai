@@ -25,8 +25,9 @@ const formStatus =
   contactState === 'success'
     ? {
         type: 'success' as const,
-        title: 'Request received',
-        message: 'Thanks. We got your consultation request. The next step is usually a short email thread, or a brief call if that helps move things faster.'
+        title: 'Thanks, we got it',
+        message:
+          'Your consultation request has been received. We’ll review it and reply as soon as possible, usually by email first.'
       }
     : contactState === 'error'
       ? {
@@ -75,9 +76,9 @@ const formStatus =
             </p>
 
             {formStatus && (
-              <div class="mt-6 scroll-mt-8">
+              <div class="mt-6 scroll-mt-8" aria-live="polite">
                 <div class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-600">
-                  Submission status
+                  {contactState === 'success' ? 'Submission confirmed' : 'Submission status'}
                 </div>
                 <FormStatus {...formStatus} class="shadow-soft ring-1 ring-inset ring-black/5" />
               </div>
