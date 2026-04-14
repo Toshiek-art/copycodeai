@@ -1,8 +1,39 @@
 import { createRedirectResponse, hasHoneypotValue, isValidEmail, isValidPhone, normalizeLeadPayload, readFormValue } from '../../_utils/form-intake.js';
-import { submitLead } from '../../_utils/lead-provider.js';
+import { sendBrevoTransactionalEmail, submitLead } from '../../_utils/lead-provider.js';
 
 function hasRequiredText(value) {
   return typeof value === 'string' && value.trim().length > 0;
+}
+
+function buildConsultationNotificationText(payload) {
+  const lines = [
+    'New consultation request received from copycodeai.online',
+    '',
+    `Name: ${payload.contact.firstName} ${payload.contact.lastName}`.trim(),
+    `Email: ${payload.contact.email}`,
+    `Phone: ${payload.contact.phone}`
+  ];
+
+  if (payload.content.company) {
+    lines.push(`Company: ${payload.content.company}`);
+  }
+
+  if (payload.content.website) {
+    lines.push(`Website: ${payload.content.website}`);
+  }
+
+  if (payload.content.message) {
+    lines.push('', 'Project brief:', payload.content.message);
+  }
+
+  lines.push(
+    '',
+    `Marketing opt-in: ${payload.consent.marketingOptIn ? 'yes' : 'no'}`,
+    `Page: ${payload.source.pagePath}`,
+    `Referrer: ${payload.source.referrer || 'n/a'}`
+  );
+
+  return lines.join('\n');
 }
 
 export async function onRequestPost(context) {
@@ -83,6 +114,26 @@ export async function onRequestPost(context) {
 
   if (!leadResult.ok) {
     return createRedirectResponse('/contact', { contact: 'error', error: 'submission_failed' }, 303);
+  }
+
+  if (
+    leadResult.provider === 'brevo' &&
+    context.env?.NOTIFICATION_EMAIL_TO &&
+    context.env?.BREVO_SENDER_EMAIL &&
+    context.env?.BREVO_API_KEY
+  ) {
+    try {
+      await sendBrevoTransactionalEmail(
+        {
+          to: context.env.NOTIFICATION_EMAIL_TO,
+          subject: 'New consultation request from CopyCodeAI',
+          textContent: buildConsultationNotificationText(payload)
+        },
+        context.env || {}
+      );
+    } catch {
+      // Keep the user-facing success flow intact if notification delivery fails.
+    }
   }
 
   return createRedirectResponse('/contact', { contact: 'success' }, 303);
