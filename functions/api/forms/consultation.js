@@ -37,20 +37,33 @@ function buildConsultationNotificationText(payload) {
 }
 
 function buildConsultationConfirmationText(payload) {
+  const formatValue = (value) => {
+    const text = typeof value === 'string' ? value.trim() : '';
+    return text || 'Not provided';
+  };
+
+  const projectBrief = typeof payload.content.message === 'string' ? payload.content.message.trim() : '';
   const lines = [
-    'Thanks for reaching out to CopyCode AI.',
+    'Thanks for contacting CopyCode AI.',
     '',
-    'We received your consultation request and will review it as soon as possible.',
-    'If we need anything else, we will reply by email.',
+    'We received your consultation request and will review it as soon as possible. If we need anything else, we will reply by email.',
     '',
-    `Email: ${payload.contact.email}`
+    'Submission summary:',
+    `Name: ${payload.contact.firstName} ${payload.contact.lastName}`.trim(),
+    `Email: ${payload.contact.email}`,
+    `Phone: ${formatValue(payload.contact.phone)}`,
+    `Company: ${formatValue(payload.content.company)}`,
+    `Website: ${formatValue(payload.content.website)}`,
+    `Project brief: ${projectBrief || 'Not provided'}`
   ];
 
-  if (payload.content.company) {
-    lines.push(`Company: ${payload.content.company}`);
-  }
+  lines.push('', 'Best,', 'CopyCode AI');
 
   return lines.join('\n');
+}
+
+function buildConsultationConfirmationSubject() {
+  return 'Thanks for your consultation request';
 }
 
 export async function onRequestPost(context) {
@@ -159,7 +172,7 @@ export async function onRequestPost(context) {
         {
           to: payload.contact.email,
           bcc: [],
-          subject: 'We received your consultation request',
+          subject: buildConsultationConfirmationSubject(),
           textContent: buildConsultationConfirmationText(payload)
         },
         context.env || {}
