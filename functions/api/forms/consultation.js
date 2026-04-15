@@ -43,10 +43,18 @@ function buildConsultationConfirmationText(payload) {
   };
 
   const projectBrief = typeof payload.content.message === 'string' ? payload.content.message.trim() : '';
+  const greetingName = hasRequiredText(payload.contact.firstName) ? payload.contact.firstName.trim() : 'there';
   const lines = [
+    `Hi ${greetingName},`,
+    '',
     'Thanks for contacting CopyCode AI.',
     '',
-    'We received your consultation request and will review it as soon as possible. If we need anything else, we will reply by email.',
+    'We received your consultation request and will review the details shortly. If we need anything else, we will reply by email before suggesting the most useful next step.',
+    '',
+    'What happens next:',
+    '- we review the context you shared',
+    '- we check whether email is enough or a short call would help',
+    '- we reply with the best next step',
     '',
     'Submission summary:',
     `Name: ${payload.contact.firstName} ${payload.contact.lastName}`.trim(),
@@ -57,13 +65,13 @@ function buildConsultationConfirmationText(payload) {
     `Project brief: ${projectBrief || 'Not provided'}`
   ];
 
-  lines.push('', 'Best,', 'CopyCode AI');
+  lines.push('', 'If anything important was missing, you can simply reply to this email.', '', 'Best,', 'CopyCode AI', 'hello@copycodeai.online');
 
   return lines.join('\n');
 }
 
 function buildConsultationConfirmationSubject() {
-  return 'Thanks for your consultation request';
+  return 'We received your consultation request';
 }
 
 export async function onRequestPost(context) {
