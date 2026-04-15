@@ -1,8 +1,20 @@
 import { createRedirectResponse, hasHoneypotValue, isValidEmail, isValidPhone, normalizeLeadPayload, readFormValue } from '../../_utils/form-intake.js';
 import { sendBrevoTransactionalEmail, submitLead } from '../../_utils/lead-provider.js';
 
+const calendlyBookingUrl = 'https://calendly.com/aldogustavomalasomma/15min';
+
 function hasRequiredText(value) {
   return typeof value === 'string' && value.trim().length > 0;
+}
+
+function createExternalRedirectResponse(location, status = 303) {
+  return new Response(null, {
+    status,
+    headers: {
+      Location: location,
+      'Cache-Control': 'no-store'
+    }
+  });
 }
 
 function buildConsultationNotificationText(payload) {
@@ -66,6 +78,8 @@ export async function onRequestPost(context) {
   const marketingOptIn = readFormValue(formData, 'marketingOptIn') === 'on';
   const privacyAccepted = readFormValue(formData, 'privacyAccepted') !== 'false';
   const honeypot = readFormValue(formData, 'websiteHp');
+  const submissionAction = readFormValue(formData, 'submissionAction');
+  const shouldBookCall = submissionAction === 'book_call';
 
   const errors = [];
 
@@ -167,6 +181,10 @@ export async function onRequestPost(context) {
     } catch {
       // Keep the user-facing success flow intact if the confirmation email fails.
     }
+  }
+
+  if (shouldBookCall) {
+    return createExternalRedirectResponse(calendlyBookingUrl, 303);
   }
 
   return createRedirectResponse('/contact', { contact: 'success' }, 303);

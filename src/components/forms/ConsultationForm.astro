@@ -74,10 +74,25 @@ const { action = '/api/forms/consultation', method = 'post', class: className = 
   <input type="hidden" name="websiteHp" value="" aria-hidden="true" tabindex="-1" />
   <input type="hidden" name="privacyAccepted" value="true" />
 
-  <button
-    type="submit"
-    class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
-  >
-    Send request
-  </button>
+  <div class="space-y-3">
+    <p class="text-sm font-medium text-slate-700">Choose what happens after we receive your details:</p>
+    <div class="grid gap-3 sm:grid-cols-2">
+      <button
+        type="submit"
+        name="submissionAction"
+        value="request"
+        class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+      >
+        Send request
+      </button>
+      <button
+        type="submit"
+        name="submissionAction"
+        value="book_call"
+        class="inline-flex items-center justify-center rounded-xl border border-brand-300 bg-white px-6 py-3 text-sm font-semibold text-brand-800 shadow-soft hover:border-brand-400 hover:bg-brand-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+      >
+        Submit details and book a call
+      </button>
+    </div>
+  </div>
 </form>
