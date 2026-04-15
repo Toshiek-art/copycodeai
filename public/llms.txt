@@ -1,0 +1,30 @@
+CopyCodeAI
+
+Site: https://copycodeai.online/
+
+What this site is:
+- Launch engineering and implementation support for startups and digital businesses.
+- Focused on practical work around websites, forms, booking/contact flows, ecommerce journeys, accessibility-sensitive paths, GDPR-aware data flow, and AI features where relevant.
+- Technical guidance only. Not legal advice.
+
+Public sections:
+- Homepage: https://copycodeai.online/
+- Services: https://copycodeai.online/services
+- Contact: https://copycodeai.online/contact
+- Guides index: https://copycodeai.online/guides/
+- Work: https://copycodeai.online/work/
+
+Key services:
+- https://copycodeai.online/compliance-ready-landing/
+- https://copycodeai.online/ai-feature-integration/
+- https://copycodeai.online/eaa-structural-hardening/
+
+Guides:
+- https://copycodeai.online/guides/gdpr-ai-startup/
+- https://copycodeai.online/guides/eaa-startup-websites/
+- https://copycodeai.online/guides/data-flow-ai-feature/
+- https://copycodeai.online/guides/launch-risk-review-checklist/
+
+Notes:
+- The site uses a structured consultation form and a separate direct booking path on the contact page.
+- The Blueprint section on the homepage is a short planning/review entry point, not a mandatory prerequisite.
