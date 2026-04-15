@@ -100,6 +100,7 @@ export async function sendBrevoTransactionalEmail(message, env = {}) {
     message?.bcc !== undefined ? toEmailRecipientList(message.bcc) : toEmailRecipientList(env?.NOTIFICATION_EMAIL_BCC);
   const subject = toTrimmedString(message?.subject);
   const textContent = toTrimmedString(message?.textContent);
+  const htmlContent = toTrimmedString(message?.htmlContent);
 
   if (!apiKey) {
     throw new Error('missing_brevo_api_key');
@@ -136,7 +137,8 @@ export async function sendBrevoTransactionalEmail(message, env = {}) {
       to: recipients,
       ...(bccRecipients.length > 0 ? { bcc: bccRecipients } : {}),
       subject,
-      textContent
+      textContent,
+      ...(htmlContent ? { htmlContent } : {})
     })
   });
 
