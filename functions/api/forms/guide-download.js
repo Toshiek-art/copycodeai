@@ -1,8 +1,10 @@
 import { createRedirectResponse, hasHoneypotValue, isValidEmail, normalizeLeadPayload, readFormValue } from '../../_utils/form-intake.js';
-import { submitLead } from '../../_utils/lead-provider.js';
+import { sendBrevoTransactionalEmail, submitLead } from '../../_utils/lead-provider.js';
+import { getGuideBySlug } from '../../../src/data/guides.ts';
 import { getGuideDownloadBySlug } from '../../../src/data/guide-downloads.ts';
 
 const ERROR_BASE = '/guides/';
+const GUIDE_REQUEST_SLUG = 'launch-risk-review-checklist';
 
 function isSafeGuideReturnPath(value) {
   return typeof value === 'string' && /^\/guides\/[a-z0-9-]+\/?$/.test(value);
@@ -10,6 +12,178 @@ function isSafeGuideReturnPath(value) {
 
 function resolveGuideDownload(slug) {
   return getGuideDownloadBySlug(slug) || null;
+}
+
+function resolveGuideRequest(slug) {
+  return slug === GUIDE_REQUEST_SLUG ? getGuideBySlug(slug) : null;
+}
+
+function buildGuideRequestEmailText(guide) {
+  return [
+    'Your Launch Risk Review Checklist',
+    '',
+    'Thanks for requesting the checklist.',
+    '',
+    'Open it here:',
+    guide.canonical,
+    '',
+    'This checklist is a short pre-launch review for websites, forms, consent and tracking, booking/contact flows, accessibility-sensitive journeys, ecommerce paths, and AI touchpoints where relevant.',
+    '',
+    'Best,',
+    'CopyCode AI',
+    'hello@copycodeai.online'
+  ].join('\n');
+}
+
+function buildGuideRequestEmailHtml(guide) {
+  return `<!doctype html>
+<html lang="en">
+  <body style="margin:0;padding:0;background:#f8fafc;font-family:Arial,Helvetica,sans-serif;color:#0f172a;">
+    <div style="max-width:640px;margin:0 auto;padding:32px 16px;">
+      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:28px;">
+        <p style="margin:0 0 10px;font-size:12px;line-height:18px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#334155;">CopyCode AI</p>
+        <h1 style="margin:0 0 12px;font-size:24px;line-height:32px;font-weight:700;">Your Launch Risk Review Checklist</h1>
+        <p style="margin:0 0 20px;font-size:15px;line-height:24px;color:#475569;">Thanks for requesting the checklist.</p>
+        <p style="margin:0 0 20px;">
+          <a href="${guide.canonical}" style="display:inline-block;border-radius:12px;background:#2563eb;color:#ffffff;text-decoration:none;padding:12px 18px;font-size:14px;font-weight:700;">Open the checklist</a>
+        </p>
+        <p style="margin:0;font-size:14px;line-height:22px;color:#475569;">
+          It is a short pre-launch review for websites, forms, consent and tracking, booking/contact flows, accessibility-sensitive journeys, ecommerce paths, and AI touchpoints where relevant.
+        </p>
+        <p style="margin:20px 0 0;font-size:14px;line-height:22px;color:#0f172a;font-weight:700;">
+          CopyCode AI<br /><span style="font-weight:400;color:#475569;">hello@copycodeai.online</span>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>`;
+}
+
+async function handleGuideRequest(context, formData, guideRequest, safeReturnTo, email, firstName, honeypot) {
+  const resourceConsent = readFormValue(formData, 'resourceConsent') === 'on';
+  const newsletterOptIn = readFormValue(formData, 'newsletterOptIn') === 'on';
+  const errors = [];
+
+  if (!guideRequest) {
+    errors.push('invalid_guide');
+  }
+
+  if (!email || !isValidEmail(email)) {
+    errors.push('invalid_email');
+  }
+
+  if (!resourceConsent) {
+    errors.push('resource_consent_missing');
+  }
+
+  if (!safeReturnTo) {
+    errors.push('invalid_return_to');
+  }
+
+  if (hasHoneypotValue(formData, 'website') || honeypot) {
+    errors.push('honeypot_triggered');
+  }
+
+  if (errors.length > 0) {
+    return createRedirectResponse(
+      safeReturnTo || ERROR_BASE,
+      {
+        resource: 'error',
+        error: errors[0]
+      },
+      303
+    );
+  }
+
+  const payload = normalizeLeadPayload({
+    flow: 'guide_request',
+    source: {
+      pagePath: safeReturnTo,
+      pageTitle: guideRequest.title,
+      referrer: context.request.headers.get('Referer') || '',
+      utmSource: '',
+      utmMedium: '',
+      utmCampaign: '',
+      leadSource: 'guide_request'
+    },
+    contact: {
+      firstName,
+      lastName: '',
+      email,
+      phone: ''
+    },
+    content: {
+      guideSlug: guideRequest.slug,
+      guideTitle: guideRequest.title,
+      resourceSlug: guideRequest.slug,
+      resourceTitle: guideRequest.title,
+      resourceUrl: guideRequest.canonical,
+      returnTo: safeReturnTo
+    },
+    consent: {
+      marketingOptIn: newsletterOptIn,
+      privacyAccepted: true,
+      newsletterOptIn,
+      resourceConsent: true
+    },
+    antiSpam: {
+      honeypot
+    }
+  });
+
+  const leadResult = await submitLead(payload, context.env || {});
+
+  if (!leadResult.ok) {
+    return createRedirectResponse(
+      safeReturnTo,
+      {
+        resource: 'error',
+        error: 'submission_failed'
+      },
+      303
+    );
+  }
+
+  if (leadResult.provider !== 'brevo' || !context.env?.BREVO_SENDER_EMAIL || !context.env?.BREVO_API_KEY) {
+    return createRedirectResponse(
+      safeReturnTo,
+      {
+        resource: 'error',
+        error: 'submission_failed'
+      },
+      303
+    );
+  }
+
+  try {
+    await sendBrevoTransactionalEmail(
+      {
+        to: email,
+        bcc: [],
+        subject: 'Your Launch Risk Review Checklist',
+        textContent: buildGuideRequestEmailText(guideRequest),
+        htmlContent: buildGuideRequestEmailHtml(guideRequest)
+      },
+      context.env || {}
+    );
+  } catch {
+    return createRedirectResponse(
+      safeReturnTo,
+      {
+        resource: 'error',
+        error: 'submission_failed'
+      },
+      303
+    );
+  }
+
+  return createRedirectResponse(
+    safeReturnTo,
+    {
+      resource: 'success'
+    },
+    303
+  );
 }
 
 export async function onRequestPost(context) {
@@ -22,12 +196,17 @@ export async function onRequestPost(context) {
   const marketingOptIn = readFormValue(formData, 'marketingOptIn') === 'on';
   const honeypot = readFormValue(formData, 'website');
 
-  const guide = resolveGuideDownload(guideSlug);
-  const safeReturnTo = isSafeGuideReturnPath(returnTo) ? returnTo : guide?.returnTo || null;
+  const guideDownload = resolveGuideDownload(guideSlug);
+  const guideRequest = resolveGuideRequest(guideSlug);
+  const safeReturnTo = isSafeGuideReturnPath(returnTo) ? returnTo : guideDownload?.returnTo || guideRequest?.href || null;
+
+  if (guideRequest) {
+    return handleGuideRequest(context, formData, guideRequest, safeReturnTo, email, firstName, honeypot);
+  }
 
   const errors = [];
 
-  if (!guide) {
+  if (!guideDownload) {
     errors.push('invalid_guide');
   }
 
@@ -58,7 +237,7 @@ export async function onRequestPost(context) {
     flow: 'guide_download',
     source: {
       pagePath: safeReturnTo,
-      pageTitle: guide.title,
+      pageTitle: guideDownload.title,
       referrer: context.request.headers.get('Referer') || '',
       utmSource: '',
       utmMedium: '',
@@ -71,9 +250,9 @@ export async function onRequestPost(context) {
       phone: ''
     },
     content: {
-      guideSlug: guide.slug,
-      guideTitle: guide.title,
-      pdfUrl: guide.pdfUrl,
+      guideSlug: guideDownload.slug,
+      guideTitle: guideDownload.title,
+      pdfUrl: guideDownload.pdfUrl,
       returnTo: safeReturnTo
     },
     consent: {

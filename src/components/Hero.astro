@@ -2,15 +2,8 @@
 import Container from './layout/Container.astro';
 import CTAGroup from './layout/CTAGroup.astro';
 
-const mailtoHref =
-  'mailto:hello@copycodeai.online?subject=' +
-  encodeURIComponent('AI System Assessment – CopyCodeAI') +
-  '&body=' +
-  encodeURIComponent(
-    'Hi,\n\nHere is a short overview:\n\n1. What we are building:\n2. Main goal for the next 30 days:\n3. Do we process personal data? (yes/no):\n4. Target customers (EU / global):\n5. Website or demo link:\n\nThank you.'
-  );
-
 const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
+const briefHref = '/contact#structured-request';
 ---
 
 <section class="relative overflow-hidden bg-gradient-to-br from-emerald-100 via-cyan-50 to-slate-100 py-20 sm:py-24 lg:py-28">
@@ -19,16 +12,19 @@ const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
 
   <Container size="wide" class="relative">
     <p class="inline-flex rounded-full border border-emerald-300/80 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-800">
-      For European startups that need to launch fast — without compliance mistakes
+      For European startups and digital businesses that need to launch fast — without compliance mistakes
     </p>
     <h1 class="mt-5 max-w-4xl text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
-      Launch your startup fast without creating GDPR problems you’ll pay later.
+      Launch websites, products, and AI features without creating GDPR or EAA problems you’ll pay later.
     </h1>
     <p class="mt-3 max-w-4xl text-2xl font-semibold leading-tight text-slate-800 sm:text-3xl">
-      I help early-stage European founders build MVPs, landing pages, and AI features that are ready to scale — technically and compliantly.
+      I help European startups and digital businesses build MVPs, landing pages, booking flows, forms, and AI features with the right technical and compliance foundations in place.
     </p>
     <p class="mt-5 max-w-3xl text-lg leading-relaxed text-slate-700">
       Move fast now, without creating GDPR issues, accessibility gaps, or technical debt that slows you down later.
+    </p>
+    <p class="mt-3 max-w-3xl text-base leading-relaxed text-slate-600">
+      Relevant work includes websites, forms, booking flows, analytics, ecommerce journeys, contact paths, and AI-enabled features where compliance and launch clarity matter.
     </p>
 
     <CTAGroup>
@@ -39,7 +35,7 @@ const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
         Start with a 15-min Technical Assessment
       </a>
       <a
-        href={mailtoHref}
+        href={briefHref}
         class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
       >
         Send a Brief
@@ -56,7 +52,7 @@ const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
       Engineering-first help for founders. Not a marketing agency. Not generic consulting.
     </p>
     <p class="mt-1 text-sm text-slate-600">
-      Based in Tallinn, working with European startups
+      Based in Tallinn, working with startups and digital businesses across Europe
     </p>
   </Container>
 </section>

@@ -1,0 +1,271 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import Section from '../../components/layout/Section.astro';
+import Container from '../../components/layout/Container.astro';
+import GuideHeader from '../../components/guides/GuideHeader.astro';
+import GuideRelatedService from '../../components/guides/GuideRelatedService.astro';
+import GuideRelatedGuides from '../../components/guides/GuideRelatedGuides.astro';
+import GuideEmailForm from '../../components/forms/GuideEmailForm.astro';
+import FormStatus from '../../components/forms/FormStatus.astro';
+import JsonLd from '../../components/seo/JsonLd.astro';
+import { getGuideBySlug, getRelatedGuides } from '../../data/guides';
+
+const checklistGroups = [
+  {
+    title: 'Personal-data touchpoints',
+    items: [
+      'Find every form, prompt, or field that collects personal data.',
+      'Check who receives it, where it goes, and what happens next.'
+    ]
+  },
+  {
+    title: 'Consent and tracking',
+    items: [
+      'Verify consent language against the real flow, not a placeholder version.',
+      'Check analytics, tags, and opt-ins before launch.'
+    ]
+  },
+  {
+    title: 'Journeys that must not break',
+    items: [
+      'Review booking, contact, and ecommerce paths end to end.',
+      'Check accessibility-sensitive steps, focus order, and recovery states.'
+    ]
+  },
+  {
+    title: 'Launch blockers vs later fixes',
+    items: [
+      'Separate what blocks release from what can wait.',
+      'Treat unclear ownership or data reuse as a blocker, not a polish task.'
+    ]
+  },
+  {
+    title: 'AI or automation touchpoints',
+    items: [
+      'If AI is involved, map prompts, outputs, logs, and vendor boundaries.',
+      'Only include it where it actually changes the flow.'
+    ]
+  }
+];
+
+const guide = getGuideBySlug('launch-risk-review-checklist');
+
+if (!guide) {
+  throw new Error('Guide metadata not found for launch-risk-review-checklist');
+}
+
+const pageTitle = `${guide.title} | CopyCodeAI`;
+const breadcrumbs = [
+  { label: 'Guides', href: '/guides/' },
+  { label: guide.title }
+];
+const relatedGuides = getRelatedGuides('launch-risk-review-checklist').map(({ category, title, description, href }) => ({
+  category,
+  title,
+  description,
+  href
+}));
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: guide.title,
+  description: guide.description,
+  datePublished: guide.publishAt,
+  dateModified: guide.updatedAt,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': guide.canonical
+  },
+  url: guide.canonical,
+  articleSection: guide.category,
+  author: {
+    '@type': 'Organization',
+    name: 'CopyCodeAI'
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'CopyCodeAI'
+  }
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Guides',
+      item: 'https://copycodeai.online/guides/'
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: guide.title,
+      item: guide.canonical
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={guide.description}
+  canonical={guide.canonical}
+  ogTitle={pageTitle}
+  ogDescription={guide.description}
+>
+  <Navbar active="guides" />
+
+  <JsonLd data={articleJsonLd} />
+  <JsonLd data={breadcrumbJsonLd} />
+
+  <main id="main-content" tabindex="-1">
+    <Section variant="compact">
+      <Container size="content">
+        <GuideHeader
+          category={guide.category}
+          title={guide.title}
+          description={guide.description}
+          publishAt={guide.publishAt}
+          updatedAt={guide.updatedAt}
+          breadcrumbs={breadcrumbs}
+        />
+      </Container>
+    </Section>
+
+    <Section aria-labelledby="article-content-title">
+      <Container size="content">
+        <article class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:text-ink-900 prose-p:leading-7 prose-li:leading-7 prose-a:font-medium prose-a:text-brand-700 prose-a:no-underline hover:prose-a:text-brand-800">
+          <h2 id="article-content-title" class="sr-only">Article content</h2>
+
+          <section aria-labelledby="why-title" class="not-prose">
+            <h2 id="why-title" class="text-3xl font-semibold text-ink-900">Why this checklist exists</h2>
+            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
+              <p>Before launch, the goal is not to review everything. The goal is to review the parts that usually create hidden work later.</p>
+              <p>This checklist is for startups and other digital businesses launching websites, forms, booking or contact flows, ecommerce journeys, accessibility-sensitive user paths, and AI-enabled features where relevant.</p>
+              <p>Keep it short. If a check is unclear, mark it and move on.</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="checklist-title" class="not-prose mt-12">
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Checklist</p>
+              <h2 id="checklist-title" class="mt-2 text-3xl font-semibold text-ink-900">What to review before go-live</h2>
+
+              <div class="mt-6 grid gap-4 lg:grid-cols-2">
+                {checklistGroups.map((group) => (
+                  <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+                    <h3 class="text-lg font-semibold text-ink-900">{group.title}</h3>
+                    <ul class="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+                      {group.items.map((item) => (
+                        <li class="flex gap-2">
+                          <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section aria-labelledby="guide-email-title" class="not-prose mt-12">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Optional copy by email</p>
+              <h2 id="guide-email-title" class="mt-2 text-3xl font-semibold text-ink-900">Get this checklist by email</h2>
+              <p class="mt-3 max-w-2xl text-base leading-7 text-slate-700">
+                Useful if you want to keep it, forward it, or review it later with your team.
+              </p>
+
+              <div class="mt-6 space-y-4">
+                <FormStatus
+                  type="success"
+                  title="Checklist sent"
+                  message="Check your inbox for the link."
+                  hidden
+                  tabindex="-1"
+                  data-guide-email-status="success"
+                />
+                <FormStatus
+                  type="error"
+                  title="Checklist not sent"
+                  message="Something went wrong. Please check your email address and consent selection, then try again."
+                  hidden
+                  tabindex="-1"
+                  data-guide-email-status="error"
+                />
+                <div data-guide-email-form-wrapper>
+                  <GuideEmailForm guideSlug={guide.slug} returnTo={guide.href} />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section aria-labelledby="when-to-stop-title" class="not-prose mt-12">
+            <div class="rounded-2xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">If several items are unclear</p>
+              <h2 id="when-to-stop-title" class="mt-2 text-3xl font-semibold text-ink-900">Stop and map the flow before the next release.</h2>
+              <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">
+                If the same issue appears in forms, tracking, booking, or access paths, the problem is usually structural. Write down the risks, order them by impact, and fix the blockers first.
+              </p>
+            </div>
+          </section>
+        </article>
+      </Container>
+    </Section>
+
+    <Section>
+      <Container size="content">
+        <GuideRelatedService
+          title="Related service"
+          label={guide.relatedService.label}
+          href={guide.relatedService.href}
+        />
+      </Container>
+    </Section>
+
+    <Section>
+      <Container size="content">
+        <GuideRelatedGuides guides={relatedGuides} title="Related guides" />
+      </Container>
+    </Section>
+  </main>
+
+  <script is:inline>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const state = params.get('resource');
+
+      if (!state) {
+        return;
+      }
+
+      const target = document.querySelector(`[data-guide-email-status="${state}"]`);
+
+      if (!target) {
+        return;
+      }
+
+      const wrapper = document.querySelector('[data-guide-email-form-wrapper]');
+
+      target.hidden = false;
+
+      if (state === 'success' && wrapper) {
+        wrapper.hidden = true;
+      }
+
+      target.scrollIntoView({ block: 'start', behavior: 'auto' });
+
+      if (typeof target.focus === 'function') {
+        target.focus({ preventScroll: true });
+      }
+    })();
+  </script>
+
+  <Footer />
+</BaseLayout>

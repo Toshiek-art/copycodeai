@@ -9,19 +9,18 @@ interface Props {
 
 const {
   heading = 'Fast Launch Offers',
-  intro = 'Launch-first interventions for early-stage teams that need clear scope and fast delivery.'
+  intro = 'Launch-first interventions for startups and digital businesses that need clear scope and fast delivery.'
 } = Astro.props;
 
 const services = [
   {
     title: 'Compliance-Ready Landing Page',
     linkLabel: 'Explore landing page offer',
-    description: 'A startup landing page or MVP site built to help you launch fast without creating avoidable GDPR or accessibility issues.',
+    description: 'A landing page or MVP-style site built to help startups and digital businesses launch fast without creating avoidable GDPR or accessibility issues.',
     href: '/compliance-ready-landing',
     price: 'From €750',
     delivery: 'Typical delivery: 3-5 days',
-    promo: 'Local Launch Offer (Tallinn-based teams): €650 (limited slots) · Ends 31 May 2026 (EEST)',
-    promoNote: 'Available to Tallinn-based teams.',
+    promo: 'EU Launch Offer · €650',
     points: [
       'Launch landing or MVP pages with GDPR-aware form and data-flow structure.',
       'Build accessibility-ready UX foundations (keyboard, focus, semantics).',
@@ -46,7 +45,7 @@ const services = [
   {
     title: 'EAA Structural Hardening',
     linkLabel: 'Explore accessibility hardening offer',
-    description: 'Fix structural accessibility issues at code level so your product is easier to use, safer to scale, and closer to EAA/WCAG expectations.',
+    description: 'Fix structural accessibility issues at code level so your website or product flow is easier to use, safer to scale, and closer to EAA/WCAG expectations.',
     href: '/eaa-structural-hardening',
     price: 'From €850',
     delivery: 'Typical delivery: 2-4 days',
@@ -56,6 +55,20 @@ const services = [
       'Retest pass on corrected journeys.'
     ],
     icon: 'universal'
+  },
+  {
+    title: 'System & Compliance Blueprint Sprint',
+    linkLabel: 'Discuss blueprint sprint',
+    description: 'A focused review and planning sprint for launch clarity, AI integration direction, and what makes sense to build first.',
+    href: '/contact',
+    price: 'From €950',
+    delivery: 'Typical delivery: 7 days',
+    points: [
+      'Practical scoping for the next implementation step.',
+      'GDPR-ready data-flow and accessibility risk direction.',
+      'Useful when you need clarity before building or changing direction.'
+    ],
+    icon: 'strategy'
   }
 ];
 ---
@@ -65,7 +78,7 @@ const services = [
     <h2 id="services-title" class="text-3xl font-semibold text-ink-900">{heading}</h2>
     <p class="mt-2 max-w-2xl text-slate-600">{intro}</p>
 
-    <div class="mt-8 grid gap-6 lg:grid-cols-3" role="list" aria-label="CopyCodeAI services">
+    <div class="mt-8 grid gap-6 lg:grid-cols-2 xl:grid-cols-4" role="list" aria-label="CopyCodeAI services">
       {services.map((service, index) => (
         <article
           class="reveal-up rounded-2xl border border-slate-200 bg-white p-6 shadow-soft xl:p-7"
@@ -90,11 +103,20 @@ const services = [
               </svg>
             )
           }
+            {
+              service.icon === 'universal' && (
+                <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.7">
+                  <circle cx="12" cy="5" r="2"></circle>
+                  <path d="M4 9h16M12 7v12m-4 0 4-6 4 6"></path>
+                </svg>
+              )
+            }
           {
-            service.icon === 'universal' && (
+            service.icon === 'strategy' && (
               <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.7">
-                <circle cx="12" cy="5" r="2"></circle>
-                <path d="M4 9h16M12 7v12m-4 0 4-6 4 6"></path>
+                <path d="M5 19h14"></path>
+                <path d="M7 17V9m5 8V5m5 12v-6"></path>
+                <path d="M7 9l5-3 5 3"></path>
               </svg>
             )
           }
@@ -112,11 +134,10 @@ const services = [
           <p class="mt-3 text-sm font-semibold text-slate-900">{service.price}</p>
           <p class="mt-1 text-sm text-slate-600">{service.delivery}</p>
           {service.promo && (
-            <div class="mt-3 rounded-lg border border-emerald-200 bg-emerald-50/70 p-3" data-offer-key="tallinn_landing_2026">
+            <div class="mt-3 rounded-lg border border-emerald-200 bg-emerald-50/70 p-3">
               <p class="text-sm font-semibold text-emerald-900" data-offer="price">{service.promo}</p>
-              <p class="mt-1 text-xs text-emerald-800" data-offer="deadline">Tallinn-based teams · Ends 31 May 2026 (EEST)</p>
-              <p class="mt-1 text-xs font-medium text-emerald-900" data-offer="slots" aria-live="polite">Slots left: 5</p>
-              {service.promoNote && <p class="mt-1 text-xs text-slate-600" data-offer="active">{service.promoNote}</p>}
+              <p class="mt-1 text-xs text-emerald-800">For EU-based teams · limited slots</p>
+              <p class="mt-1 text-xs text-slate-600">Ends 31 May 2026 (EEST).</p>
             </div>
           )}
           <ul class="mt-4 space-y-2 text-sm leading-relaxed text-slate-700">

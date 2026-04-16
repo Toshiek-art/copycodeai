@@ -33,6 +33,14 @@ export function readFormValues(formData, keys) {
   }, {});
 }
 
+function toOptionalBoolean(value) {
+  if (typeof value === 'boolean') {
+    return value;
+  }
+
+  return undefined;
+}
+
 export function isValidEmail(value) {
   const normalized = toStringValue(value);
   return EMAIL_REGEX.test(normalized);
@@ -68,7 +76,8 @@ export function normalizeLeadPayload(input) {
       referrer: toStringValue(source.referrer),
       utmSource: toStringValue(source.utmSource),
       utmMedium: toStringValue(source.utmMedium),
-      utmCampaign: toStringValue(source.utmCampaign)
+      utmCampaign: toStringValue(source.utmCampaign),
+      leadSource: toStringValue(source.leadSource)
     },
     contact: {
       firstName: toStringValue(contact.firstName),
@@ -80,6 +89,9 @@ export function normalizeLeadPayload(input) {
       guideSlug: toStringValue(content.guideSlug),
       guideTitle: toStringValue(content.guideTitle),
       pdfUrl: toStringValue(content.pdfUrl),
+      resourceSlug: toStringValue(content.resourceSlug),
+      resourceTitle: toStringValue(content.resourceTitle),
+      resourceUrl: toStringValue(content.resourceUrl),
       company: toStringValue(content.company),
       website: toStringValue(content.website),
       message: toStringValue(content.message),
@@ -87,7 +99,9 @@ export function normalizeLeadPayload(input) {
     },
     consent: {
       marketingOptIn: Boolean(consent.marketingOptIn),
-      privacyAccepted: consent.privacyAccepted !== false
+      privacyAccepted: consent.privacyAccepted !== false,
+      newsletterOptIn: toOptionalBoolean(consent.newsletterOptIn),
+      resourceConsent: toOptionalBoolean(consent.resourceConsent)
     },
     antiSpam: {
       honeypot: toStringValue(antiSpam.honeypot)
@@ -163,4 +177,3 @@ export function createRedirectResponse(basePath, params = {}, status = 303, orig
     }
   });
 }
-

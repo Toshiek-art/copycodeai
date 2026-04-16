@@ -22,7 +22,7 @@ export const faqGroups = {
   complianceReadyLanding: {
     key: 'complianceReadyLanding',
     title: 'FAQ',
-    intro: 'Quick answers on scope, compliance boundaries, and delivery.',
+    intro: 'Quick answers on who this fits, scope, compliance boundaries, and delivery.',
     pagePath: '/compliance-ready-landing',
     schemaName: 'Compliance-Ready Landing Page FAQ',
     schemaDescription:
@@ -42,7 +42,7 @@ export const faqGroups = {
       },
       {
         question: 'Can you work with my existing site?',
-        answer: 'Yes. Scope and timeline depend on your current stack and implementation quality.'
+        answer: 'Yes. It works for startups and other digital businesses with an existing site, landing page, or launch flow. Scope and timeline depend on your current stack and implementation quality.'
       },
       {
         question: 'Do you implement cookies and analytics?',
@@ -66,12 +66,16 @@ export const faqGroups = {
   aiFeatureIntegration: {
     key: 'aiFeatureIntegration',
     title: 'FAQ',
-    intro: 'Quick answers on scope, compliance boundaries, and delivery.',
+    intro: 'Quick answers on who this fits, scope, compliance boundaries, and delivery.',
     pagePath: '/ai-feature-integration',
     schemaName: 'AI Feature Integration FAQ',
     schemaDescription:
       'Quick answers about platform integrations, personal data, reliability, scope, and delivery for AI Feature Integration work.',
     items: [
+      {
+        question: 'Do you only work with AI startups?',
+        answer: 'No. AI is a specialization, but the same launch-risk work also applies to other digital businesses with forms, booking flows, analytics, ecommerce, or accessibility-sensitive journeys.'
+      },
       {
         question: 'Do you build chatbots?',
         answer: 'Only when it solves a real workflow. The focus is automation, not demos.'
@@ -109,7 +113,7 @@ export const faqGroups = {
   eaaStructuralHardening: {
     key: 'eaaStructuralHardening',
     title: 'FAQ',
-    intro: 'Quick answers on scope, compliance boundaries, and delivery.',
+    intro: 'Quick answers on who this fits, scope, compliance boundaries, and delivery.',
     pagePath: '/eaa-structural-hardening',
     schemaName: 'EAA Structural Hardening FAQ',
     schemaDescription:
@@ -129,7 +133,7 @@ export const faqGroups = {
       },
       {
         question: 'Can you work on my existing stack?',
-        answer: 'Yes. Scope depends on your current stack and implementation constraints.'
+        answer: 'Yes. It works for startups and other digital businesses with an existing website or product flow. Scope depends on your current stack and implementation constraints.'
       },
       {
         question: 'Will you change the design?',
@@ -160,4 +164,3 @@ export function getFaqGroupByKey(key: FaqGroupKey): FaqGroup {
 export function getFaqGroups(): FaqGroup[] {
   return faqGroupsList;
 }
-

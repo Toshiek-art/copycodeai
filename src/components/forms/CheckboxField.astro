@@ -4,12 +4,13 @@ interface Props {
   label: string;
   value?: string;
   checked?: boolean;
+  required?: boolean;
   hint?: string;
   error?: string;
   class?: string;
 }
 
-const { name, label, value = 'on', checked = false, hint, error, class: className = '', ...rest } = Astro.props;
+const { name, label, value = 'on', checked = false, required = false, hint, error, class: className = '', ...rest } = Astro.props;
 const inputId = `checkbox-${name}`;
 const describedByIds = [hint ? `${inputId}-hint` : null, error ? `${inputId}-error` : null].filter(Boolean).join(' ') || undefined;
 ---
@@ -22,12 +23,15 @@ const describedByIds = [hint ? `${inputId}-hint` : null, error ? `${inputId}-err
       type="checkbox"
       value={value}
       checked={checked}
+      required={required}
       aria-invalid={error ? 'true' : 'false'}
+      aria-required={required ? 'true' : 'false'}
       aria-describedby={describedByIds}
       class="mt-1 h-4 w-4 rounded border-slate-300 text-brand-700 focus:ring-2 focus:ring-brand-100"
     />
     <label for={inputId} class="text-sm leading-6 text-slate-800">
       {label}
+      {required && <span class="ml-1 text-brand-700" aria-hidden="true">*</span>}
     </label>
   </div>
 
@@ -43,4 +47,3 @@ const describedByIds = [hint ? `${inputId}-hint` : null, error ? `${inputId}-err
     </p>
   )}
 </div>
-

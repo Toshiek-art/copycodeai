@@ -1,0 +1,49 @@
+---
+import FormField from './FormField.astro';
+import CheckboxField from './CheckboxField.astro';
+
+interface Props {
+  guideSlug: string;
+  returnTo?: string;
+  submitLabel?: string;
+  class?: string;
+}
+
+const { guideSlug, returnTo, submitLabel = 'Send this checklist', class: className = '', ...rest } = Astro.props;
+
+const formAction = '/api/forms/guide-request';
+---
+
+<form action={formAction} method="post" class={`space-y-5 ${className}`.trim()} {...rest}>
+  <FormField
+    name="email"
+    label="Email"
+    type="email"
+    autocomplete="email"
+    required
+    hint="We’ll email the checklist link here."
+  />
+
+  <CheckboxField
+    name="resourceConsent"
+    label="I consent to the processing of my email address to receive this checklist."
+    required
+  />
+
+  <CheckboxField
+    name="newsletterOptIn"
+    label="I’d like to receive occasional practical updates and new guides from CopyCodeAI."
+    hint="Optional. You can leave this unchecked."
+  />
+
+  <input type="hidden" name="guideSlug" value={guideSlug} />
+  {returnTo && <input type="hidden" name="returnTo" value={returnTo} />}
+  <input type="hidden" name="website" value="" aria-hidden="true" tabindex="-1" />
+
+  <button
+    type="submit"
+    class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+  >
+    {submitLabel}
+  </button>
+</form>

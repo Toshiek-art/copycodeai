@@ -1,4 +1,4 @@
-export type GuideSlug = 'gdpr-ai-startup' | 'eaa-startup-websites' | 'data-flow-ai-feature';
+export type GuideSlug = 'gdpr-ai-startup' | 'eaa-startup-websites' | 'data-flow-ai-feature' | 'launch-risk-review-checklist';
 
 export interface GuideRelatedService {
   label: string;
@@ -69,6 +69,23 @@ export const guides: GuideEntry[] = [
     relatedGuides: ['gdpr-ai-startup', 'eaa-startup-websites'],
     href: '/guides/data-flow-ai-feature/',
     canonical: 'https://copycodeai.online/guides/data-flow-ai-feature/',
+    pdfUrl: null
+  },
+  {
+    slug: 'launch-risk-review-checklist',
+    title: 'Launch Risk Review Checklist: what to check before go-live',
+    description:
+      'A short pre-launch checklist for websites, forms, booking flows, ecommerce journeys, accessibility-sensitive paths, and AI touchpoints where relevant.',
+    publishAt: '2026-04-15T09:15:00+03:00',
+    updatedAt: '2026-04-15T09:15:00+03:00',
+    category: 'Launch risk',
+    relatedService: {
+      label: 'System & Compliance Blueprint Sprint',
+      href: '/services'
+    },
+    relatedGuides: ['gdpr-ai-startup', 'eaa-startup-websites'],
+    href: '/guides/launch-risk-review-checklist/',
+    canonical: 'https://copycodeai.online/guides/launch-risk-review-checklist/',
     pdfUrl: null
   }
 ];

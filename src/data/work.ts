@@ -259,7 +259,7 @@ export const workProjects: WorkProject[] = [
 ];
 
 export const selectedWorkIntro =
-  'Two live sites, one transparent concept demo, and one public portfolio build. Static screenshots, clear labels, and direct links keep the proof readable.';
+  'Three live sites, one concept demo, and one public portfolio build. Static screenshots and direct links keep the proof readable.';
 
 export function getWorkProject(slug: string) {
   return workProjects.find((project) => project.slug === slug);

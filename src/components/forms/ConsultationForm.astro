@@ -12,6 +12,8 @@ const { action = '/api/forms/consultation', method = 'post', class: className = 
 ---
 
 <form action={action} method={method} class={`space-y-6 ${className}`.trim()} {...rest}>
+  <p class="text-sm text-slate-600">Fields marked * are required. A short brief is enough.</p>
+
   <div class="grid gap-5 sm:grid-cols-2">
     <FormField
       name="firstName"
@@ -43,26 +45,26 @@ const { action = '/api/forms/consultation', method = 'post', class: className = 
     required
   />
 
-  <FormField
-    name="company"
-    label="Company"
-    autocomplete="organization"
-    hint="Optional, but useful for scope and context."
-  />
+    <FormField
+      name="company"
+      label="Company"
+      autocomplete="organization"
+      hint="Optional. Useful if the request is for a team or business."
+    />
 
-  <FormField
-    name="website"
-    label="Website"
-    autocomplete="url"
-    hint="Optional website or project URL."
-  />
+    <FormField
+      name="website"
+      label="Website"
+      autocomplete="url"
+      hint="Optional. Share a live URL if you already have one."
+    />
 
   <FormField
     name="message"
     label="Project brief"
     as="textarea"
     rows={5}
-    hint="Tell me what you want to build or improve."
+    hint="A short brief is enough: goal, scope, timing, and any constraints."
   />
 
   <CheckboxField

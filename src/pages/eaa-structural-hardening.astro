@@ -11,8 +11,7 @@ import { getFaqGroupByKey } from '../data/faq';
 import { buildFaqPageJsonLd } from '../lib/faq-schema';
 
 const schedulingLink = 'https://calendly.com/aldogustavomalasomma/15min';
-const briefHref =
-  'mailto:hello@copycodeai.online?subject=' + encodeURIComponent('EAA Structural Hardening Request');
+const briefHref = '/contact#structured-request';
 const faqGroup = getFaqGroupByKey('eaaStructuralHardening');
 const faqJsonLd = buildFaqPageJsonLd({
   pageUrl: 'https://copycodeai.online/eaa-structural-hardening',
@@ -22,10 +21,10 @@ const faqJsonLd = buildFaqPageJsonLd({
 
 <BaseLayout
   title="EAA Structural Hardening | CopyCodeAI"
-  description="Technical accessibility review + structural fixes for EAA/WCAG readiness. Not legal consulting. Typical delivery 2–4 days."
+  description="Technical accessibility review + structural fixes for startups and digital businesses that need EAA/WCAG readiness. Not legal consulting. Typical delivery 2–4 days."
   canonical="https://copycodeai.online/eaa-structural-hardening"
   ogTitle="EAA Structural Hardening | CopyCodeAI"
-  ogDescription="Technical accessibility review + structural fixes for EAA/WCAG readiness. Not legal consulting. Typical delivery 2–4 days."
+  ogDescription="Technical accessibility review + structural fixes for startups and digital businesses that need EAA/WCAG readiness. Not legal consulting. Typical delivery 2–4 days."
 >
   <Navbar active="services" />
 
@@ -34,7 +33,7 @@ const faqJsonLd = buildFaqPageJsonLd({
       <Container size="content">
         <h1 id="eaa-hero-title" class="text-4xl font-bold text-ink-900 sm:text-5xl">EAA Structural Hardening</h1>
         <p class="mt-4 max-w-3xl text-lg text-slate-700">
-          Technical accessibility review + structural fixes for EAA/WCAG readiness. Not legal advice.
+          Technical accessibility review + structural fixes for startups and digital businesses that need EAA/WCAG readiness. Not legal advice.
         </p>
         <p class="mt-4 text-lg font-semibold text-slate-900">From €850</p>
         <p class="mt-1 text-sm text-slate-600">Typical delivery: 2-4 days</p>

@@ -8,12 +8,13 @@ import SelectedWork from '../components/SelectedWork.astro';
 import FastLaunchEngineering from '../components/FastLaunchEngineering.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import MiniScenarios from '../components/MiniScenarios.astro';
+import Container from '../components/layout/Container.astro';
 import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout
-  title="Launch engineering for European startups | CopyCodeAI"
-  description="Launch engineering for early-stage European startups: MVPs, landing pages, AI features, and GDPR/EAA-aware implementation support."
+  title="Launch engineering for startups and digital businesses | CopyCodeAI"
+  description="Launch engineering for startups and digital businesses: MVPs, landing pages, AI features, and GDPR/EAA-aware implementation support."
   canonical="https://copycodeai.online/"
   includeOfferSync={true}
 >
@@ -23,6 +24,111 @@ import Footer from '../components/Footer.astro';
     <Hero />
     <WhyCopyCodeAI />
     <EntryOffer />
+    <section class="py-10 sm:py-12 lg:py-14" aria-labelledby="homepage-proof-title">
+      <Container size="wide">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8 lg:p-10">
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-700">Proof layer</p>
+          <h2 id="homepage-proof-title" class="mt-2 text-2xl font-semibold text-ink-900">
+            What we review, and what you get first
+          </h2>
+          <p class="mt-2 max-w-3xl text-sm leading-7 text-slate-700">
+            Relevant whether you&apos;re shipping an AI feature, a new website, a form flow, or a launch that needs GDPR / EAA-aware implementation.
+          </p>
+
+          <div class="mt-6 grid gap-5 md:grid-cols-2">
+            <article class="rounded-xl border border-slate-200 bg-slate-50 p-5">
+              <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-slate-700">What we review</h3>
+              <ul class="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+                <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Data flows and personal-data touchpoints</span></li>
+                <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Forms, consent, and tracking setup</span></li>
+                <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Accessibility-critical user journeys</span></li>
+                <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Launch blockers vs later fixes</span></li>
+                <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>AI or automation touchpoints, where relevant</span></li>
+              </ul>
+            </article>
+
+            <article class="rounded-xl border border-slate-200 bg-slate-50 p-5">
+              <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-slate-700">What you get first</h3>
+              <ul class="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+                <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Top risks, in priority order</span></li>
+                <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Priority order for what to fix first</span></li>
+                <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Recommended next actions</span></li>
+                <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>A clearer direction for the next implementation step</span></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </Container>
+    </section>
+    <section class="py-4 sm:py-6 lg:py-8" aria-labelledby="launch-checklist-title">
+      <Container size="wide">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-soft sm:p-8 lg:p-10">
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-700">Practical checklist</p>
+          <h2 id="launch-checklist-title" class="mt-2 text-2xl font-semibold text-ink-900">
+            Launch Risk Review Checklist
+          </h2>
+          <p class="mt-2 max-w-3xl text-sm leading-7 text-slate-700">
+            A short, practical checklist for launches that touch forms, consent, tracking, booking or contact flows, accessibility-sensitive journeys, ecommerce paths, or AI and automation touchpoints.
+          </p>
+
+          <div class="mt-5 grid gap-4 md:grid-cols-2">
+            <ul class="space-y-2 text-sm leading-6 text-slate-700">
+              <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Personal-data touchpoints</span></li>
+              <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Consent and tracking setup</span></li>
+              <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Accessibility-sensitive user journeys</span></li>
+            </ul>
+            <ul class="space-y-2 text-sm leading-6 text-slate-700">
+              <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Booking, contact, and ecommerce flows</span></li>
+              <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>AI or automation touchpoints</span></li>
+              <li class="flex gap-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span><span>Launch blockers worth solving first</span></li>
+            </ul>
+          </div>
+
+          <p class="mt-5 text-sm text-slate-700">
+            <a
+              href="/guides/launch-risk-review-checklist/"
+              class="inline-flex items-center font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+            >
+              Open the checklist
+            </a>
+          </p>
+        </div>
+      </Container>
+    </section>
+    <section class="py-4 sm:py-6 lg:py-8" aria-labelledby="prioritize-title">
+      <Container size="wide">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8 lg:p-10">
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-brand-700">Working method</p>
+          <h2 id="prioritize-title" class="mt-2 text-2xl font-semibold text-ink-900">How we prioritize</h2>
+          <p class="mt-2 max-w-3xl text-sm leading-7 text-slate-700">
+            Relevant for startups and digital businesses shipping websites, forms, booking or contact flows, ecommerce paths, accessibility-sensitive journeys, and AI-enabled features.
+          </p>
+
+          <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p class="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">1</p>
+              <h3 class="mt-2 text-sm font-semibold text-ink-900">Identify critical launch risks</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700">Find the issues that can block launch, confuse users, or create avoidable rework.</p>
+            </article>
+            <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p class="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">2</p>
+              <h3 class="mt-2 text-sm font-semibold text-ink-900">Separate launch-now from later</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700">Keep launch blockers in view and let lower-impact fixes wait until after the first release.</p>
+            </article>
+            <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p class="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">3</p>
+              <h3 class="mt-2 text-sm font-semibold text-ink-900">Document implementation decisions</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700">Write down the data, UX, and scope choices so the team is not improvising later.</p>
+            </article>
+            <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <p class="text-xs font-semibold uppercase tracking-[0.18em] text-brand-700">4</p>
+              <h3 class="mt-2 text-sm font-semibold text-ink-900">Hand off the next buildable step</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-700">Leave the team with a clear next action that can be built without guessing.</p>
+            </article>
+          </div>
+        </div>
+      </Container>
+    </section>
     <SelectedWork />
     <FastLaunchEngineering />
     <HowItWorks />
