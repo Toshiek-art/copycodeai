@@ -12,41 +12,30 @@ import FormStatus from '../../components/forms/FormStatus.astro';
 import JsonLd from '../../components/seo/JsonLd.astro';
 import { getGuideBySlug, getRelatedGuides } from '../../data/guides';
 
-const checklistGroups = [
+const requestPreviewPoints = [
   {
-    title: 'Personal-data touchpoints',
-    items: [
-      'Find every form, prompt, or field that collects personal data.',
-      'Check who receives it, where it goes, and what happens next.'
-    ]
+    title: 'Changed journey',
+    body: 'Name the live path, the release boundary, and the owner.'
+  },
+  {
+    title: 'Data entry points',
+    body: 'List every place data enters and what breaks if it is removed.'
   },
   {
     title: 'Consent and tracking',
-    items: [
-      'Verify consent language against the real flow, not a placeholder version.',
-      'Check analytics, tags, and opt-ins before launch.'
-    ]
+    body: 'Separate operational consent from marketing consent before launch.'
   },
   {
-    title: 'Journeys that must not break',
-    items: [
-      'Review booking, contact, and ecommerce paths end to end.',
-      'Check accessibility-sensitive steps, focus order, and recovery states.'
-    ]
+    title: 'Downstream handoff',
+    body: 'Trace where the submission goes and who can stop it.'
   },
   {
-    title: 'Launch blockers vs later fixes',
-    items: [
-      'Separate what blocks release from what can wait.',
-      'Treat unclear ownership or data reuse as a blocker, not a polish task.'
-    ]
+    title: 'Critical accessibility',
+    body: 'Check completion, recovery, and repeat-entry friction on the live path.'
   },
   {
-    title: 'AI or automation touchpoints',
-    items: [
-      'If AI is involved, map prompts, outputs, logs, and vendor boundaries.',
-      'Only include it where it actually changes the flow.'
-    ]
+    title: 'Rollback control',
+    body: 'Confirm evidence, sign-off, and a fast disable path.'
   }
 ];
 
@@ -145,29 +134,25 @@ const breadcrumbJsonLd = {
           <section aria-labelledby="why-title" class="not-prose">
             <h2 id="why-title" class="text-3xl font-semibold text-ink-900">Why this checklist exists</h2>
             <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
-              <p>Before launch, the goal is not to review everything. The goal is to review the parts that usually create hidden work later.</p>
-              <p>This checklist is for startups and other digital businesses launching websites, forms, booking or contact flows, ecommerce journeys, accessibility-sensitive user paths, and AI-enabled features where relevant.</p>
-              <p>Keep it short. If a check is unclear, mark it and move on.</p>
+              <p>This is a flow-first launch risk review. It is for the parts of a change that can break completion, create avoidable compliance debt, or make rollback harder than it should be.</p>
+              <p>Use it for websites, forms, booking or contact flows, ecommerce paths, accessibility-sensitive journeys, and conditional AI or automation touchpoints where relevant.</p>
+              <p>If the path changed, the data path changed, or the handoff changed, review it here before go-live.</p>
             </div>
           </section>
 
-          <section aria-labelledby="checklist-title" class="not-prose mt-12">
+          <section aria-labelledby="request-preview-title" class="not-prose mt-12">
             <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
-              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Checklist</p>
-              <h2 id="checklist-title" class="mt-2 text-3xl font-semibold text-ink-900">What to review before go-live</h2>
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Preview</p>
+              <h2 id="request-preview-title" class="mt-2 text-3xl font-semibold text-ink-900">What this checklist covers</h2>
+              <p class="mt-3 max-w-2xl text-base leading-7 text-slate-700">
+                A short, dense review of the live path, the data it captures, the handoffs it triggers, and the proof you need before launch.
+              </p>
 
-              <div class="mt-6 grid gap-4 lg:grid-cols-2">
-                {checklistGroups.map((group) => (
+              <div class="mt-6 grid gap-4 md:grid-cols-2">
+                {requestPreviewPoints.map((point) => (
                   <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
-                    <h3 class="text-lg font-semibold text-ink-900">{group.title}</h3>
-                    <ul class="mt-3 space-y-2 text-sm leading-6 text-slate-700">
-                      {group.items.map((item) => (
-                        <li class="flex gap-2">
-                          <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" aria-hidden="true"></span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <h3 class="text-lg font-semibold text-ink-900">{point.title}</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-700">{point.body}</p>
                   </div>
                 ))}
               </div>
@@ -176,10 +161,10 @@ const breadcrumbJsonLd = {
 
           <section aria-labelledby="guide-email-title" class="not-prose mt-12">
             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
-              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Optional copy by email</p>
-              <h2 id="guide-email-title" class="mt-2 text-3xl font-semibold text-ink-900">Get this checklist by email</h2>
+              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Get it by email</p>
+              <h2 id="guide-email-title" class="mt-2 text-3xl font-semibold text-ink-900">Request the full checklist</h2>
               <p class="mt-3 max-w-2xl text-base leading-7 text-slate-700">
-                Useful if you want to keep it, forward it, or review it later with your team.
+                Leave your email and we&apos;ll send the full checklist link. The email keeps the same privacy and opt-in choices, but the delivered page is the full checklist view.
               </p>
 
               <div class="mt-6 space-y-4">
@@ -203,16 +188,6 @@ const breadcrumbJsonLd = {
                   <GuideEmailForm guideSlug={guide.slug} returnTo={guide.href} />
                 </div>
               </div>
-            </div>
-          </section>
-
-          <section aria-labelledby="when-to-stop-title" class="not-prose mt-12">
-            <div class="rounded-2xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
-              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">If several items are unclear</p>
-              <h2 id="when-to-stop-title" class="mt-2 text-3xl font-semibold text-ink-900">Stop and map the flow before the next release.</h2>
-              <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">
-                If the same issue appears in forms, tracking, booking, or access paths, the problem is usually structural. Write down the risks, order them by impact, and fix the blockers first.
-              </p>
             </div>
           </section>
         </article>

@@ -11,7 +11,7 @@ interface Props {
 
 const { guideSlug, returnTo, submitLabel = 'Send this checklist', class: className = '', ...rest } = Astro.props;
 
-const formAction = '/api/forms/guide-request';
+const formAction = '/api/forms/guide-download';
 ---
 
 <form action={formAction} method="post" class={`space-y-5 ${className}`.trim()} {...rest}>

@@ -1,10 +1,13 @@
 import { createRedirectResponse, hasHoneypotValue, isValidEmail, normalizeLeadPayload, readFormValue } from '../../_utils/form-intake.js';
 import { sendBrevoTransactionalEmail, submitLead } from '../../_utils/lead-provider.js';
+import { createSignedResourceToken } from '../../_utils/resource-access.js';
 import { getGuideBySlug } from '../../../src/data/guides.ts';
 import { getGuideDownloadBySlug } from '../../../src/data/guide-downloads.ts';
 
 const ERROR_BASE = '/guides/';
 const GUIDE_REQUEST_SLUG = 'launch-risk-review-checklist';
+const GUIDE_REQUEST_VIEW_PATH = '/guides/launch-risk-review-checklist/view/';
+const RESOURCE_ACCESS_TOKEN_TTL_SECONDS = 60 * 60 * 24 * 7;
 
 function isSafeGuideReturnPath(value) {
   return typeof value === 'string' && /^\/guides\/[a-z0-9-]+\/?$/.test(value);
@@ -18,14 +21,16 @@ function resolveGuideRequest(slug) {
   return slug === GUIDE_REQUEST_SLUG ? getGuideBySlug(slug) : null;
 }
 
-function buildGuideRequestEmailText(guide) {
+function buildGuideRequestEmailText(accessUrl) {
   return [
     'Your Launch Risk Review Checklist',
     '',
     'Thanks for requesting the checklist.',
     '',
-    'Open it here:',
-    guide.canonical,
+    'Open the full checklist here:',
+    accessUrl,
+    '',
+    'If the link expires, request a new copy from the checklist page.',
     '',
     'This checklist is a short pre-launch review for websites, forms, consent and tracking, booking/contact flows, accessibility-sensitive journeys, ecommerce paths, and AI touchpoints where relevant.',
     '',
@@ -35,7 +40,7 @@ function buildGuideRequestEmailText(guide) {
   ].join('\n');
 }
 
-function buildGuideRequestEmailHtml(guide) {
+function buildGuideRequestEmailHtml(accessUrl) {
   return `<!doctype html>
 <html lang="en">
   <body style="margin:0;padding:0;background:#f8fafc;font-family:Arial,Helvetica,sans-serif;color:#0f172a;">
@@ -45,11 +50,12 @@ function buildGuideRequestEmailHtml(guide) {
         <h1 style="margin:0 0 12px;font-size:24px;line-height:32px;font-weight:700;">Your Launch Risk Review Checklist</h1>
         <p style="margin:0 0 20px;font-size:15px;line-height:24px;color:#475569;">Thanks for requesting the checklist.</p>
         <p style="margin:0 0 20px;">
-          <a href="${guide.canonical}" style="display:inline-block;border-radius:12px;background:#2563eb;color:#ffffff;text-decoration:none;padding:12px 18px;font-size:14px;font-weight:700;">Open the checklist</a>
+          <a href="${accessUrl}" style="display:inline-block;border-radius:12px;background:#2563eb;color:#ffffff;text-decoration:none;padding:12px 18px;font-size:14px;font-weight:700;">Open the full checklist</a>
         </p>
         <p style="margin:0;font-size:14px;line-height:22px;color:#475569;">
           It is a short pre-launch review for websites, forms, consent and tracking, booking/contact flows, accessibility-sensitive journeys, ecommerce paths, and AI touchpoints where relevant.
         </p>
+        <p style="margin:14px 0 0;font-size:14px;line-height:22px;color:#475569;">If the link expires, request a new copy from the checklist page.</p>
         <p style="margin:20px 0 0;font-size:14px;line-height:22px;color:#0f172a;font-weight:700;">
           CopyCode AI<br /><span style="font-weight:400;color:#475569;">hello@copycodeai.online</span>
         </p>
@@ -117,7 +123,7 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
       guideTitle: guideRequest.title,
       resourceSlug: guideRequest.slug,
       resourceTitle: guideRequest.title,
-      resourceUrl: guideRequest.canonical,
+      resourceUrl: GUIDE_REQUEST_VIEW_PATH,
       returnTo: safeReturnTo
     },
     consent: {
@@ -155,14 +161,39 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
     );
   }
 
+  let accessToken;
+
+  try {
+    accessToken = await createSignedResourceToken(
+      {
+        email,
+        resourceSlug: guideRequest.slug,
+        ttlSeconds: RESOURCE_ACCESS_TOKEN_TTL_SECONDS
+      },
+      context.env || {}
+    );
+  } catch {
+    return createRedirectResponse(
+      safeReturnTo,
+      {
+        resource: 'error',
+        error: 'submission_failed'
+      },
+      303
+    );
+  }
+
+  const accessUrl = new URL(GUIDE_REQUEST_VIEW_PATH, 'https://copycodeai.online');
+  accessUrl.searchParams.set('token', accessToken);
+
   try {
     await sendBrevoTransactionalEmail(
       {
         to: email,
         bcc: [],
         subject: 'Your Launch Risk Review Checklist',
-        textContent: buildGuideRequestEmailText(guideRequest),
-        htmlContent: buildGuideRequestEmailHtml(guideRequest)
+        textContent: buildGuideRequestEmailText(accessUrl.toString()),
+        htmlContent: buildGuideRequestEmailHtml(accessUrl.toString())
       },
       context.env || {}
     );
