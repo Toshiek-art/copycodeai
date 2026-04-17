@@ -5,28 +5,6 @@ import Footer from '../../components/Footer.astro';
 import Section from '../../components/layout/Section.astro';
 import Container from '../../components/layout/Container.astro';
 
-function isSafeGuideReturnPath(value: string | null): value is `/guides/${string}/` | `/guides/${string}` {
-  return typeof value === 'string' && /^\/guides\/[a-z0-9-]+\/?$/.test(value);
-}
-
-function isSafeGuideRequestHref(value: string | null): value is `/guides/${string}/#guide-request` {
-  return typeof value === 'string' && /^\/guides\/[a-z0-9-]+\/#guide-request$/.test(value);
-}
-
-const searchParams = Astro.url.searchParams;
-const requestHrefValue = searchParams.get('requestHref');
-const requestPathValue = searchParams.get('requestPath');
-const returnToValue = searchParams.get('returnTo');
-const requestHref = isSafeGuideRequestHref(requestHrefValue)
-  ? requestHrefValue
-  : isSafeGuideReturnPath(requestPathValue)
-    ? `${requestPathValue}#guide-request`
-    : isSafeGuideReturnPath(returnToValue)
-      ? `${returnToValue}#guide-request`
-      : '/guides/';
-const resource = searchParams.get('resource') === 'checklist' ? 'checklist' : 'guide';
-const resourceLabel = resource === 'checklist' ? 'checklist' : 'guide';
-
 const pageTitle = 'Access link unavailable | CopyCodeAI';
 const pageDescription = 'This access link is missing, invalid, or expired. Request a new copy to continue.';
 const pageCanonical = 'https://copycodeai.online/guides/access-link-unavailable/';
@@ -52,8 +30,8 @@ const pageCanonical = 'https://copycodeai.online/guides/access-link-unavailable/
         <p class="mt-4 max-w-3xl text-lg text-slate-700">
           This link is missing, invalid, or expired.
         </p>
-        <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">
-          Go to the {resourceLabel} request page and request a fresh access link by email.
+        <p data-access-summary class="mt-3 max-w-3xl text-base leading-7 text-slate-700">
+          Go to the request page and request a fresh access link by email.
         </p>
       </Container>
     </Section>
@@ -62,16 +40,17 @@ const pageCanonical = 'https://copycodeai.online/guides/access-link-unavailable/
       <Container size="content">
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
           <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Request a new access link</p>
-          <h2 id="request-link-title" class="mt-2 text-3xl font-semibold text-ink-900">
-            Go to the {resourceLabel} request page
+          <h2 data-access-heading id="request-link-title" class="mt-2 text-3xl font-semibold text-ink-900">
+            Go to the request page
           </h2>
-          <p class="mt-3 max-w-2xl text-base leading-7 text-slate-700">
-            This takes you back to the request form for this {resourceLabel}. From there you can request a fresh signed access link by email.
+          <p data-access-body class="mt-3 max-w-2xl text-base leading-7 text-slate-700">
+            This takes you back to the request form for this resource. From there you can request a fresh signed access link by email.
           </p>
 
           <div class="mt-6">
             <a
-              href={requestHref}
+              href="/guides/"
+              data-access-request-link
               class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
             >
               Go to the request page
@@ -88,6 +67,47 @@ const pageCanonical = 'https://copycodeai.online/guides/access-link-unavailable/
       </Container>
     </Section>
   </main>
+
+  <script is:inline>
+    (() => {
+      const searchParams = new URLSearchParams(window.location.search);
+      const safeRequestPath = (value) => typeof value === 'string' && /^\/guides\/[a-z0-9-]+\/?$/.test(value);
+      const safeRequestHref = (value) => typeof value === 'string' && /^\/guides\/[a-z0-9-]+\/#guide-request$/.test(value);
+
+      const requestHrefValue = searchParams.get('requestHref');
+      const requestPathValue = searchParams.get('requestPath');
+      const returnToValue = searchParams.get('returnTo');
+      const requestHref = safeRequestHref(requestHrefValue)
+        ? requestHrefValue
+        : safeRequestPath(requestPathValue)
+          ? `${requestPathValue}#guide-request`
+          : safeRequestPath(returnToValue)
+            ? `${returnToValue}#guide-request`
+            : '/guides/';
+
+      const resourceLabel = searchParams.get('resource') === 'checklist' ? 'checklist' : 'guide';
+      const requestLink = document.querySelector('[data-access-request-link]');
+      const summary = document.querySelector('[data-access-summary]');
+      const heading = document.querySelector('[data-access-heading]');
+      const body = document.querySelector('[data-access-body]');
+
+      if (requestLink) {
+        requestLink.setAttribute('href', requestHref);
+      }
+
+      if (summary) {
+        summary.textContent = `Go to the ${resourceLabel} request page and request a fresh access link by email.`;
+      }
+
+      if (heading) {
+        heading.textContent = `Go to the ${resourceLabel} request page`;
+      }
+
+      if (body) {
+        body.textContent = `This takes you back to the request form for this ${resourceLabel}. From there you can request a fresh signed access link by email.`;
+      }
+    })();
+  </script>
 
   <Footer />
 </BaseLayout>
