@@ -19,12 +19,15 @@ src/
       FormField.astro
       FormStatus.astro
       GuideDownloadForm.astro
+      GuideEmailForm.astro
     Hero.astro
     HowItWorks.astro
     MiniScenarios.astro
     Navbar.astro
     ServiceCards.astro
     guides/
+      GuideRequestFeedback.astro
+      GuideRequestPanel.astro
       GuideCTA.astro
       GuideCard.astro
       GuideHeader.astro
@@ -46,6 +49,16 @@ src/
       data-flow-ai-feature.astro
       eaa-startup-websites.astro
       gdpr-ai-startup.astro
+      launch-risk-review-checklist.astro
+      access-link-unavailable.astro
+      data-flow-ai-feature/
+        view.astro
+      eaa-startup-websites/
+        view.astro
+      gdpr-ai-startup/
+        view.astro
+      launch-risk-review-checklist/
+        view.astro
     index.astro
     privacy.astro
     services.astro
@@ -55,6 +68,8 @@ functions/
   _utils/
     form-intake.js
     lead-provider.js
+    resource-access.js
+    resource-access-response.js
   api/
     forms/
       consultation.js
@@ -86,7 +101,8 @@ npm run build
 4. Deploy.
 
 Notes:
-- Static pages are still the default delivery model, but the site now also uses Cloudflare Pages Functions for lead intake and guide downloads.
+- Static pages are still the default delivery model, but the site now also uses Cloudflare Pages Functions for lead intake and guide access-link delivery.
+- Guides are not delivered as PDFs or downloadable files; they are delivered as signed links to protected `/view/` pages.
 - Site has no public admin page and no admin links in public navigation.
 - If an internal admin area is introduced, protect it behind Cloudflare Zero Trust Access.
 
@@ -109,15 +125,18 @@ curl -X POST https://<your-domain>/api/admin/offer/tallinn-landing/decrement \\
   -H "Authorization: Bearer <ADMIN_TOKEN>"
 ```
 
-## Lead Intake and Download Flows
+## Lead Intake and Guide Access Flows
 
 - Primary contact intake: `src/components/forms/ConsultationForm.astro` posts to `POST /api/forms/consultation`.
-- Guide download bonus flow: `src/components/forms/GuideDownloadForm.astro` posts to `POST /api/forms/guide-download`.
+- Guide access-link flow: `src/components/forms/GuideDownloadForm.astro` posts to `POST /api/forms/guide-download`.
 - Shared server helpers live in `functions/_utils/form-intake.js` and `functions/_utils/lead-provider.js`.
+- Signed guide access lives in `functions/_utils/resource-access.js`.
+- Locked-state recovery lives in `functions/_utils/resource-access-response.js` and `src/pages/guides/access-link-unavailable.astro`.
 - Provider selection is controlled with `LEAD_PROVIDER=mock|brevo`.
 - Local development uses the mock provider; Brevo requires `BREVO_API_KEY` and optional `BREVO_LIST_IDS`.
 - The site itself does not keep a dedicated submissions database.
-- Guide PDF assets are expected under `public/downloads/guides/` when they are available. At the moment, the repository snapshot does not include those PDFs yet.
+- Guide access requests save the lead in Brevo, send a transactional email, and return a signed access link to the protected `/view/` page.
+- The Launch Risk Review Checklist and the other current guides all use the same request/view pattern.
 
 ## Contact Strategy
 
@@ -131,6 +150,7 @@ curl -X POST https://<your-domain>/api/admin/offer/tallinn-landing/decrement \\
 - Server-side validation checks required fields and honeypots.
 - Successful submits redirect back with a query-string status.
 - Lead forwarding is handled by Cloudflare Pages Functions and the configured provider adapter.
+- Guide request pages support a default first-request state and a renew state for expired or invalid access links.
 
 Minimal Pages Functions flow:
 
@@ -139,5 +159,6 @@ Minimal Pages Functions flow:
 2. Validate required fields and honeypot.
 3. Normalize the payload.
 4. Forward the lead to the configured provider.
-5. Redirect back with success or error state.
+5. For guide requests, generate a signed access token and send the transactional email with the protected `/view/` link.
+6. Redirect back with success or error state.
 ```
