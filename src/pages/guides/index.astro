@@ -8,7 +8,12 @@ import CTAGroup from '../../components/layout/CTAGroup.astro';
 import GuideCard from '../../components/guides/GuideCard.astro';
 import { getPublishedGuides } from '../../data/guides';
 
-const guides = getPublishedGuides();
+const publishedGuides = getPublishedGuides();
+const featuredGuideSlug = 'launch-risk-review-checklist';
+const guides = [
+  ...publishedGuides.filter((guide) => guide.slug === featuredGuideSlug),
+  ...publishedGuides.filter((guide) => guide.slug !== featuredGuideSlug)
+];
 
 const coverPoints = [
   'AI feature implementation risk',
