@@ -24,8 +24,39 @@ export function createAccessLockedResponse(requestPath, resourceLabel = 'guide')
         color: var(--text);
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
-      main {
+      .shell {
         min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
+      header, footer {
+        width: 100%;
+      }
+      .bar {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .brand {
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+      }
+      .navlink {
+        color: #475569;
+        font-size: 14px;
+        text-decoration: none;
+      }
+      .navlink:hover {
+        color: var(--brand);
+      }
+      main {
         display: grid;
         place-items: center;
         padding: 32px 20px;
@@ -58,6 +89,16 @@ export function createAccessLockedResponse(requestPath, resourceLabel = 'guide')
         font-size: 16px;
         line-height: 1.7;
       }
+      footer {
+        padding: 0 20px 20px;
+      }
+      .foot {
+        max-width: 1120px;
+        margin: 0 auto;
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.6;
+      }
       a {
         display: inline-flex;
         align-items: center;
@@ -78,15 +119,26 @@ export function createAccessLockedResponse(requestPath, resourceLabel = 'guide')
     </style>
   </head>
   <body>
-    <main>
-      <section class="card" aria-labelledby="access-title">
-        <p class="eyebrow">CopyCodeAI</p>
-        <h1 id="access-title">Access link unavailable</h1>
-        <p>This link is missing, invalid, or expired.</p>
-        <p>Request a new copy by email to access the ${resourceLabel} again.</p>
-        <a href="${requestPath}">Request a new access link</a>
-      </section>
-    </main>
+    <div class="shell">
+      <header>
+        <div class="bar">
+          <a class="brand" href="/">CopyCodeAI</a>
+          <a class="navlink" href="/guides/">Guides</a>
+        </div>
+      </header>
+      <main>
+        <section class="card" aria-labelledby="access-title">
+          <p class="eyebrow">CopyCodeAI</p>
+          <h1 id="access-title">Access link unavailable</h1>
+          <p>This link is missing, invalid, or expired.</p>
+          <p>Request a new copy by email to access the ${resourceLabel} again.</p>
+          <a href="${requestPath}">Request a new access link</a>
+        </section>
+      </main>
+      <footer>
+        <div class="foot">CopyCodeAI guides are written for practical launch decisions, not generic policy theatre.</div>
+      </footer>
+    </div>
   </body>
 </html>`;
 
