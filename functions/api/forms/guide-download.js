@@ -176,9 +176,9 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
     },
     consent: {
       marketingOptIn: newsletterOptIn,
-      privacyAccepted: true,
+      privacyAccepted: resourceConsent,
       newsletterOptIn,
-      resourceConsent: true
+      resourceConsent
     },
     antiSpam: {
       honeypot
@@ -274,7 +274,8 @@ export async function onRequestPost(context) {
   const guideSlug = readFormValue(formData, 'guideSlug');
   const returnTo = readFormValue(formData, 'returnTo');
   const firstName = readFormValue(formData, 'firstName');
-  const marketingOptIn = readFormValue(formData, 'marketingOptIn') === 'on';
+  const resourceConsent = readFormValue(formData, 'resourceConsent') === 'on';
+  const newsletterOptIn = readFormValue(formData, 'newsletterOptIn') === 'on';
   const honeypot = readFormValue(formData, 'website');
 
   const guideDownload = resolveGuideDownload(guideSlug);
@@ -299,6 +300,10 @@ export async function onRequestPost(context) {
     errors.push('invalid_return_to');
   }
 
+  if (!resourceConsent) {
+    errors.push('resource_consent_missing');
+  }
+
   if (hasHoneypotValue(formData, 'website') || honeypot) {
     errors.push('honeypot_triggered');
   }
@@ -307,7 +312,7 @@ export async function onRequestPost(context) {
     return createRedirectResponse(
       safeReturnTo || ERROR_BASE,
       {
-        download: 'error',
+        resource: 'error',
         error: errors[0]
       },
       303
@@ -337,8 +342,10 @@ export async function onRequestPost(context) {
       returnTo: safeReturnTo
     },
     consent: {
-      marketingOptIn,
-      privacyAccepted: true
+      marketingOptIn: newsletterOptIn,
+      privacyAccepted: resourceConsent,
+      newsletterOptIn,
+      resourceConsent
     },
     antiSpam: {
       honeypot
@@ -351,7 +358,96 @@ export async function onRequestPost(context) {
     return createRedirectResponse(
       safeReturnTo,
       {
-        download: 'error',
+        resource: 'error',
+        error: 'submission_failed'
+      },
+      303
+    );
+  }
+
+  if (leadResult.provider !== 'brevo' || !context.env?.BREVO_SENDER_EMAIL || !context.env?.BREVO_API_KEY) {
+    return createRedirectResponse(
+      safeReturnTo,
+      {
+        resource: 'error',
+        error: 'submission_failed'
+      },
+      303
+    );
+  }
+
+  let accessToken;
+
+  try {
+    accessToken = await createSignedResourceToken(
+      {
+        email,
+        resourceSlug: guideDownload.slug,
+        ttlSeconds: RESOURCE_ACCESS_TOKEN_TTL_SECONDS
+      },
+      context.env || {}
+    );
+  } catch {
+    return createRedirectResponse(
+      safeReturnTo,
+      {
+        resource: 'error',
+        error: 'submission_failed'
+      },
+      303
+    );
+  }
+
+  const accessUrl = new URL(getGuideViewPath(guideDownload.slug), 'https://copycodeai.online');
+  accessUrl.searchParams.set('token', accessToken);
+
+  try {
+    await sendBrevoTransactionalEmail(
+      {
+        to: email,
+        bcc: [],
+        subject: `Your ${guideDownload.title}`,
+        textContent: [
+          `Your ${guideDownload.title}`,
+          '',
+          'Thanks for requesting the guide.',
+          '',
+          'Open the full guide here:',
+          accessUrl.toString(),
+          '',
+          'If the link expires, request a new copy from the guide page.',
+          '',
+          'Best,',
+          'CopyCode AI',
+          'hello@copycodeai.online'
+        ].join('\n'),
+        htmlContent: `<!doctype html>
+<html lang="en">
+  <body style="margin:0;padding:0;background:#f8fafc;font-family:Arial,Helvetica,sans-serif;color:#0f172a;">
+    <div style="max-width:640px;margin:0 auto;padding:32px 16px;">
+      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:28px;">
+        <p style="margin:0 0 10px;font-size:12px;line-height:18px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#334155;">CopyCode AI</p>
+        <h1 style="margin:0 0 12px;font-size:24px;line-height:32px;font-weight:700;">Your ${guideDownload.title}</h1>
+        <p style="margin:0 0 20px;font-size:15px;line-height:24px;color:#475569;">Thanks for requesting the guide.</p>
+        <p style="margin:0 0 20px;">
+          <a href="${accessUrl}" style="display:inline-block;border-radius:12px;background:#2563eb;color:#ffffff;text-decoration:none;padding:12px 18px;font-size:14px;font-weight:700;">Open the full guide</a>
+        </p>
+        <p style="margin:0;font-size:14px;line-height:22px;color:#475569;">If the link expires, request a new copy from the guide page.</p>
+        <p style="margin:20px 0 0;font-size:14px;line-height:22px;color:#0f172a;font-weight:700;">
+          CopyCode AI<br /><span style="font-weight:400;color:#475569;">hello@copycodeai.online</span>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>`
+      },
+      context.env || {}
+    );
+  } catch {
+    return createRedirectResponse(
+      safeReturnTo,
+      {
+        resource: 'error',
         error: 'submission_failed'
       },
       303
@@ -361,7 +457,7 @@ export async function onRequestPost(context) {
   return createRedirectResponse(
     safeReturnTo,
     {
-      download: 'success'
+      resource: 'success'
     },
     303
   );
