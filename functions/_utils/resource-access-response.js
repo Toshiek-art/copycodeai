@@ -1,5 +1,6 @@
 function buildLockedAccessPath(requestPath, resourceLabel = 'guide') {
   const searchParams = new URLSearchParams({
+    requestPath,
     returnTo: requestPath,
     resource: resourceLabel
   });

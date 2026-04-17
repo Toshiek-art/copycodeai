@@ -10,8 +10,14 @@ function isSafeGuideReturnPath(value: string | null): value is `/guides/${string
 }
 
 const searchParams = Astro.url.searchParams;
+const requestPathValue = searchParams.get('requestPath');
 const returnToValue = searchParams.get('returnTo');
-const requestHref = isSafeGuideReturnPath(returnToValue) ? `${returnToValue}#guide-request` : '/guides/';
+const requestTarget = isSafeGuideReturnPath(requestPathValue)
+  ? requestPathValue
+  : isSafeGuideReturnPath(returnToValue)
+    ? returnToValue
+    : null;
+const requestHref = requestTarget ? `${requestTarget}#guide-request` : '/guides/';
 const resource = searchParams.get('resource') === 'checklist' ? 'checklist' : 'guide';
 const resourceLabel = resource === 'checklist' ? 'checklist' : 'guide';
 
