@@ -14,15 +14,23 @@ import JsonLd from '../../components/seo/JsonLd.astro';
 import { getGuideBySlug, getRelatedGuides } from '../../data/guides';
 import { getGuideDownloadBySlug } from '../../data/guide-downloads';
 
-const checklistItems = [
-  'the team has a current data flow map they can actually use',
-  'one person owns the flow, and the review roles are written down',
-  'the purposes and legal basis match how the feature works in practice',
-  'you know which vendors touch the data and what they are allowed to do',
-  'you know whether a DPIA review is needed before launch',
-  'logging, retention, and debugging follow explicit rules',
-  'user-facing transparency matches the real processing',
-  'production, testing, and other data uses are clearly separated'
+const requestPreviewPoints = [
+  {
+    title: 'Where data enters',
+    body: 'Prompts, uploads, forms, and backend handoff points all count. If the path is fuzzy, the risk is already there.'
+  },
+  {
+    title: 'Who owns the flow',
+    body: 'A launch owner should be able to say who decides the purpose, the legal basis, and the review path.'
+  },
+  {
+    title: 'What the model provider sees',
+    body: 'Check the vendor boundary, logging, retention, and any reuse before the feature becomes normal.'
+  },
+  {
+    title: 'When to pause',
+    body: 'If the feature starts profiling, handling sensitive data, or mixing sources, stop and confirm whether a DPIA review is needed.'
+  }
 ];
 
 const guide = getGuideBySlug('gdpr-ai-startup');
@@ -133,238 +141,44 @@ const breadcrumbJsonLd = {
       </Container>
     </Section>
 
-    <Section aria-labelledby="article-content-title">
+    <Section aria-labelledby="request-preview-title">
       <Container size="content">
-        <article class="prose prose-slate max-w-none prose-headings:font-semibold prose-headings:text-ink-900 prose-p:leading-7 prose-li:leading-7 prose-a:font-medium prose-a:text-brand-700 prose-a:no-underline hover:prose-a:text-brand-800">
-          <h2 id="article-content-title" class="sr-only">Article content</h2>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Preview</p>
+          <h2 id="request-preview-title" class="mt-2 text-3xl font-semibold text-ink-900">
+            What this guide helps you decide before launch
+          </h2>
+          <p class="mt-4 max-w-3xl text-base leading-7 text-slate-700">
+            This is a flow-first guide for AI startups and digital businesses that need to understand where data enters, who controls it, and which decisions should be made before the product gets harder to change.
+          </p>
 
-          <section aria-labelledby="why-gdpr-title" class="not-prose">
-            <h2 id="why-gdpr-title" class="text-3xl font-semibold text-ink-900">Why GDPR in AI startups can’t be “fixed later”</h2>
-            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
-              <p>There’s a recurring temptation in the startup world: build first, fix later.</p>
-              <p>It works for many things. You adjust pricing, rewrite copy, redesign parts of the interface.</p>
-              <p>With AI features, though, that logic usually gets expensive fast.</p>
-              <p>
-                The GDPR problem usually starts earlier than people think.
-                Not when someone writes the privacy policy. Not when the cookie banner goes up.
-                It starts when the feature is still being shaped: what data you collect, where it goes, what gets stored, which outside providers touch it, and how long any of it sticks around.
-              </p>
-              <p>
-                When these choices are postponed, the risk isn’t just legal. It becomes technical.
-                Your feature gets tied to providers, workflows, testing environments, logging practices, retention logic, and team habits that later require time, rework, and compromises to fix.
-              </p>
-              <p>
-                That’s why, in AI startups, GDPR is not something you “fix later.”
-                If you address it too late, you’re not adjusting a detail—you’re trying to reshape the structure.
-              </p>
-            </div>
-          </section>
-
-          <section aria-labelledby="data-flow-title" class="not-prose mt-12">
-            <h2 id="data-flow-title" class="text-3xl font-semibold text-ink-900">Where data actually enters an AI feature</h2>
-            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
-              <p>One of the most common mistakes is assuming data only enters during the training phase. In reality, it enters much earlier and stays involved much longer.</p>
-              <p>
-                It enters when a user submits a prompt, a text, a file, or a request.
-                It enters when that request moves from frontend to backend, then to an external provider, and possibly into logging systems.
-                It enters when you store outputs for debugging, run internal tests, compare prompt versions, or use real data to evaluate performance.
-              </p>
-              <p>
-                Sometimes data isn’t even explicitly reused, yet it continues to exist in temporary copies, application logs, dashboards, staging environments, or monitoring tools.
-              </p>
-              <p>
-                This is where many startups lose visibility.
-                The feature looks small, but the actual data flow is far more extensive.
-              </p>
-              <p>And if you don’t clearly know where data travels, for what purpose, and under whose control, you’re already accumulating risk.</p>
-              <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
-                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-700">Input</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-700">A prompt, file, form field, or request enters the product and starts the flow.</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
-                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-700">Handoff</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-700">The data moves through backend code, providers, or tools that may see more than one team expects.</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
-                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-700">Storage</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-700">Logs, staging, analytics, and debugging copies should have a clear reason to exist.</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
-                  <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-700">Reuse</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-700">Any secondary use should be deliberate, visible, and documented before it becomes normal.</p>
-                </div>
+          <div class="mt-6 grid gap-4 lg:grid-cols-2">
+            {requestPreviewPoints.map((point) => (
+              <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+                <h3 class="text-lg font-semibold text-ink-900">{point.title}</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-700">{point.body}</p>
               </div>
-            </div>
-          </section>
+            ))}
+          </div>
+        </div>
+      </Container>
+    </Section>
 
-          <section aria-labelledby="launch-decisions-title" class="not-prose mt-12">
-            <h2 id="launch-decisions-title" class="text-3xl font-semibold text-ink-900">The 5 launch decisions that shape your risk</h2>
-            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
-              <p>Before releasing an AI feature, there are decisions that need to be made explicitly. They’re not bureaucratic details—they’re product and architecture choices.</p>
+    <Section aria-labelledby="request-guide-title">
+      <Container size="content">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-soft">
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">Get the guide</p>
+          <h2 id="request-guide-title" class="mt-2 text-3xl font-semibold text-ink-900">Request a downloadable copy</h2>
+          <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">
+            If you want to keep the guide handy for the team, request the PDF and use it as a practical pre-launch reference.
+          </p>
 
-              <div class="grid gap-4 pt-2">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
-                  <h3 class="text-lg font-semibold text-ink-900">1. Legal basis</h3>
-                  <p class="mt-2">You need to know on what basis you’re processing data and why. This doesn’t just affect documentation. It shapes UX, disclosures, and operational flows.</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
-                  <h3 class="text-lg font-semibold text-ink-900">2. Data minimization</h3>
-                  <p class="mt-2">If your feature can work with less data, collecting more isn’t caution. It’s unnecessary exposure.</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
-                  <h3 class="text-lg font-semibold text-ink-900">3. Logging and retention</h3>
-                  <p class="mt-2">What are you storing? Why? For how long? And most importantly: is that logging essential for operating the product, or has it become a catch-all “just in case”?</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
-                  <h3 class="text-lg font-semibold text-ink-900">4. Third-party providers and processing boundaries</h3>
-                  <p class="mt-2">If you rely on APIs, models, or external services, you need a clear understanding of their role and what data crosses that boundary.</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
-                  <h3 class="text-lg font-semibold text-ink-900">5. Separation of environments and data usage</h3>
-                  <p class="mt-2">Production, testing, debugging, analytics, and system improvement are not the same thing. When these layers blur, operational clarity disappears and risk increases.</p>
-                </div>
-              </div>
+          {downloadStatus && <FormStatus {...downloadStatus} class="mt-6" />}
 
-              <p>Making these decisions before launch doesn’t necessarily slow you down. In many cases, it prevents having to fix the product once it’s already in motion.</p>
-              <div class="mt-6 grid gap-4 lg:grid-cols-2">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
-                  <h3 class="text-lg font-semibold text-ink-900">Who owns what</h3>
-                  <ul class="mt-3 space-y-2 text-sm leading-6 text-slate-700">
-                    <li><strong class="font-semibold text-ink-900">Product:</strong> the purpose and the user-facing flow</li>
-                    <li><strong class="font-semibold text-ink-900">Tech:</strong> the actual data path, logging, and retention</li>
-                    <li><strong class="font-semibold text-ink-900">Ops / compliance:</strong> vendors, contracts, and transfers</li>
-                    <li><strong class="font-semibold text-ink-900">Launch owner:</strong> can stop the rollout if the flow is not clear</li>
-                  </ul>
-                </div>
-                <div class="rounded-2xl border border-brand-200 bg-brand-50 p-5 shadow-soft">
-                  <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">DPIA trigger</p>
-                  <p class="mt-3 text-sm leading-6 text-slate-700">
-                    If the feature starts profiling people, handling sensitive data, combining sources, or changing how data is reused, pause and check whether a DPIA review is needed before launch.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section aria-labelledby="compliance-debt-title" class="not-prose mt-12">
-            <h2 id="compliance-debt-title" class="text-3xl font-semibold text-ink-900">The mistakes that create compliance debt</h2>
-            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
-              <p>Compliance debt rarely comes from a major violation on day one. More often, it builds up through small shortcuts that were meant to be temporary.</p>
-              <p>A common mistake is treating an AI feature as just interface and output, ignoring everything in between. Another is excessive logging without clear rules on what is stored and why.</p>
-              <p>
-                Then there’s uncontrolled data reuse: data collected for one purpose ends up being used for internal testing, secondary analysis, or system improvement without a clearly defined transition.
-              </p>
-              <p>The same applies to quickly integrated external providers, without a full understanding of the data flow.</p>
-              <div class="mt-6 grid gap-3 sm:grid-cols-2">
-                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
-                  <h3 class="text-base font-semibold text-ink-900">Vendors and contracts</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-700">Know who is a processor, who is a subprocessor, and what the agreement allows them to do with the data.</p>
-                </div>
-                <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
-                  <h3 class="text-base font-semibold text-ink-900">Transfers and transparency</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-700">Check where the data goes, how users are told about it, and whether the real flow matches the wording.</p>
-                </div>
-              </div>
-              <p>Another classic issue is environment confusion. Production data used in staging, debug logs kept too long, outputs stored “just in case.” Each compromise seems harmless. Together, they create opacity.</p>
-              <p>
-                And then there’s the most underestimated issue: lack of meaningful documentation.
-                You don’t need hundreds of pages. But if your team can’t clearly explain what data enters, where it goes, who accesses it, and how long it stays, that gap will eventually surface.
-              </p>
-            </div>
-          </section>
-
-          <section aria-labelledby="llm-title" class="not-prose mt-12">
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
-              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">AI models / LLM</p>
-              <h2 id="llm-title" class="mt-2 text-3xl font-semibold text-ink-900">What changed when the model entered the flow</h2>
-              <div class="mt-4 space-y-4 text-base leading-7 text-slate-700">
-                <p>With LLMs, the flow is easier to extend and easier to misunderstand at the same time. Prompts, outputs, logs, and provider terms can all matter at once.</p>
-                <p>The practical question is not just whether the model works. It is whether you know what it sees, what it keeps, and what happens when the output is reused elsewhere.</p>
-              </div>
-              <div class="mt-6 grid gap-3 sm:grid-cols-2">
-                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
-                  Prompts can contain personal data, so treat them like part of the flow.
-                </div>
-                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
-                  Logs and retries may preserve more than the visible response.
-                </div>
-                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
-                  Reuse, fine-tuning, or provider defaults should be checked explicitly.
-                </div>
-                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
-                  External model terms can change the real boundary of the processing.
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section aria-labelledby="checklist-title" class="not-prose mt-12">
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
-              <h2 id="checklist-title" class="text-3xl font-semibold text-ink-900">The minimum checklist before go-live</h2>
-              <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">Before going live, you don’t need paranoia. You need clarity.</p>
-              <p class="mt-3 text-base leading-7 text-slate-700">At a minimum, check this:</p>
-
-              <div class="mt-5 rounded-2xl border border-brand-200 bg-white p-5 shadow-soft">
-                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">Simple example</p>
-                <p class="mt-3 text-sm leading-6 text-slate-700">
-                  A support assistant receives a user message, sends it to an external model, keeps a debug log for a short time, and returns an answer to the user. Before launch, you should know who owns that flow, which vendor sees the data, how long the log stays, and whether the wording shown to users matches the real processing.
-                </p>
-              </div>
-
-              <ul class="mt-6 grid gap-3">
-                {checklistItems.map((item) => (
-                  <li class="flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-soft">
-                    <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-700 text-[11px] font-semibold leading-none text-white">✓</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <p class="mt-5 text-base leading-7 text-slate-700">
-                This checklist doesn’t replace an audit. But it reveals something critical:
-              </p>
-              <p class="mt-3 text-base leading-7 text-slate-700">
-                Are you launching a feature you actually control—or one that has already grown more complex than you can clearly describe?
-              </p>
-            </div>
-          </section>
-
-          <section aria-labelledby="audit-title" class="not-prose mt-12">
-            <h2 id="audit-title" class="text-3xl font-semibold text-ink-900">When to stop and run a structured audit</h2>
-            <div class="mt-5 space-y-4 text-base leading-7 text-slate-700">
-              <p>There’s a point where moving faster doesn’t help anymore. It only pushes forward problems that are already forming.</p>
-              <p>
-                That moment comes when the startup grows, when new clients come in, when the product integrates with other systems, when external providers increase, when datasets change, or when the team itself is no longer sure where data actually flows.
-              </p>
-              <p>At that point, a structured audit isn’t about bureaucracy. It’s about making the implicit explicit.</p>
-              <p>It helps realign technology, product, and operational responsibility. It clarifies where the feature is sustainable and where hidden complexity is building up.</p>
-              <p>Most importantly, it prevents your next phase of growth from being built on unclear foundations.</p>
-              <p>In AI startups, the real question isn’t just: “Can we launch?”</p>
-              <p>It’s: “Are we launching something we’ll still be able to control six months from now?”</p>
-              <p>
-                If your team is no longer fully sure how data moves through the feature, that is usually the moment to stop improvising and map the system properly.
-                That is exactly where a structured pre-launch blueprint or audit becomes useful.
-              </p>
-            </div>
-          </section>
-
-          <section aria-labelledby="download-title" class="not-prose mt-12">
-            <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-soft">
-              <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700">PDF download</p>
-              <h2 id="download-title" class="mt-2 text-3xl font-semibold text-ink-900">Get a downloadable copy of this guide</h2>
-              <p class="mt-3 max-w-3xl text-base leading-7 text-slate-700">
-                The public article stays available here. The PDF is just a bonus copy if you want to share the guide or keep it handy for the team.
-              </p>
-
-              {downloadStatus && <FormStatus {...downloadStatus} class="mt-6" />}
-
-              <div class="mt-6">
-                <GuideDownloadForm guideSlug={guide.slug} returnTo={guideDownload.returnTo} />
-              </div>
-            </div>
-          </section>
-        </article>
+          <div class="mt-6">
+            <GuideDownloadForm guideSlug={guide.slug} returnTo={guideDownload.returnTo} />
+          </div>
+        </div>
       </Container>
     </Section>
 
@@ -388,12 +202,12 @@ const breadcrumbJsonLd = {
       <Container size="content">
         <GuideCTA
           eyebrow="Next step"
-          title="If the feature is already moving, map it before the next release."
-          description="A structured pre-launch blueprint or audit helps turn unclear data handling into concrete implementation decisions, so the team can move without guessing."
+          title="If the feature already touches real data, map it before the next release."
+          description="A structured pre-launch blueprint or audit helps turn unclear processing into decisions the team can keep using as the product grows."
           primaryLabel="View Blueprint"
           primaryHref="/#blueprint"
-          secondaryLabel="Back to Guides"
-          secondaryHref="/guides/"
+          secondaryLabel="See Services"
+          secondaryHref="/services"
         />
       </Container>
     </Section>

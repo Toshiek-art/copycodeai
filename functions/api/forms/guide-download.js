@@ -18,21 +18,44 @@ function resolveGuideDownload(slug) {
 }
 
 function resolveGuideRequest(slug) {
-  return slug === GUIDE_REQUEST_SLUG ? getGuideBySlug(slug) : null;
+  return getGuideBySlug(slug) || null;
 }
 
-function buildGuideRequestEmailText(accessUrl) {
+function getGuideViewPath(slug) {
+  return slug === GUIDE_REQUEST_SLUG ? GUIDE_REQUEST_VIEW_PATH : `/guides/${slug}/view/`;
+}
+
+function buildGuideRequestEmailText(guide, accessUrl) {
+  if (guide.slug === GUIDE_REQUEST_SLUG) {
+    return [
+      'Your Launch Risk Review Checklist',
+      '',
+      'Thanks for requesting the checklist.',
+      '',
+      'Open the full checklist here:',
+      accessUrl,
+      '',
+      'If the link expires, request a new copy from the checklist page.',
+      '',
+      'This checklist is a short pre-launch review for websites, forms, consent and tracking, booking/contact flows, accessibility-sensitive journeys, ecommerce paths, and AI touchpoints where relevant.',
+      '',
+      'Best,',
+      'CopyCode AI',
+      'hello@copycodeai.online'
+    ].join('\n');
+  }
+
   return [
-    'Your Launch Risk Review Checklist',
+    `Your ${guide.title}`,
     '',
-    'Thanks for requesting the checklist.',
+    `Thanks for requesting the guide.`,
     '',
-    'Open the full checklist here:',
+    'Open the full guide here:',
     accessUrl,
     '',
-    'If the link expires, request a new copy from the checklist page.',
+    'If the link expires, request a new copy from the guide page.',
     '',
-    'This checklist is a short pre-launch review for websites, forms, consent and tracking, booking/contact flows, accessibility-sensitive journeys, ecommerce paths, and AI touchpoints where relevant.',
+    guide.description,
     '',
     'Best,',
     'CopyCode AI',
@@ -40,8 +63,9 @@ function buildGuideRequestEmailText(accessUrl) {
   ].join('\n');
 }
 
-function buildGuideRequestEmailHtml(accessUrl) {
-  return `<!doctype html>
+function buildGuideRequestEmailHtml(guide, accessUrl) {
+  if (guide.slug === GUIDE_REQUEST_SLUG) {
+    return `<!doctype html>
 <html lang="en">
   <body style="margin:0;padding:0;background:#f8fafc;font-family:Arial,Helvetica,sans-serif;color:#0f172a;">
     <div style="max-width:640px;margin:0 auto;padding:32px 16px;">
@@ -56,6 +80,30 @@ function buildGuideRequestEmailHtml(accessUrl) {
           It is a short pre-launch review for websites, forms, consent and tracking, booking/contact flows, accessibility-sensitive journeys, ecommerce paths, and AI touchpoints where relevant.
         </p>
         <p style="margin:14px 0 0;font-size:14px;line-height:22px;color:#475569;">If the link expires, request a new copy from the checklist page.</p>
+        <p style="margin:20px 0 0;font-size:14px;line-height:22px;color:#0f172a;font-weight:700;">
+          CopyCode AI<br /><span style="font-weight:400;color:#475569;">hello@copycodeai.online</span>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>`;
+  }
+
+  return `<!doctype html>
+<html lang="en">
+  <body style="margin:0;padding:0;background:#f8fafc;font-family:Arial,Helvetica,sans-serif;color:#0f172a;">
+    <div style="max-width:640px;margin:0 auto;padding:32px 16px;">
+      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;padding:28px;">
+        <p style="margin:0 0 10px;font-size:12px;line-height:18px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#334155;">CopyCode AI</p>
+        <h1 style="margin:0 0 12px;font-size:24px;line-height:32px;font-weight:700;">Your ${guide.title}</h1>
+        <p style="margin:0 0 20px;font-size:15px;line-height:24px;color:#475569;">Thanks for requesting the guide.</p>
+        <p style="margin:0 0 20px;">
+          <a href="${accessUrl}" style="display:inline-block;border-radius:12px;background:#2563eb;color:#ffffff;text-decoration:none;padding:12px 18px;font-size:14px;font-weight:700;">Open the full guide</a>
+        </p>
+        <p style="margin:0;font-size:14px;line-height:22px;color:#475569;">
+          ${guide.description}
+        </p>
+        <p style="margin:14px 0 0;font-size:14px;line-height:22px;color:#475569;">If the link expires, request a new copy from the guide page.</p>
         <p style="margin:20px 0 0;font-size:14px;line-height:22px;color:#0f172a;font-weight:700;">
           CopyCode AI<br /><span style="font-weight:400;color:#475569;">hello@copycodeai.online</span>
         </p>
@@ -123,7 +171,7 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
       guideTitle: guideRequest.title,
       resourceSlug: guideRequest.slug,
       resourceTitle: guideRequest.title,
-      resourceUrl: GUIDE_REQUEST_VIEW_PATH,
+      resourceUrl: getGuideViewPath(guideRequest.slug),
       returnTo: safeReturnTo
     },
     consent: {
@@ -184,16 +232,18 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
   }
 
   const accessUrl = new URL(GUIDE_REQUEST_VIEW_PATH, 'https://copycodeai.online');
+  accessUrl.pathname = getGuideViewPath(guideRequest.slug);
   accessUrl.searchParams.set('token', accessToken);
+  const emailSubject = guideRequest.slug === GUIDE_REQUEST_SLUG ? 'Your Launch Risk Review Checklist' : `Your ${guideRequest.title}`;
 
   try {
     await sendBrevoTransactionalEmail(
       {
         to: email,
         bcc: [],
-        subject: 'Your Launch Risk Review Checklist',
-        textContent: buildGuideRequestEmailText(accessUrl.toString()),
-        htmlContent: buildGuideRequestEmailHtml(accessUrl.toString())
+        subject: emailSubject,
+        textContent: buildGuideRequestEmailText(guideRequest, accessUrl.toString()),
+        htmlContent: buildGuideRequestEmailHtml(guideRequest, accessUrl.toString())
       },
       context.env || {}
     );
