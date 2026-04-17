@@ -7,6 +7,7 @@ interface Props {
   titleRenew: string;
   bodyDefault: string;
   bodyRenew: string;
+  submitRenew?: string;
 }
 
 const {
@@ -16,11 +17,12 @@ const {
   titleDefault,
   titleRenew,
   bodyDefault,
-  bodyRenew
+  bodyRenew,
+  submitRenew = 'Request a fresh access link'
 } = Astro.props;
 ---
 
-<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8" data-guide-request-panel data-request-state="default">
+<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8" data-guide-request-panel data-request-state="default" data-renew-submit-copy={submitRenew}>
   <p
     class="text-xs font-semibold uppercase tracking-[0.24em] text-brand-700"
     data-guide-request-eyebrow
@@ -81,7 +83,7 @@ const {
       }
 
       if (submitButton) {
-        submitButton.textContent = 'Request a fresh access link';
+        submitButton.textContent = panel.getAttribute('data-renew-submit-copy') || submitButton.textContent || '';
       }
 
       panel.setAttribute('data-request-state', 'renew');
