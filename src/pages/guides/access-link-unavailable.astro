@@ -9,15 +9,21 @@ function isSafeGuideReturnPath(value: string | null): value is `/guides/${string
   return typeof value === 'string' && /^\/guides\/[a-z0-9-]+\/?$/.test(value);
 }
 
+function isSafeGuideRequestHref(value: string | null): value is `/guides/${string}/#guide-request` {
+  return typeof value === 'string' && /^\/guides\/[a-z0-9-]+\/#guide-request$/.test(value);
+}
+
 const searchParams = Astro.url.searchParams;
+const requestHrefValue = searchParams.get('requestHref');
 const requestPathValue = searchParams.get('requestPath');
 const returnToValue = searchParams.get('returnTo');
-const requestTarget = isSafeGuideReturnPath(requestPathValue)
-  ? requestPathValue
-  : isSafeGuideReturnPath(returnToValue)
-    ? returnToValue
-    : null;
-const requestHref = requestTarget ? `${requestTarget}#guide-request` : '/guides/';
+const requestHref = isSafeGuideRequestHref(requestHrefValue)
+  ? requestHrefValue
+  : isSafeGuideReturnPath(requestPathValue)
+    ? `${requestPathValue}#guide-request`
+    : isSafeGuideReturnPath(returnToValue)
+      ? `${returnToValue}#guide-request`
+      : '/guides/';
 const resource = searchParams.get('resource') === 'checklist' ? 'checklist' : 'guide';
 const resourceLabel = resource === 'checklist' ? 'checklist' : 'guide';
 
