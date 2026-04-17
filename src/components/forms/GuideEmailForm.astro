@@ -5,11 +5,12 @@ import CheckboxField from './CheckboxField.astro';
 interface Props {
   guideSlug: string;
   returnTo?: string;
+  renew?: boolean;
   submitLabel?: string;
   class?: string;
 }
 
-const { guideSlug, returnTo, submitLabel = 'Send this checklist', class: className = '', ...rest } = Astro.props;
+const { guideSlug, returnTo, renew = false, submitLabel = 'Send this checklist', class: className = '', ...rest } = Astro.props;
 
 const formAction = '/api/forms/guide-download';
 ---
@@ -38,10 +39,12 @@ const formAction = '/api/forms/guide-download';
 
   <input type="hidden" name="guideSlug" value={guideSlug} />
   {returnTo && <input type="hidden" name="returnTo" value={returnTo} />}
+  <input type="hidden" name="renew" value={renew ? '1' : '0'} data-guide-request-renew-input />
   <input type="hidden" name="website" value="" aria-hidden="true" tabindex="-1" />
 
   <button
     type="submit"
+    data-guide-request-submit
     class="inline-flex items-center justify-center rounded-xl bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
   >
     {submitLabel}

@@ -113,7 +113,7 @@ function buildGuideRequestEmailHtml(guide, accessUrl) {
 </html>`;
 }
 
-async function handleGuideRequest(context, formData, guideRequest, safeReturnTo, email, firstName, honeypot) {
+async function handleGuideRequest(context, formData, guideRequest, safeReturnTo, email, firstName, honeypot, renew) {
   const resourceConsent = readFormValue(formData, 'resourceConsent') === 'on';
   const newsletterOptIn = readFormValue(formData, 'newsletterOptIn') === 'on';
   const errors = [];
@@ -143,6 +143,7 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
       safeReturnTo || ERROR_BASE,
       {
         resource: 'error',
+        renew: renew ? '1' : undefined,
         error: errors[0]
       },
       303
@@ -192,6 +193,7 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
       safeReturnTo,
       {
         resource: 'error',
+        renew: renew ? '1' : undefined,
         error: 'submission_failed'
       },
       303
@@ -203,6 +205,7 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
       safeReturnTo,
       {
         resource: 'error',
+        renew: renew ? '1' : undefined,
         error: 'submission_failed'
       },
       303
@@ -225,6 +228,7 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
       safeReturnTo,
       {
         resource: 'error',
+        renew: renew ? '1' : undefined,
         error: 'submission_failed'
       },
       303
@@ -252,6 +256,7 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
       safeReturnTo,
       {
         resource: 'error',
+        renew: renew ? '1' : undefined,
         error: 'submission_failed'
       },
       303
@@ -261,7 +266,8 @@ async function handleGuideRequest(context, formData, guideRequest, safeReturnTo,
   return createRedirectResponse(
     safeReturnTo,
     {
-      resource: 'success'
+      resource: 'success',
+      renew: renew ? '1' : undefined
     },
     303
   );
@@ -273,6 +279,7 @@ export async function onRequestPost(context) {
   const email = readFormValue(formData, 'email');
   const guideSlug = readFormValue(formData, 'guideSlug');
   const returnTo = readFormValue(formData, 'returnTo');
+  const renew = readFormValue(formData, 'renew') === '1';
   const firstName = readFormValue(formData, 'firstName');
   const resourceConsent = readFormValue(formData, 'resourceConsent') === 'on';
   const newsletterOptIn = readFormValue(formData, 'newsletterOptIn') === 'on';
@@ -283,7 +290,7 @@ export async function onRequestPost(context) {
   const safeReturnTo = isSafeGuideReturnPath(returnTo) ? returnTo : guideDownload?.returnTo || guideRequest?.href || null;
 
   if (guideRequest) {
-    return handleGuideRequest(context, formData, guideRequest, safeReturnTo, email, firstName, honeypot);
+    return handleGuideRequest(context, formData, guideRequest, safeReturnTo, email, firstName, honeypot, renew);
   }
 
   const errors = [];
@@ -313,6 +320,7 @@ export async function onRequestPost(context) {
       safeReturnTo || ERROR_BASE,
       {
         resource: 'error',
+        renew: renew ? '1' : undefined,
         error: errors[0]
       },
       303
@@ -359,6 +367,7 @@ export async function onRequestPost(context) {
       safeReturnTo,
       {
         resource: 'error',
+        renew: renew ? '1' : undefined,
         error: 'submission_failed'
       },
       303
@@ -370,6 +379,7 @@ export async function onRequestPost(context) {
       safeReturnTo,
       {
         resource: 'error',
+        renew: renew ? '1' : undefined,
         error: 'submission_failed'
       },
       303
@@ -392,6 +402,7 @@ export async function onRequestPost(context) {
       safeReturnTo,
       {
         resource: 'error',
+        renew: renew ? '1' : undefined,
         error: 'submission_failed'
       },
       303
@@ -448,6 +459,7 @@ export async function onRequestPost(context) {
       safeReturnTo,
       {
         resource: 'error',
+        renew: renew ? '1' : undefined,
         error: 'submission_failed'
       },
       303
@@ -457,7 +469,8 @@ export async function onRequestPost(context) {
   return createRedirectResponse(
     safeReturnTo,
     {
-      resource: 'success'
+      resource: 'success',
+      renew: renew ? '1' : undefined
     },
     303
   );

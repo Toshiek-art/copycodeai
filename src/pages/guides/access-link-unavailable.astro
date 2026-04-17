@@ -72,18 +72,18 @@ const pageCanonical = 'https://copycodeai.online/guides/access-link-unavailable/
     (() => {
       const searchParams = new URLSearchParams(window.location.search);
       const safeRequestPath = (value) => typeof value === 'string' && /^\/guides\/[a-z0-9-]+\/?$/.test(value);
-      const safeRequestHref = (value) => typeof value === 'string' && /^\/guides\/[a-z0-9-]+\/#guide-request$/.test(value);
+      const normalizeRequestPath = (value) => {
+        if (!safeRequestPath(value)) {
+          return null;
+        }
 
-      const requestHrefValue = searchParams.get('requestHref');
+        return value.endsWith('/') ? value : `${value}/`;
+      };
+
       const requestPathValue = searchParams.get('requestPath');
       const returnToValue = searchParams.get('returnTo');
-      const requestHref = safeRequestHref(requestHrefValue)
-        ? requestHrefValue
-        : safeRequestPath(requestPathValue)
-          ? `${requestPathValue}#guide-request`
-          : safeRequestPath(returnToValue)
-            ? `${returnToValue}#guide-request`
-            : '/guides/';
+      const requestTarget = normalizeRequestPath(requestPathValue) || normalizeRequestPath(returnToValue);
+      const requestHref = requestTarget ? `${requestTarget}?renew=1#guide-request` : '/guides/';
 
       const resourceLabel = searchParams.get('resource') === 'checklist' ? 'checklist' : 'guide';
       const requestLink = document.querySelector('[data-access-request-link]');
