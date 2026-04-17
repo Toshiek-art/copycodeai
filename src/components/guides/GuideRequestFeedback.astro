@@ -1,0 +1,67 @@
+---
+import FormStatus from '../forms/FormStatus.astro';
+
+interface Props {
+  successTitle?: string;
+  successMessage?: string;
+  errorTitle?: string;
+  errorMessage?: string;
+}
+
+const {
+  successTitle = 'Guide sent',
+  successMessage = 'Check your inbox for the link.',
+  errorTitle = 'Guide not sent',
+  errorMessage = 'Something went wrong. Please check your email address and consent selection, then try again.'
+} = Astro.props;
+---
+
+<div class="mt-6 space-y-4">
+  <FormStatus
+    type="success"
+    title={successTitle}
+    message={successMessage}
+    hidden
+    tabindex="-1"
+    data-guide-request-status="success"
+  />
+  <FormStatus
+    type="error"
+    title={errorTitle}
+    message={errorMessage}
+    hidden
+    tabindex="-1"
+    data-guide-request-status="error"
+  />
+</div>
+
+<script is:inline>
+  (() => {
+    const params = new URLSearchParams(window.location.search);
+    const state = params.get('resource');
+
+    if (!state) {
+      return;
+    }
+
+    const target = document.querySelector(`[data-guide-request-status="${state}"]`);
+
+    if (!target) {
+      return;
+    }
+
+    const wrapper = document.querySelector('[data-guide-request-form-wrapper]');
+
+    target.hidden = false;
+
+    if (state === 'success' && wrapper) {
+      wrapper.hidden = true;
+    }
+
+    target.scrollIntoView({ block: 'start', behavior: 'auto' });
+
+    if (typeof target.focus === 'function') {
+      target.focus({ preventScroll: true });
+    }
+  })();
+</script>

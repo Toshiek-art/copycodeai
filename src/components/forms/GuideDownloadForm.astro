@@ -12,33 +12,31 @@ interface Props {
 const {
   guideSlug,
   returnTo,
-  submitLabel = 'Send me the PDF',
+  submitLabel = 'Send me the guide',
   class: className = '',
   ...rest
 } = Astro.props;
 ---
 
 <form action="/api/forms/guide-download" method="post" class={`space-y-5 ${className}`.trim()} {...rest}>
-  <div class="grid gap-5 sm:grid-cols-2">
-    <FormField
-      name="email"
-      label="Email"
-      type="email"
-      autocomplete="email"
-      required
-      hint="We’ll send the PDF here."
-    />
-    <FormField
-      name="firstName"
-      label="First name"
-      autocomplete="given-name"
-      hint="Optional, but it helps us personalize the reply."
-    />
-  </div>
+  <FormField
+    name="email"
+    label="Email"
+    type="email"
+    autocomplete="email"
+    required
+    hint="We’ll email the guide link here."
+  />
 
   <CheckboxField
-    name="marketingOptIn"
-    label="I’d like occasional updates about services and new guides."
+    name="resourceConsent"
+    label="I consent to the processing of my email address to receive this guide."
+    required
+  />
+
+  <CheckboxField
+    name="newsletterOptIn"
+    label="I’d like occasional practical updates and new guides from CopyCodeAI."
     hint="Optional. You can leave this unchecked."
   />
 
